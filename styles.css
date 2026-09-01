@@ -80,6 +80,14 @@ h1 { max-width: 640px; margin: 0 auto 10px; font-family: Georgia, "Times New Rom
 .city-search-wrap { display: grid; grid-template-columns: 1fr auto; gap: 9px; }
 .city-search-wrap input { min-width: 0; min-height: 46px; border: 1px solid var(--border); border-radius: 12px; padding: 0 13px; color: var(--text); background: var(--surface-strong); }
 .field-error { min-height: 18px; margin: 5px 0 0; color: #b23b3b; font-size: 12px; }
+.city-add-row { position: relative; }
+.city-suggestions { position: absolute; z-index: 20; left: 0; right: 0; top: 76px; max-height: 292px; overflow-y: auto; padding: 7px; border: 1px solid var(--border); border-radius: 13px; background: var(--surface-strong); box-shadow: var(--shadow); }
+.city-suggestions[hidden], .results-card[hidden] { display: none; }
+.city-suggestion { width: 100%; min-height: 50px; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 7px 10px; border: 0; border-radius: 9px; background: transparent; color: var(--text); text-align: left; }
+.city-suggestion:hover, .city-suggestion:focus-visible { background: var(--primary-soft); }
+.city-suggestion strong { display: block; }
+.city-suggestion span { color: var(--muted); font-size: 12px; text-align: right; }
+.city-suggestions-status { padding: 12px; color: var(--muted); font-size: 13px; }
 .meeting-settings { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr auto; align-items: end; gap: 12px; }
 .meeting-settings label { min-width: 0; }
 .meeting-settings input, .meeting-settings select { width: 100%; }
