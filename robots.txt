@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rico36.github.io/world-meeting-time-finder/sitemap.xml
