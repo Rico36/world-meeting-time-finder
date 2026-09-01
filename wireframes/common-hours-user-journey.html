@@ -1130,6 +1130,42 @@ html&gt;body{padding:0}&lt;/style&gt;
       align-items: center;
       gap: 7px;
     }
+    #common-hours-journey .city-picker {
+      margin: 4px 0 8px;
+      padding: 10px;
+      border: 1px solid light-dark(#cbd5d0, #4b5d55);
+      border-radius: 12px;
+      background: light-dark(#ffffff, #22322d);
+      box-shadow: 0 10px 22px light-dark(rgba(44, 58, 51, .10), rgba(0, 0, 0, .20));
+    }
+    #common-hours-journey .city-picker[hidden] { display: none; }
+    #common-hours-journey .city-search {
+      min-height: 44px;
+      width: 100%;
+      border: 1px solid light-dark(#cbd5d0, #4b5d55);
+      border-radius: 10px;
+      padding: 0 12px;
+      background: light-dark(#fffefb, #1e2d28);
+      color: inherit;
+      font: inherit;
+    }
+    #common-hours-journey .city-suggestions { margin-top: 6px; display: grid; }
+    #common-hours-journey .city-suggestion {
+      min-height: 44px;
+      border: 0;
+      border-radius: 8px;
+      padding: 6px 9px;
+      background: transparent;
+      color: inherit;
+      text-align: left;
+      font: inherit;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    #common-hours-journey .city-suggestion:hover { background: light-dark(#edf5f0, #2b4038); }
+    #common-hours-journey .city-suggestion span { font-size: 12px; color: light-dark(#6d7b74, #aebbb5); }
     #common-hours-journey .finder-footer {
       margin-top: 8px;
       display: flex;
@@ -1269,6 +1305,18 @@ html&gt;body{padding:0}&lt;/style&gt;
     #common-hours-journey .chosen { position: absolute; inset-block: 3px; background: light-dark(#277461, #7ac8ad); border-radius: 7px; }
     #common-hours-journey .chosen::after { content: &quot;✓&quot;; position: absolute; inset: 0; display: grid; place-items: center; color: light-dark(#ffffff, #10251d); font-weight: 500; }
     #common-hours-journey .axis { margin: 4px 0 0 104px; display: flex; justify-content: space-between; font-size: 10px; color: light-dark(#75827c, #a2afa9); }
+    #common-hours-journey .timeline-legend {
+      margin: 12px 0 0 104px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 11px;
+      color: light-dark(#66746d, #aebbb5);
+    }
+    #common-hours-journey .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+    #common-hours-journey .legend-swatch { width: 22px; height: 10px; border-radius: 4px; }
+    #common-hours-journey .legend-working { background: light-dark(#b9dec7, #366c54); }
+    #common-hours-journey .legend-selected { background: light-dark(#277461, #7ac8ad); }
     #common-hours-journey .ad-space {
       max-width: 680px;
       min-height: 62px;
@@ -1292,6 +1340,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     #common-hours-journey .product-window.phone .share-actions button { flex: 1; justify-content: center; }
     #common-hours-journey .product-window.phone .timeline-row { grid-template-columns: 72px 1fr; gap: 7px; }
     #common-hours-journey .product-window.phone .axis { margin-left: 79px; }
+    #common-hours-journey .product-window.phone .timeline-legend { margin-left: 79px; gap: 9px; }
     #common-hours-journey .product-window.phone .location-copy { align-items: start; }
     @media (max-width: 520px) {
       #common-hours-journey .product-header { padding: 0 15px; }
@@ -1304,6 +1353,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       #common-hours-journey .share-actions button { flex: 1; justify-content: center; }
       #common-hours-journey .timeline-row { grid-template-columns: 72px 1fr; gap: 7px; }
       #common-hours-journey .axis { margin-left: 79px; }
+      #common-hours-journey .timeline-legend { margin-left: 79px; gap: 9px; }
     }
     @media (prefers-reduced-motion: reduce) { #common-hours-journey .product-window { transition: none; } }
   &lt;/style&gt;
@@ -1329,6 +1379,15 @@ html&gt;body{padding:0}&lt;/style&gt;
         &lt;div class=&quot;finder&quot;&gt;
           &lt;div class=&quot;location-list&quot; data-location-list&gt;&lt;/div&gt;
           &lt;button type=&quot;button&quot; class=&quot;add-location&quot; data-add-location&gt;&lt;i data-lucide=&quot;plus&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Add another city&lt;/button&gt;
+          &lt;div class=&quot;city-picker&quot; data-city-picker hidden&gt;
+            &lt;label class=&quot;sr-only&quot; for=&quot;city-search&quot;&gt;Search for a city or country&lt;/label&gt;
+            &lt;input id=&quot;city-search&quot; class=&quot;city-search&quot; data-city-search placeholder=&quot;Search city or country…&quot; autocomplete=&quot;off&quot;&gt;
+            &lt;div class=&quot;city-suggestions&quot; data-city-suggestions&gt;
+              &lt;button type=&quot;button&quot; class=&quot;city-suggestion&quot; data-city-choice=&quot;Toronto&quot;&gt;&lt;strong&gt;Toronto&lt;/strong&gt;&lt;span&gt;Canada · EDT&lt;/span&gt;&lt;/button&gt;
+              &lt;button type=&quot;button&quot; class=&quot;city-suggestion&quot; data-city-choice=&quot;Paris&quot;&gt;&lt;strong&gt;Paris&lt;/strong&gt;&lt;span&gt;France · CEST&lt;/span&gt;&lt;/button&gt;
+              &lt;button type=&quot;button&quot; class=&quot;city-suggestion&quot; data-city-choice=&quot;Singapore&quot;&gt;&lt;strong&gt;Singapore&lt;/strong&gt;&lt;span&gt;Singapore · SGT&lt;/span&gt;&lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
           &lt;div class=&quot;finder-footer&quot;&gt;
             &lt;label class=&quot;date-control&quot;&gt;&lt;i data-lucide=&quot;calendar-days&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;span class=&quot;sr-only&quot;&gt;Meeting date&lt;/span&gt;&lt;input type=&quot;date&quot; value=&quot;2026-09-01&quot; data-date-input&gt;&lt;/label&gt;
             &lt;button type=&quot;button&quot; class=&quot;find-button&quot; data-find&gt;Find common hours&lt;/button&gt;
@@ -1395,7 +1454,7 @@ html&gt;body{padding:0}&lt;/style&gt;
         }).join(&#x27;&#x27;);
         const durationOptions = [[30, &#x27;30 minutes&#x27;], [45, &#x27;45 minutes&#x27;], [60, &#x27;1 hour&#x27;], [90, &#x27;1½ hours&#x27;], [120, &#x27;2 hours&#x27;]].map(([value, label]) =&gt; `&lt;option value=&quot;${value}&quot;${selectedDuration === value ? &#x27; selected&#x27; : &#x27;&#x27;}&gt;${label}&lt;/option&gt;`).join(&#x27;&#x27;);
         const adjuster = chosen ? `&lt;div class=&quot;day-adjuster&quot;&gt;&lt;button data-day=&quot;-1&quot; aria-label=&quot;Previous day&quot;&gt;&lt;i data-lucide=&quot;chevron-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;&lt;div class=&quot;day-label&quot;&gt;&lt;strong data-date-label&gt;${dateLabel(selectedDate)}&lt;/strong&gt;&lt;span data-date-context&gt;${isToday(selectedDate) ? &#x27;Today&#x27; : &#x27;Meeting date&#x27;}&lt;/span&gt;&lt;/div&gt;&lt;button data-day=&quot;1&quot; aria-label=&quot;Next day&quot;&gt;&lt;i data-lucide=&quot;chevron-right&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;duration-control&quot;&gt;&lt;label for=&quot;meeting-duration&quot;&gt;&lt;i data-lucide=&quot;timer&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Duration&lt;/label&gt;&lt;select id=&quot;meeting-duration&quot; data-duration aria-label=&quot;Meeting duration&quot;&gt;${durationOptions}&lt;/select&gt;&lt;/div&gt;&lt;div class=&quot;time-adjuster&quot;&gt;&lt;button class=&quot;nudge-time&quot; data-nudge=&quot;-30&quot; aria-label=&quot;Move 30 minutes earlier&quot;&gt;&lt;i data-lucide=&quot;minus&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;&lt;label class=&quot;sr-only&quot; for=&quot;meeting-time-slider&quot;&gt;Selected meeting time&lt;/label&gt;&lt;input id=&quot;meeting-time-slider&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1410&quot; step=&quot;30&quot; value=&quot;${selectedMinutes}&quot; aria-label=&quot;Adjust selected meeting time&quot;&gt;&lt;button class=&quot;nudge-time&quot; data-nudge=&quot;30&quot; aria-label=&quot;Move 30 minutes later&quot;&gt;&lt;i data-lucide=&quot;plus&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;adjust-hint&quot;&gt;Change the day or duration, then drag to explore the best time&lt;/div&gt;` : &#x27;&#x27;;
-        return `&lt;section class=&quot;results&quot; aria-label=&quot;Common meeting times&quot;&gt;&lt;div class=&quot;result-heading&quot;&gt;&lt;div&gt;&lt;span&gt;${chosen ? &#x27;Selected time&#x27; : &#x27;Best overlap&#x27;}&lt;/span&gt;&lt;strong data-selected-summary&gt;${chosen ? &#x27;10:00 AM New York · 3:00 PM London&#x27; : &#x27;Two good windows found&#x27;}&lt;/strong&gt;&lt;span data-meeting-meta&gt;${chosen ? &#x27;Tuesday, Sep 1 · 60 minutes&#x27; : &#x27;Click a window to choose it&#x27;}&lt;/span&gt;&lt;/div&gt;${chosen ? &#x27;&lt;div class=&quot;share-actions&quot;&gt;&lt;button&gt;&lt;i data-lucide=&quot;copy&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Copy&lt;/button&gt;&lt;button&gt;&lt;i data-lucide=&quot;share-2&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Share&lt;/button&gt;&lt;/div&gt;&#x27; : &#x27;&#x27;}&lt;/div&gt;${adjuster}&lt;div class=&quot;timeline-list&quot;&gt;${rows}&lt;/div&gt;&lt;div class=&quot;axis&quot;&gt;&lt;span&gt;6 AM&lt;/span&gt;&lt;span&gt;12 PM&lt;/span&gt;&lt;span&gt;6 PM&lt;/span&gt;&lt;span&gt;12 AM&lt;/span&gt;&lt;/div&gt;&lt;/section&gt;&lt;div class=&quot;ad-space&quot; aria-label=&quot;Reserved advertising position&quot;&gt;Reserved responsive ad · below the completed task&lt;/div&gt;`;
+        return `&lt;section class=&quot;results&quot; aria-label=&quot;Common meeting times&quot;&gt;&lt;div class=&quot;result-heading&quot;&gt;&lt;div&gt;&lt;span&gt;${chosen ? &#x27;Selected time&#x27; : &#x27;Best overlap&#x27;}&lt;/span&gt;&lt;strong data-selected-summary&gt;${chosen ? &#x27;10:00 AM New York · 3:00 PM London&#x27; : &#x27;Two good windows found&#x27;}&lt;/strong&gt;&lt;span data-meeting-meta&gt;${chosen ? &#x27;Tuesday, Sep 1 · 60 minutes&#x27; : &#x27;Click a window to choose it&#x27;}&lt;/span&gt;&lt;/div&gt;${chosen ? &#x27;&lt;div class=&quot;share-actions&quot;&gt;&lt;button&gt;&lt;i data-lucide=&quot;copy&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Copy&lt;/button&gt;&lt;button&gt;&lt;i data-lucide=&quot;share-2&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Share&lt;/button&gt;&lt;/div&gt;&#x27; : &#x27;&#x27;}&lt;/div&gt;${adjuster}&lt;div class=&quot;timeline-list&quot;&gt;${rows}&lt;/div&gt;&lt;div class=&quot;axis&quot;&gt;&lt;span&gt;6 AM&lt;/span&gt;&lt;span&gt;12 PM&lt;/span&gt;&lt;span&gt;6 PM&lt;/span&gt;&lt;span&gt;12 AM&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;timeline-legend&quot; aria-label=&quot;Timeline legend&quot;&gt;&lt;span class=&quot;legend-item&quot;&gt;&lt;span class=&quot;legend-swatch legend-working&quot;&gt;&lt;/span&gt;Normal working hours&lt;/span&gt;&lt;span class=&quot;legend-item&quot;&gt;&lt;span class=&quot;legend-swatch legend-selected&quot;&gt;&lt;/span&gt;Selected meeting&lt;/span&gt;&lt;/div&gt;&lt;/section&gt;&lt;div class=&quot;ad-space&quot; aria-label=&quot;Reserved advertising position&quot;&gt;Reserved responsive ad · below the completed task&lt;/div&gt;`;
       }
 
       function updateSelection(nextMinutes) {
@@ -1432,6 +1491,8 @@ html&gt;body{padding:0}&lt;/style&gt;
 
       function render(step) {
         const state = states[step];
+        const picker = root.querySelector(&#x27;[data-city-picker]&#x27;);
+        if (picker &amp;&amp; step !== &#x27;start&#x27;) picker.hidden = true;
         const cities = cityData.slice(0, state.cities);
         productWindow.classList.toggle(&#x27;phone&#x27;, state.phone);
         locationList.innerHTML = cities.map((city, index) =&gt; locationMarkup(city, index, cities.length)).join(&#x27;&#x27;);
@@ -1444,7 +1505,26 @@ html&gt;body{padding:0}&lt;/style&gt;
       }
 
       buttons.forEach(button =&gt; button.addEventListener(&#x27;click&#x27;, () =&gt; render(button.dataset.step)));
-      root.querySelector(&#x27;[data-add-location]&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; render(&#x27;cities&#x27;));
+      const cityPicker = root.querySelector(&#x27;[data-city-picker]&#x27;);
+      const citySearch = root.querySelector(&#x27;[data-city-search]&#x27;);
+      root.querySelector(&#x27;[data-add-location]&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+        cityPicker.hidden = !cityPicker.hidden;
+        if (!cityPicker.hidden) citySearch.focus();
+      });
+      root.querySelector(&#x27;[data-city-suggestions]&#x27;).addEventListener(&#x27;click&#x27;, event =&gt; {
+        if (event.target.closest(&#x27;[data-city-choice]&#x27;)) {
+          cityPicker.hidden = true;
+          citySearch.value = &#x27;&#x27;;
+          root.querySelectorAll(&#x27;[data-city-choice]&#x27;).forEach(choice =&gt; { choice.hidden = false; });
+          render(&#x27;cities&#x27;);
+        }
+      });
+      citySearch.addEventListener(&#x27;input&#x27;, () =&gt; {
+        const query = citySearch.value.trim().toLowerCase();
+        root.querySelectorAll(&#x27;[data-city-choice]&#x27;).forEach(choice =&gt; {
+          choice.hidden = query &amp;&amp; !choice.textContent.toLowerCase().includes(query);
+        });
+      });
       root.querySelector(&#x27;[data-find]&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; render(&#x27;choose&#x27;));
       resultsHost.addEventListener(&#x27;input&#x27;, event =&gt; {
         if (event.target.matches(&#x27;#meeting-time-slider&#x27;)) updateSelection(Number(event.target.value));
