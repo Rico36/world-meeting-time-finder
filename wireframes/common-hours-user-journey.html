@@ -1,0 +1,1669 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Common Hours User Journey</title>
+<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+</head>
+<body>
+<iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="Common Hours User Journey" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;Common Hours User Journey&lt;/title&gt;
+&lt;style&gt;:root {
+  color-scheme: light dark;
+  background-color: var(
+    --background,
+    var(--color-background-primary, light-dark(rgb(255 255 255), rgb(24 24 24)))
+  ) !important;
+
+  /* Agent-facing contract; keep in sync with SKILL.md. */
+  --background: var(
+    --color-background-primary,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --card: color-mix(in oklab, var(--foreground) 5%, var(--background));
+  --card-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --popover: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255), rgb(45 45 45))
+  );
+  --popover-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --primary: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --primary-foreground: var(
+    --color-text-inverse,
+    light-dark(rgb(255 255 255), rgb(13 13 13))
+  );
+  --secondary: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%))
+  );
+  --secondary-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --muted-foreground: var(
+    --color-text-secondary,
+    light-dark(rgb(26 28 31 / 49.4%), rgb(255 255 255 / 49.8%))
+  );
+  --accent: var(
+    --color-background-info,
+    light-dark(rgb(229 242 255), rgb(13 39 63))
+  );
+  --accent-foreground: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --destructive: var(
+    --color-text-warning,
+    light-dark(rgb(226 85 7), rgb(255 133 73))
+  );
+  --border: var(
+    --color-border-secondary,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+  --input: var(
+    --color-border-primary,
+    light-dark(
+      rgb(26 28 31 / 11.8%),
+      color-mix(in oklab, rgb(0 0 0) 10%, transparent)
+    )
+  );
+  --ring: var(
+    --color-ring-primary,
+    light-dark(rgb(51 156 255), rgb(131 195 255 / 76%))
+  );
+  --font-size-base: var(--font-text-md-size, 14px);
+  --blue: light-dark(rgb(51 156 255), rgb(51 156 255));
+  --orange: light-dark(rgb(226 85 7), rgb(251 106 34));
+  --green: light-dark(rgb(0 162 64), rgb(64 201 119));
+  --red: light-dark(rgb(224 46 42), rgb(255 103 100));
+  --purple: light-dark(rgb(146 79 247), rgb(173 123 249));
+  --yellow: light-dark(rgb(255 195 0), rgb(255 210 64));
+  --viz-series-1: var(--primary);
+  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
+  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
+  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
+  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
+  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
+
+  /* Internal implementation variables; not part of the agent contract. */
+  --font-sans: -apple-system, system-ui, &quot;Segoe UI&quot;, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;,
+    monospace;
+  --font-size-normal: max(11px, var(--font-size-base));
+  --font-size-tooltip: calc(var(--font-size-base) - 1px);
+  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
+  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
+  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
+  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
+  --font-weight-normal: 430;
+  --font-weight-medium: 500;
+  --line-height-normal: calc(var(--font-size-normal) * 1.5);
+  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
+  --line-height-small: calc(var(--font-size-small) + 4px);
+  --radius: var(--border-radius-lg, 12.5px);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
+
+  /* Legacy aliases; not part of the current agent contract. */
+  --viz-bg: transparent;
+  --viz-panel: var(--card);
+  --viz-border: var(--border);
+  --viz-text: var(--foreground);
+  --viz-muted: var(--muted-foreground);
+  --viz-accent: var(--primary);
+  --viz-accent-text: var(--primary-foreground);
+  --viz-accent-bg: var(--accent);
+  --viz-font-size: var(--font-size-base);
+  --viz-warning: var(--destructive);
+}
+
+:root[data-theme=&quot;light&quot;] {
+  color-scheme: light;
+}
+
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html &gt; body {
+  /* Preserve MCP aliases for older inline renderers without creating :root cycles. */
+  --color-background-primary: var(
+    --background,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --color-text-primary: var(
+    --foreground,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --color-border-secondary: var(
+    --border,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+
+  margin: 0;
+  padding: 5px;
+  color: var(--foreground);
+  background: transparent !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+a {
+  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
+  cursor: pointer;
+  font-weight: var(--font-weight-medium, 500);
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+
+a:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: 0;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+}
+
+b,
+strong,
+th {
+  font-weight: var(--font-weight-medium);
+}
+
+code:not(pre code) {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--foreground);
+  font: inherit;
+  text-align: start;
+}
+
+.table :is(th, td) {
+  padding-block: 10px;
+  padding-inline: 0 24px;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.table-responsive &gt; .table :is(th, td) {
+  overflow-wrap: break-word;
+}
+
+.table :is(th, td):last-child {
+  padding-inline-end: 0;
+}
+
+.table :is(caption, thead th) {
+  font-weight: 600;
+}
+
+.table thead th {
+  padding-block: 8px;
+  border-bottom-color: color-mix(in srgb, var(--foreground) 16%, transparent);
+}
+
+.table tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+.table.table-sm :is(th, td) {
+  padding-block: 6px;
+}
+
+.table.table-sm :is(th, td):not(:last-child) {
+  padding-inline-end: 16px;
+}
+
+.table :is(.text-end, [align=&quot;right&quot;]) {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.table :is(.text-center, [align=&quot;center&quot;]) {
+  text-align: center;
+}
+
+.table .text-nowrap {
+  white-space: nowrap;
+}
+
+#widget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  border-radius: var(--radius-2xl);
+  corner-shape: superellipse(1.5);
+  color: var(--card-foreground);
+  background: var(--card);
+}
+
+#widget &gt; :not(.card, .progress) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(
+    20rem,
+    var(--tooltip-available-width, calc(100vw - 10px)),
+    calc(100vw - 10px)
+  );
+  max-height: min(
+    var(--tooltip-available-height, calc(100vh - 10px)),
+    calc(100vh - 10px)
+  );
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--popover-foreground);
+  background: var(--popover);
+  box-shadow: none;
+  font-size: var(--font-size-tooltip);
+  line-height: var(--line-height-tooltip);
+  overflow-wrap: break-word;
+  white-space: normal;
+  pointer-events: none;
+  user-select: none;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
+  gap: 10px;
+}
+
+.viz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-stat-value {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress {
+  display: flex;
+  height: 6px;
+  margin-block: calc((var(--line-height-normal, 1.5em) - 6px) / 2);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+}
+
+.progress-bar {
+  height: 100%;
+  flex-shrink: 0;
+  border: 0;
+  background: var(--viz-series-1);
+}
+
+.viz-badge {
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  color: var(--accent-foreground);
+  background: var(--accent);
+  font-weight: var(--font-weight-medium);
+}
+
+small,
+.text-small,
+.viz-badge {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.viz-controls &gt; .form-label {
+  display: grid;
+  min-width: min(100%, 260px);
+  flex: 1 1 280px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-bottom: 0;
+}
+
+.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
+  grid-column: 1 / -1;
+}
+
+.btn,
+.form-check-input,
+.form-control,
+.form-range,
+.form-select {
+  font: inherit;
+}
+
+.btn {
+  appearance: button;
+  display: inline-flex;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  -webkit-app-region: no-drag;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: var(--cursor-interaction, pointer);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn:is(.btn-block, .viz-tile) {
+  inline-size: 100%;
+}
+
+.btn.viz-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+a.btn {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn-primary {
+  border-color: transparent;
+  color: var(--primary-foreground);
+  background: var(--foreground);
+  background-clip: padding-box;
+}
+
+.btn-primary .text-muted {
+  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 80%, transparent);
+  background-clip: padding-box;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+[data-lucide] {
+  stroke-width: 1.6;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  padding: 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+.form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.form-control[type=&quot;file&quot;] {
+  padding: 0;
+  overflow: hidden;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control[type=&quot;file&quot;]::file-selector-button {
+  min-height: 26px;
+  margin-right: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid var(--input);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: inherit;
+  font: inherit;
+}
+
+.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-control-color[type=&quot;color&quot;] {
+  width: 40px;
+  height: 28px;
+  padding: 3px;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 4px);
+  corner-shape: superellipse(1.5);
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.form-control:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.form-select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  margin: 0;
+  padding: 0 32px 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background-color: var(--secondary);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted-foreground) 50%),
+    linear-gradient(135deg, var(--muted-foreground) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 10px) 50%;
+  background-repeat: no-repeat;
+  background-size: 4px 4px;
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-select:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-select:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-check {
+  display: flex;
+  min-height: 20px;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-check-input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid var(--input);
+  color: var(--primary-foreground);
+  background-color: transparent;
+  cursor: var(--cursor-interaction, default);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+  border-color: var(--input);
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background-color: var(--secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input:not(:disabled):not(:checked):hover {
+  background-color: var(--card);
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-foreground);
+  content: &quot;&quot;;
+  mask: var(--checkmark-image) center / 12px 12px no-repeat;
+}
+
+.form-check-input[type=&quot;radio&quot;] {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+}
+
+.form-check-input[type=&quot;radio&quot;]:checked {
+  border: 2px solid var(--primary);
+  background:
+    radial-gradient(circle, var(--primary-foreground) 0 2.5px, transparent 3px),
+    var(--primary);
+}
+
+.form-check:not(.form-switch) .form-check-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+}
+
+.form-switch .form-check-input:disabled,
+.form-switch .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-check-label {
+  color: var(--foreground);
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-switch .form-check-input {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  box-shadow: none;
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+  box-shadow: var(--shadow-sm);
+  content: &quot;&quot;;
+  transform: translate(2px, -50%);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input:checked {
+  background: var(--primary);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translate(14px, -50%);
+}
+
+.form-switch .form-check-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.form-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  accent-color: var(--primary);
+  background: linear-gradient(
+      color-mix(in srgb, var(--foreground) 7%, transparent),
+      color-mix(in srgb, var(--foreground) 7%, transparent)
+    )
+    center / 100% 2px no-repeat;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-webkit-slider-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range::-moz-range-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-moz-range-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.btn:not(.btn-primary, .viz-tile):is(
+  [aria-pressed=&quot;true&quot;],
+  [aria-selected=&quot;true&quot;],
+  .is-selected
+) {
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (pointer: coarse) {
+  .btn,
+  .form-control,
+  .form-select {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .form-control,
+  .form-select {
+    font-size: max(16px, var(--font-size-normal));
+  }
+
+  .form-control[type=&quot;file&quot;]::file-selector-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .form-control-color[type=&quot;color&quot;] {
+    width: 44px;
+    height: 44px;
+  }
+
+  .form-control:is(
+    [type=&quot;date&quot;],
+    [type=&quot;datetime-local&quot;],
+    [type=&quot;month&quot;],
+    [type=&quot;time&quot;],
+    [type=&quot;week&quot;]
+  ) {
+    min-width: 0;
+    max-width: 100%;
+    padding-block: 8px;
+  }
+
+  .form-check {
+    min-height: 44px;
+    padding-inline: 15px;
+  }
+
+  .form-check-input {
+    position: relative;
+  }
+
+  .form-check-input::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    content: &quot;&quot;;
+    transform: translate(-50%, -50%);
+  }
+
+  .form-check-label {
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .form-range {
+    height: 44px;
+    touch-action: pan-y;
+  }
+
+  .form-range::-webkit-slider-runnable-track {
+    height: 44px;
+  }
+
+  .form-range::-moz-range-track {
+    height: 44px;
+  }
+
+  .form-range::-webkit-slider-thumb {
+    margin-top: 12px;
+  }
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#widget &gt; svg {
+  width: 100%;
+}
+
+/* Model-authored chart rules can otherwise stretch icons after these styles load. */
+svg.lucide {
+  display: block;
+  width: 16px !important;
+  height: 16px !important;
+  flex: none;
+  margin: 0 !important;
+  stroke-width: 1.6;
+}
+
+.text-warning,
+.text-destructive {
+  color: var(--destructive);
+}
+
+html&gt;body{padding:0}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;common-hours-journey&quot;&gt;
+  &lt;style&gt;
+    #common-hours-journey {
+      color: light-dark(#26332f, #edf4f0);
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      display: grid;
+      gap: 14px;
+    }
+    #common-hours-journey * { box-sizing: border-box; }
+    #common-hours-journey .journey-controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    #common-hours-journey .journey-controls button {
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid light-dark(#cfd9d4, #52635c);
+      background: light-dark(#f7f5ef, #1c2824);
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+    }
+    #common-hours-journey .journey-controls button[aria-pressed=&quot;true&quot;] {
+      background: light-dark(#296f5d, #79c4aa);
+      color: light-dark(#ffffff, #10221b);
+      border-color: transparent;
+    }
+    #common-hours-journey .stage-note {
+      color: light-dark(#697770, #adbbb4);
+      min-height: 20px;
+    }
+    #common-hours-journey .preview-shell {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    #common-hours-journey .product-window {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 18px;
+      border: 1px solid light-dark(#d7ded9, #415049);
+      background: light-dark(#fbf8f1, #17231f);
+      box-shadow: 0 16px 40px light-dark(rgba(45, 57, 51, .11), rgba(0, 0, 0, .28));
+      transition: width .25s ease;
+    }
+    #common-hours-journey .product-window.phone {
+      width: min(100%, 390px);
+      border-radius: 28px;
+    }
+    #common-hours-journey .product-header {
+      min-height: 62px;
+      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      background: light-dark(#fffdf8, #1a2924);
+      border-bottom: 1px solid light-dark(#e7e0d2, #33453f);
+    }
+    #common-hours-journey .brand { display: flex; align-items: center; gap: 9px; font-weight: 500; }
+    #common-hours-journey .brand-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: light-dark(#276d5c, #92d5bd);
+      background: light-dark(#dceee5, #294f42);
+    }
+    #common-hours-journey .header-tools { display: flex; align-items: center; gap: 8px; }
+    #common-hours-journey .language-select {
+      min-height: 38px;
+      border: 1px solid light-dark(#cbd5d0, #4b5d55);
+      border-radius: 10px;
+      padding: 0 10px;
+      background: light-dark(#fffdf8, #21312b);
+      color: inherit;
+      font: inherit;
+    }
+    #common-hours-journey .theme-button {
+      min-width: 40px;
+      min-height: 40px;
+      border: 0;
+      background: transparent;
+      color: inherit;
+    }
+    #common-hours-journey .product-main {
+      padding: 30px 24px 24px;
+      background:
+        radial-gradient(circle at 8% 0%, light-dark(rgba(230, 180, 105, .18), rgba(165, 112, 48, .10)), transparent 25%),
+        radial-gradient(circle at 92% 8%, light-dark(rgba(98, 180, 151, .17), rgba(67, 139, 113, .10)), transparent 26%);
+    }
+    #common-hours-journey .intro { text-align: center; max-width: 560px; margin: 0 auto 22px; }
+    #common-hours-journey .intro h2 { margin: 0 0 6px; font-family: Georgia, serif; font-weight: 500; }
+    #common-hours-journey .intro p { margin: 0; color: light-dark(#68766f, #b3c0ba); }
+    #common-hours-journey .finder,
+    #common-hours-journey .results {
+      max-width: 680px;
+      margin: 0 auto;
+      background: light-dark(#fffefb, #1e2d28);
+      border-radius: 18px;
+      box-shadow: 0 10px 26px light-dark(rgba(69, 76, 60, .09), rgba(0, 0, 0, .17));
+    }
+    #common-hours-journey .finder { padding: 18px; }
+    #common-hours-journey .location-list { display: grid; gap: 10px; }
+    #common-hours-journey .location-field { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+    #common-hours-journey .location-copy {
+      min-height: 52px;
+      border: 1px solid light-dark(#cad4cf, #506159);
+      border-radius: 12px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: light-dark(#ffffff, #22322d);
+    }
+    #common-hours-journey .location-name { display: grid; gap: 1px; }
+    #common-hours-journey .location-name strong { font-weight: 500; }
+    #common-hours-journey .location-name span,
+    #common-hours-journey .location-time span { font-size: 12px; color: light-dark(#6b7972, #aebbb5); }
+    #common-hours-journey .location-time { text-align: right; white-space: nowrap; }
+    #common-hours-journey .remove-location {
+      min-width: 44px;
+      min-height: 44px;
+      border: 0;
+      background: transparent;
+      color: light-dark(#78837e, #a9b6b0);
+    }
+    #common-hours-journey .add-location {
+      min-height: 42px;
+      border: 0;
+      background: transparent;
+      color: light-dark(#256b59, #8dd2ba);
+      font: inherit;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+    #common-hours-journey .finder-footer {
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    #common-hours-journey .date-control { display: flex; align-items: center; gap: 7px; font-size: 13px; }
+    #common-hours-journey .find-button {
+      min-height: 44px;
+      border: 0;
+      border-radius: 12px;
+      padding: 0 18px;
+      color: #ffffff;
+      background: #267562;
+      font: inherit;
+      font-weight: 500;
+    }
+    #common-hours-journey .results { margin-top: 16px; padding: 18px; }
+    #common-hours-journey .result-heading { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+    #common-hours-journey .result-heading span { font-size: 12px; color: light-dark(#6b7972, #aebbb5); }
+    #common-hours-journey .result-heading strong { display: block; margin-top: 2px; font-weight: 500; }
+    #common-hours-journey .share-actions { display: flex; gap: 6px; }
+    #common-hours-journey .share-actions button {
+      min-height: 38px;
+      padding: 0 10px;
+      border-radius: 10px;
+      border: 1px solid light-dark(#ccd6d1, #506159);
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    #common-hours-journey .time-adjuster {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 42px 1fr 42px;
+      align-items: center;
+      gap: 10px;
+    }
+    #common-hours-journey .time-adjuster input[type=&quot;range&quot;] {
+      width: 100%;
+      accent-color: light-dark(#267562, #7ac8ad);
+      cursor: grab;
+    }
+    #common-hours-journey .time-adjuster input[type=&quot;range&quot;]:active { cursor: grabbing; }
+    #common-hours-journey .nudge-time {
+      min-width: 42px;
+      min-height: 42px;
+      border-radius: 10px;
+      border: 1px solid light-dark(#ccd6d1, #506159);
+      background: light-dark(#ffffff, #22322d);
+      color: inherit;
+      display: grid;
+      place-items: center;
+    }
+    #common-hours-journey .adjust-hint {
+      margin-top: 5px;
+      text-align: center;
+      font-size: 11px;
+      color: light-dark(#718079, #aab7b1);
+    }
+    #common-hours-journey .timeline-list { margin-top: 16px; display: grid; gap: 10px; }
+    #common-hours-journey .timeline-row { display: grid; grid-template-columns: 94px 1fr; align-items: center; gap: 10px; }
+    #common-hours-journey .timeline-city strong { display: block; font-size: 12px; font-weight: 500; }
+    #common-hours-journey .timeline-city span { font-size: 11px; color: light-dark(#718079, #aab7b1); }
+    #common-hours-journey .timeline {
+      height: 32px;
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      background: light-dark(#e8ece9, #2d3b35);
+      cursor: pointer;
+    }
+    #common-hours-journey .working { position: absolute; inset-block: 0; background: light-dark(#b9dec7, #366c54); }
+    #common-hours-journey .chosen { position: absolute; inset-block: 3px; background: light-dark(#277461, #7ac8ad); border-radius: 7px; }
+    #common-hours-journey .chosen::after { content: &quot;✓&quot;; position: absolute; inset: 0; display: grid; place-items: center; color: light-dark(#ffffff, #10251d); font-weight: 500; }
+    #common-hours-journey .axis { margin: 4px 0 0 104px; display: flex; justify-content: space-between; font-size: 10px; color: light-dark(#75827c, #a2afa9); }
+    #common-hours-journey .ad-space {
+      max-width: 680px;
+      min-height: 62px;
+      margin: 18px auto 0;
+      border: 1px dashed light-dark(#c8cec9, #506058);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: light-dark(#7b8580, #9eaaa4);
+      font-size: 12px;
+      background: light-dark(rgba(255,255,255,.35), rgba(27,42,35,.45));
+    }
+    #common-hours-journey .product-window.phone .product-header { padding: 0 15px; }
+    #common-hours-journey .product-window.phone .product-main { padding: 24px 13px 18px; }
+    #common-hours-journey .product-window.phone .intro { margin-bottom: 17px; }
+    #common-hours-journey .product-window.phone .language-select { max-width: 102px; }
+    #common-hours-journey .product-window.phone .finder-footer { flex-direction: column; align-items: stretch; }
+    #common-hours-journey .product-window.phone .find-button { width: 100%; }
+    #common-hours-journey .product-window.phone .result-heading { flex-direction: column; }
+    #common-hours-journey .product-window.phone .share-actions { width: 100%; }
+    #common-hours-journey .product-window.phone .share-actions button { flex: 1; justify-content: center; }
+    #common-hours-journey .product-window.phone .timeline-row { grid-template-columns: 72px 1fr; gap: 7px; }
+    #common-hours-journey .product-window.phone .axis { margin-left: 79px; }
+    #common-hours-journey .product-window.phone .location-copy { align-items: start; }
+    @media (max-width: 520px) {
+      #common-hours-journey .product-header { padding: 0 15px; }
+      #common-hours-journey .product-main { padding: 24px 13px 18px; }
+      #common-hours-journey .language-select { max-width: 104px; }
+      #common-hours-journey .finder-footer { flex-direction: column; align-items: stretch; }
+      #common-hours-journey .find-button { width: 100%; }
+      #common-hours-journey .result-heading { flex-direction: column; }
+      #common-hours-journey .share-actions { width: 100%; }
+      #common-hours-journey .share-actions button { flex: 1; justify-content: center; }
+      #common-hours-journey .timeline-row { grid-template-columns: 72px 1fr; gap: 7px; }
+      #common-hours-journey .axis { margin-left: 79px; }
+    }
+    @media (prefers-reduced-motion: reduce) { #common-hours-journey .product-window { transition: none; } }
+  &lt;/style&gt;
+
+  &lt;div class=&quot;journey-controls&quot; role=&quot;group&quot; aria-label=&quot;Choose a journey step&quot;&gt;
+    &lt;button type=&quot;button&quot; data-step=&quot;start&quot; aria-pressed=&quot;true&quot;&gt;1 · Start&lt;/button&gt;
+    &lt;button type=&quot;button&quot; data-step=&quot;cities&quot; aria-pressed=&quot;false&quot;&gt;2 · Multiple cities&lt;/button&gt;
+    &lt;button type=&quot;button&quot; data-step=&quot;choose&quot; aria-pressed=&quot;false&quot;&gt;3 · Choose &amp; share&lt;/button&gt;
+    &lt;button type=&quot;button&quot; data-step=&quot;mobile&quot; aria-pressed=&quot;false&quot;&gt;4 · Mobile&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;stage-note&quot; aria-live=&quot;polite&quot;&gt;Two useful defaults; one clear action.&lt;/div&gt;
+  &lt;div class=&quot;preview-shell&quot;&gt;
+    &lt;div class=&quot;product-window&quot; data-product-window&gt;
+      &lt;header class=&quot;product-header&quot;&gt;
+        &lt;div class=&quot;brand&quot;&gt;&lt;span class=&quot;brand-mark&quot;&gt;&lt;i data-lucide=&quot;sun-medium&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;Common Hours&lt;/div&gt;
+        &lt;div class=&quot;header-tools&quot;&gt;
+          &lt;select class=&quot;language-select&quot; aria-label=&quot;Language&quot;&gt;&lt;option&gt;English&lt;/option&gt;&lt;option&gt;Español&lt;/option&gt;&lt;option&gt;Français&lt;/option&gt;&lt;option&gt;Deutsch&lt;/option&gt;&lt;option&gt;Português&lt;/option&gt;&lt;/select&gt;
+          &lt;button class=&quot;theme-button&quot; aria-label=&quot;Change color theme&quot;&gt;&lt;i data-lucide=&quot;moon&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main class=&quot;product-main&quot;&gt;
+        &lt;div class=&quot;intro&quot;&gt;&lt;h2&gt;Find a good time for everyone.&lt;/h2&gt;&lt;p&gt;Compare cities and spot the hours that work—without doing time-zone math.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;finder&quot;&gt;
+          &lt;div class=&quot;location-list&quot; data-location-list&gt;&lt;/div&gt;
+          &lt;button type=&quot;button&quot; class=&quot;add-location&quot; data-add-location&gt;&lt;i data-lucide=&quot;plus&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Add another city&lt;/button&gt;
+          &lt;div class=&quot;finder-footer&quot;&gt;
+            &lt;span class=&quot;date-control&quot;&gt;&lt;i data-lucide=&quot;calendar-days&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Today, 1 September&lt;/span&gt;
+            &lt;button type=&quot;button&quot; class=&quot;find-button&quot; data-find&gt;Find common hours&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div data-results&gt;&lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;script&gt;
+    (() =&gt; {
+      const root = document.getElementById(&#x27;common-hours-journey&#x27;);
+      const productWindow = root.querySelector(&#x27;[data-product-window]&#x27;);
+      const locationList = root.querySelector(&#x27;[data-location-list]&#x27;);
+      const resultsHost = root.querySelector(&#x27;[data-results]&#x27;);
+      const note = root.querySelector(&#x27;.stage-note&#x27;);
+      const buttons = [...root.querySelectorAll(&#x27;[data-step]&#x27;)];
+      const cityData = [
+        { name: &#x27;New York&#x27;, zone: &#x27;EDT · UTC−4&#x27;, time: &#x27;10:24 AM&#x27; },
+        { name: &#x27;London&#x27;, zone: &#x27;BST · UTC+1&#x27;, time: &#x27;3:24 PM&#x27; },
+        { name: &#x27;Tokyo&#x27;, zone: &#x27;JST · UTC+9&#x27;, time: &#x27;11:24 PM&#x27; },
+        { name: &#x27;Sydney&#x27;, zone: &#x27;AEST · UTC+10&#x27;, time: &#x27;12:24 AM&#x27; }
+      ];
+      const states = {
+        start: { cities: 2, results: false, chosen: false, phone: false, note: &#x27;Two useful defaults; one clear action.&#x27; },
+        cities: { cities: 4, results: true, chosen: false, phone: false, note: &#x27;Up to five cities remain readable without turning into a dashboard.&#x27; },
+        choose: { cities: 4, results: true, chosen: true, phone: false, note: &#x27;Selecting one window exposes copy and share actions at the moment they matter.&#x27; },
+        mobile: { cities: 3, results: true, chosen: true, phone: true, note: &#x27;The same flow stacks naturally on a phone; no separate mobile interaction model.&#x27; }
+      };
+
+      function locationMarkup(city, index, count) {
+        return `&lt;div class=&quot;location-field&quot;&gt;&lt;div class=&quot;location-copy&quot;&gt;&lt;div class=&quot;location-name&quot;&gt;&lt;strong&gt;${city.name}&lt;/strong&gt;&lt;span&gt;${index === 0 ? &#x27;Your location&#x27; : city.zone}&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;location-time&quot;&gt;&lt;strong&gt;${city.time}&lt;/strong&gt;&lt;span&gt;${index === 0 ? city.zone : &#x27;Local time&#x27;}&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;${count &gt; 2 &amp;&amp; index &gt; 1 ? &#x27;&lt;button class=&quot;remove-location&quot; aria-label=&quot;Remove &#x27; + city.name + &#x27;&quot;&gt;&lt;i data-lucide=&quot;x&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;&#x27; : &#x27;&lt;span&gt;&lt;/span&gt;&#x27;}&lt;/div&gt;`;
+      }
+
+      let selectedMinutes = 600;
+
+      function formatTime(totalMinutes) {
+        const normalized = ((totalMinutes % 1440) + 1440) % 1440;
+        const hours = Math.floor(normalized / 60);
+        const minutes = normalized % 60;
+        const displayHour = hours % 12 || 12;
+        return `${displayHour}:${String(minutes).padStart(2, &#x27;0&#x27;)} ${hours &lt; 12 ? &#x27;AM&#x27; : &#x27;PM&#x27;}`;
+      }
+
+      function resultsMarkup(cities, chosen) {
+        const rows = cities.map((city, index) =&gt; {
+          const workLeft = [20, 8, 48, 52][index];
+          return `&lt;div class=&quot;timeline-row&quot;&gt;&lt;div class=&quot;timeline-city&quot;&gt;&lt;strong&gt;${city.name}&lt;/strong&gt;&lt;span data-city-time=&quot;${index}&quot;&gt;${city.time}&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;timeline&quot; role=&quot;button&quot; aria-label=&quot;Choose a meeting time for ${city.name}&quot; data-timeline&gt;&lt;span class=&quot;working&quot; style=&quot;left:${workLeft}%;width:46%&quot;&gt;&lt;/span&gt;${chosen ? &#x27;&lt;span class=&quot;chosen&quot; data-chosen style=&quot;left:40%;width:4.2%&quot;&gt;&lt;/span&gt;&#x27; : &#x27;&#x27;}&lt;/div&gt;&lt;/div&gt;`;
+        }).join(&#x27;&#x27;);
+        const adjuster = chosen ? `&lt;div class=&quot;time-adjuster&quot;&gt;&lt;button class=&quot;nudge-time&quot; data-nudge=&quot;-30&quot; aria-label=&quot;Move 30 minutes earlier&quot;&gt;&lt;i data-lucide=&quot;minus&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;&lt;label class=&quot;sr-only&quot; for=&quot;meeting-time-slider&quot;&gt;Selected meeting time&lt;/label&gt;&lt;input id=&quot;meeting-time-slider&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1410&quot; step=&quot;30&quot; value=&quot;${selectedMinutes}&quot; aria-label=&quot;Adjust selected meeting time&quot;&gt;&lt;button class=&quot;nudge-time&quot; data-nudge=&quot;30&quot; aria-label=&quot;Move 30 minutes later&quot;&gt;&lt;i data-lucide=&quot;plus&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;adjust-hint&quot;&gt;Drag to explore · or move in 30-minute steps&lt;/div&gt;` : &#x27;&#x27;;
+        return `&lt;section class=&quot;results&quot; aria-label=&quot;Common meeting times&quot;&gt;&lt;div class=&quot;result-heading&quot;&gt;&lt;div&gt;&lt;span&gt;${chosen ? &#x27;Selected time&#x27; : &#x27;Best overlap&#x27;}&lt;/span&gt;&lt;strong data-selected-summary&gt;${chosen ? &#x27;10:00 AM New York · 3:00 PM London&#x27; : &#x27;Two good windows found&#x27;}&lt;/strong&gt;&lt;span&gt;${chosen ? &#x27;Tuesday, 1 September · 60 minutes&#x27; : &#x27;Click a window to choose it&#x27;}&lt;/span&gt;&lt;/div&gt;${chosen ? &#x27;&lt;div class=&quot;share-actions&quot;&gt;&lt;button&gt;&lt;i data-lucide=&quot;copy&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Copy&lt;/button&gt;&lt;button&gt;&lt;i data-lucide=&quot;share-2&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Share&lt;/button&gt;&lt;/div&gt;&#x27; : &#x27;&#x27;}&lt;/div&gt;${adjuster}&lt;div class=&quot;timeline-list&quot;&gt;${rows}&lt;/div&gt;&lt;div class=&quot;axis&quot;&gt;&lt;span&gt;6 AM&lt;/span&gt;&lt;span&gt;12 PM&lt;/span&gt;&lt;span&gt;6 PM&lt;/span&gt;&lt;span&gt;12 AM&lt;/span&gt;&lt;/div&gt;&lt;/section&gt;&lt;div class=&quot;ad-space&quot; aria-label=&quot;Reserved advertising position&quot;&gt;Reserved responsive ad · below the completed task&lt;/div&gt;`;
+      }
+
+      function updateSelection(nextMinutes) {
+        selectedMinutes = Math.max(0, Math.min(1410, Math.round(nextMinutes / 30) * 30));
+        const offsets = [0, 300, 780, 840];
+        const markerLeft = (selectedMinutes / 1440) * 100;
+        root.querySelectorAll(&#x27;[data-chosen]&#x27;).forEach(marker =&gt; { marker.style.left = `${markerLeft}%`; });
+        const slider = root.querySelector(&#x27;#meeting-time-slider&#x27;);
+        if (slider) slider.value = String(selectedMinutes);
+        root.querySelectorAll(&#x27;[data-city-time]&#x27;).forEach(label =&gt; {
+          const index = Number(label.dataset.cityTime);
+          label.textContent = formatTime(selectedMinutes + offsets[index]);
+        });
+        const summary = root.querySelector(&#x27;[data-selected-summary]&#x27;);
+        if (summary) summary.textContent = `${formatTime(selectedMinutes)} New York · ${formatTime(selectedMinutes + 300)} London`;
+      }
+
+      function render(step) {
+        const state = states[step];
+        const cities = cityData.slice(0, state.cities);
+        productWindow.classList.toggle(&#x27;phone&#x27;, state.phone);
+        locationList.innerHTML = cities.map((city, index) =&gt; locationMarkup(city, index, cities.length)).join(&#x27;&#x27;);
+        resultsHost.innerHTML = state.results ? resultsMarkup(cities, state.chosen) : &#x27;&#x27;;
+        note.textContent = state.note;
+        buttons.forEach(button =&gt; button.setAttribute(&#x27;aria-pressed&#x27;, String(button.dataset.step === step)));
+        if (window.lucide) window.lucide.createIcons({ attrs: { width: 16, height: 16 } });
+        if (state.chosen) updateSelection(selectedMinutes);
+      }
+
+      buttons.forEach(button =&gt; button.addEventListener(&#x27;click&#x27;, () =&gt; render(button.dataset.step)));
+      root.querySelector(&#x27;[data-add-location]&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; render(&#x27;cities&#x27;));
+      root.querySelector(&#x27;[data-find]&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; render(&#x27;choose&#x27;));
+      resultsHost.addEventListener(&#x27;input&#x27;, event =&gt; {
+        if (event.target.matches(&#x27;#meeting-time-slider&#x27;)) updateSelection(Number(event.target.value));
+      });
+      resultsHost.addEventListener(&#x27;click&#x27;, event =&gt; {
+        const nudge = event.target.closest(&#x27;[data-nudge]&#x27;);
+        if (nudge) {
+          updateSelection(selectedMinutes + Number(nudge.dataset.nudge));
+          return;
+        }
+        const timeline = event.target.closest(&#x27;[data-timeline]&#x27;);
+        if (timeline) {
+          if (!root.querySelector(&#x27;#meeting-time-slider&#x27;)) {
+            render(&#x27;choose&#x27;);
+            return;
+          }
+          const bounds = timeline.getBoundingClientRect();
+          updateSelection(((event.clientX - bounds.left) / bounds.width) * 1440);
+        }
+      });
+      render(&#x27;start&#x27;);
+    })();
+  &lt;/script&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  if (window.FloatingUIDOM == null) {
+    return;
+  }
+  const { autoUpdate, computePosition, flip, offset, shift, size } =
+    window.FloatingUIDOM;
+  const tooltipPlacements = new Set([&quot;top&quot;, &quot;right&quot;, &quot;bottom&quot;, &quot;left&quot;]);
+  const tooltipId = `codex-visualization-tooltip-${
+    window.crypto?.randomUUID?.() ?? Date.now().toString(36)
+  }`;
+  const tooltipGap = 5;
+  const hoverDelay = 700;
+  const skipDelay = 300;
+  let activeTrigger = null;
+  let pendingTrigger = null;
+  let tooltip = null;
+  let openTimeout = null;
+  let autoUpdateCleanup = null;
+  let positionRequest = 0;
+  let skipDelayUntil = 0;
+  let lastPointerWasTouch = false;
+  let pinnedByTouch = false;
+
+  const getTrigger = (target) =&gt;
+    target?.nodeType === Node.ELEMENT_NODE
+      ? target.closest(&quot;[data-tooltip]&quot;)
+      : null;
+  const containsTarget = (trigger, target) =&gt;
+    target?.nodeType != null &amp;&amp; trigger.contains(target);
+  const getContent = (trigger) =&gt;
+    trigger.getAttribute(&quot;data-tooltip&quot;)?.trim() ?? &quot;&quot;;
+  const getPlacement = (trigger) =&gt; {
+    const placement = trigger.getAttribute(&quot;data-tooltip-placement&quot;);
+    return tooltipPlacements.has(placement) ? placement : &quot;top&quot;;
+  };
+  const getTooltip = () =&gt; {
+    if (tooltip == null) {
+      tooltip = document.createElement(&quot;div&quot;);
+      tooltip.id = tooltipId;
+      tooltip.className = &quot;tooltip&quot;;
+      tooltip.setAttribute(&quot;role&quot;, &quot;tooltip&quot;);
+    }
+    return tooltip;
+  };
+  const setDescribedBy = (trigger, described) =&gt; {
+    const ids = new Set(
+      (trigger.getAttribute(&quot;aria-describedby&quot;) ?? &quot;&quot;)
+        .split(/\s+/)
+        .filter(Boolean),
+    );
+    if (described) {
+      ids.add(tooltipId);
+    } else {
+      ids.delete(tooltipId);
+    }
+    if (ids.size === 0) {
+      trigger.removeAttribute(&quot;aria-describedby&quot;);
+    } else {
+      trigger.setAttribute(&quot;aria-describedby&quot;, [...ids].join(&quot; &quot;));
+    }
+  };
+  const clearOpenTimeout = () =&gt; {
+    if (openTimeout != null) {
+      window.clearTimeout(openTimeout);
+      openTimeout = null;
+    }
+    pendingTrigger = null;
+  };
+  const closeTooltip = (activateSkipDelay = true) =&gt; {
+    clearOpenTimeout();
+    pinnedByTouch = false;
+    positionRequest += 1;
+    autoUpdateCleanup?.();
+    autoUpdateCleanup = null;
+    if (activeTrigger == null) {
+      return;
+    }
+    setDescribedBy(activeTrigger, false);
+    activeTrigger = null;
+    tooltip?.remove();
+    if (activateSkipDelay) {
+      skipDelayUntil = Date.now() + skipDelay;
+    }
+  };
+  const updatePosition = (trigger, floating) =&gt; {
+    const request = ++positionRequest;
+    void computePosition(trigger, floating, {
+      middleware: [
+        offset(tooltipGap),
+        flip({ padding: tooltipGap }),
+        shift({ padding: tooltipGap }),
+        size({
+          padding: tooltipGap,
+          apply({ availableHeight, availableWidth, elements }) {
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-width&quot;,
+              `${Math.max(0, availableWidth)}px`,
+            );
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-height&quot;,
+              `${Math.max(0, availableHeight)}px`,
+            );
+          },
+        }),
+      ],
+      placement: getPlacement(trigger),
+      strategy: &quot;fixed&quot;,
+    })
+      .then(({ x, y }) =&gt; {
+        if (activeTrigger !== trigger || request !== positionRequest) {
+          return;
+        }
+        const scale = window.devicePixelRatio || 1;
+        floating.style.transform = `translate(${Math.round(x * scale) / scale}px, ${Math.round(y * scale) / scale}px)`;
+        floating.style.visibility = &quot;visible&quot;;
+      })
+      .catch(() =&gt; {
+        if (activeTrigger === trigger &amp;&amp; request === positionRequest) {
+          closeTooltip(false);
+        }
+      });
+  };
+  const openTooltip = (trigger) =&gt; {
+    const content = getContent(trigger);
+    if (!trigger.isConnected || content.length === 0) {
+      return;
+    }
+    clearOpenTimeout();
+    if (activeTrigger === trigger) {
+      return;
+    }
+    closeTooltip();
+    const floating = getTooltip();
+    floating.textContent = content;
+    floating.style.visibility = &quot;hidden&quot;;
+    floating.style.transform = &quot;translate(0, 0)&quot;;
+    document.body.appendChild(floating);
+    activeTrigger = trigger;
+    setDescribedBy(trigger, true);
+    autoUpdateCleanup = autoUpdate(trigger, floating, () =&gt; {
+      updatePosition(trigger, floating);
+    });
+  };
+  const requestOpen = (trigger, immediate = false) =&gt; {
+    if (
+      getContent(trigger).length === 0 ||
+      activeTrigger === trigger ||
+      pendingTrigger === trigger
+    ) {
+      return;
+    }
+    clearOpenTimeout();
+    pendingTrigger = trigger;
+    const delay =
+      immediate || activeTrigger != null || Date.now() &lt; skipDelayUntil
+        ? 0
+        : hoverDelay;
+    if (delay === 0) {
+      openTooltip(trigger);
+      return;
+    }
+    openTimeout = window.setTimeout(() =&gt; {
+      openTimeout = null;
+      pendingTrigger = null;
+      openTooltip(trigger);
+    }, delay);
+  };
+  const handlePointerOpen = (event) =&gt; {
+    if (event.pointerType === &quot;touch&quot;) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    requestOpen(trigger);
+  };
+  const handlePointer = (event) =&gt; {
+    lastPointerWasTouch =
+      event.type === &quot;pointerdown&quot; &amp;&amp; event.pointerType === &quot;touch&quot;;
+  };
+  const handleTouchClick = (event) =&gt; {
+    const isTouch = event.pointerType === &quot;touch&quot; || lastPointerWasTouch;
+    lastPointerWasTouch = false;
+    if (!isTouch || event.detail === 0) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (
+      trigger == null ||
+      !trigger.isConnected ||
+      getContent(trigger).length === 0 ||
+      (pinnedByTouch &amp;&amp; activeTrigger === trigger)
+    ) {
+      if (pinnedByTouch) {
+        closeTooltip();
+      }
+      return;
+    }
+    openTooltip(trigger);
+    pinnedByTouch = activeTrigger === trigger;
+    window.setTimeout(() =&gt; {
+      if (activeTrigger === trigger &amp;&amp; !trigger.isConnected) {
+        closeTooltip(false);
+      }
+    }, 0);
+  };
+  const handleLeave = (event) =&gt; {
+    if (pinnedByTouch) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const handleFocusIn = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger?.matches(&quot;:focus-visible&quot;)) {
+      requestOpen(trigger, true);
+    }
+  };
+  const handleKeyDown = (event) =&gt; {
+    if (event.key === &quot;Escape&quot;) {
+      closeTooltip();
+    }
+  };
+  const handleContextMenu = (event) =&gt; {
+    lastPointerWasTouch = false;
+    const trigger = getTrigger(event.target);
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const destroy = () =&gt; {
+    closeTooltip(false);
+    lastPointerWasTouch = false;
+    document.removeEventListener(&quot;pointerover&quot;, handlePointerOpen);
+    document.removeEventListener(&quot;pointerdown&quot;, handlePointer);
+    document.removeEventListener(&quot;pointercancel&quot;, handlePointer);
+    document.removeEventListener(&quot;click&quot;, handleTouchClick);
+    document.removeEventListener(&quot;pointerout&quot;, handleLeave);
+    document.removeEventListener(&quot;focusin&quot;, handleFocusIn);
+    document.removeEventListener(&quot;focusout&quot;, handleLeave);
+    document.removeEventListener(&quot;keydown&quot;, handleKeyDown);
+    document.removeEventListener(&quot;contextmenu&quot;, handleContextMenu);
+    tooltip = null;
+  };
+
+  document.addEventListener(&quot;pointerover&quot;, handlePointerOpen);
+  document.addEventListener(&quot;pointerdown&quot;, handlePointer);
+  document.addEventListener(&quot;pointercancel&quot;, handlePointer);
+  document.addEventListener(&quot;click&quot;, handleTouchClick);
+  document.addEventListener(&quot;pointerout&quot;, handleLeave);
+  document.addEventListener(&quot;focusin&quot;, handleFocusIn);
+  document.addEventListener(&quot;focusout&quot;, handleLeave);
+  document.addEventListener(&quot;keydown&quot;, handleKeyDown);
+  document.addEventListener(&quot;contextmenu&quot;, handleContextMenu);
+  window.addEventListener(&quot;pagehide&quot;, destroy, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-lucide&quot; async src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  const initialize = () =&gt; {
+    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
+  };
+  if (globalThis.lucide != null) {
+    initialize();
+    return;
+  }
+  document
+    .getElementById(&quot;codex-visualization-lucide&quot;)
+    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+</body>
+</html>
