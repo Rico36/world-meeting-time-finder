@@ -1138,7 +1138,23 @@ html&gt;body{padding:0}&lt;/style&gt;
       gap: 12px;
       flex-wrap: wrap;
     }
-    #common-hours-journey .date-control { display: flex; align-items: center; gap: 7px; font-size: 13px; }
+    #common-hours-journey .date-control {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid light-dark(#ccd6d1, #506159);
+      border-radius: 11px;
+      padding: 0 10px;
+      background: light-dark(#ffffff, #22322d);
+    }
+    #common-hours-journey .date-control input[type=&quot;date&quot;] {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      min-height: 40px;
+    }
     #common-hours-journey .find-button {
       min-height: 44px;
       border: 0;
@@ -1194,6 +1210,48 @@ html&gt;body{padding:0}&lt;/style&gt;
       text-align: center;
       font-size: 11px;
       color: light-dark(#718079, #aab7b1);
+    }
+    #common-hours-journey .day-adjuster {
+      margin-top: 15px;
+      min-height: 44px;
+      display: grid;
+      grid-template-columns: 44px 1fr 44px;
+      align-items: center;
+      gap: 8px;
+      border-radius: 12px;
+      background: light-dark(#f3f6f2, #24342e);
+    }
+    #common-hours-journey .day-adjuster button {
+      min-width: 44px;
+      min-height: 44px;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      display: grid;
+      place-items: center;
+    }
+    #common-hours-journey .day-label { text-align: center; }
+    #common-hours-journey .day-label strong { display: block; font-weight: 500; }
+    #common-hours-journey .day-label span { font-size: 11px; color: light-dark(#718079, #aab7b1); }
+    #common-hours-journey .duration-control {
+      margin-top: 10px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 12px;
+      border: 1px solid light-dark(#ccd6d1, #506159);
+      border-radius: 11px;
+      background: light-dark(#ffffff, #22322d);
+    }
+    #common-hours-journey .duration-control label { display: flex; align-items: center; gap: 7px; font-size: 13px; }
+    #common-hours-journey .duration-control select {
+      min-height: 38px;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
     }
     #common-hours-journey .timeline-list { margin-top: 16px; display: grid; gap: 10px; }
     #common-hours-journey .timeline-row { display: grid; grid-template-columns: 94px 1fr; align-items: center; gap: 10px; }
@@ -1272,7 +1330,7 @@ html&gt;body{padding:0}&lt;/style&gt;
           &lt;div class=&quot;location-list&quot; data-location-list&gt;&lt;/div&gt;
           &lt;button type=&quot;button&quot; class=&quot;add-location&quot; data-add-location&gt;&lt;i data-lucide=&quot;plus&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Add another city&lt;/button&gt;
           &lt;div class=&quot;finder-footer&quot;&gt;
-            &lt;span class=&quot;date-control&quot;&gt;&lt;i data-lucide=&quot;calendar-days&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Today, 1 September&lt;/span&gt;
+            &lt;label class=&quot;date-control&quot;&gt;&lt;i data-lucide=&quot;calendar-days&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;span class=&quot;sr-only&quot;&gt;Meeting date&lt;/span&gt;&lt;input type=&quot;date&quot; value=&quot;2026-09-01&quot; data-date-input&gt;&lt;/label&gt;
             &lt;button type=&quot;button&quot; class=&quot;find-button&quot; data-find&gt;Find common hours&lt;/button&gt;
           &lt;/div&gt;
         &lt;/div&gt;
@@ -1307,6 +1365,20 @@ html&gt;body{padding:0}&lt;/style&gt;
       }
 
       let selectedMinutes = 600;
+      let selectedDuration = 60;
+      let selectedDate = new Date(Date.UTC(2026, 8, 1));
+
+      function dateInputValue(date) {
+        return date.toISOString().slice(0, 10);
+      }
+
+      function dateLabel(date) {
+        return new Intl.DateTimeFormat(&#x27;en-US&#x27;, { weekday: &#x27;long&#x27;, month: &#x27;short&#x27;, day: &#x27;numeric&#x27;, timeZone: &#x27;UTC&#x27; }).format(date);
+      }
+
+      function isToday(date) {
+        return dateInputValue(date) === &#x27;2026-09-01&#x27;;
+      }
 
       function formatTime(totalMinutes) {
         const normalized = ((totalMinutes % 1440) + 1440) % 1440;
@@ -1321,15 +1393,19 @@ html&gt;body{padding:0}&lt;/style&gt;
           const workLeft = [20, 8, 48, 52][index];
           return `&lt;div class=&quot;timeline-row&quot;&gt;&lt;div class=&quot;timeline-city&quot;&gt;&lt;strong&gt;${city.name}&lt;/strong&gt;&lt;span data-city-time=&quot;${index}&quot;&gt;${city.time}&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;timeline&quot; role=&quot;button&quot; aria-label=&quot;Choose a meeting time for ${city.name}&quot; data-timeline&gt;&lt;span class=&quot;working&quot; style=&quot;left:${workLeft}%;width:46%&quot;&gt;&lt;/span&gt;${chosen ? &#x27;&lt;span class=&quot;chosen&quot; data-chosen style=&quot;left:40%;width:4.2%&quot;&gt;&lt;/span&gt;&#x27; : &#x27;&#x27;}&lt;/div&gt;&lt;/div&gt;`;
         }).join(&#x27;&#x27;);
-        const adjuster = chosen ? `&lt;div class=&quot;time-adjuster&quot;&gt;&lt;button class=&quot;nudge-time&quot; data-nudge=&quot;-30&quot; aria-label=&quot;Move 30 minutes earlier&quot;&gt;&lt;i data-lucide=&quot;minus&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;&lt;label class=&quot;sr-only&quot; for=&quot;meeting-time-slider&quot;&gt;Selected meeting time&lt;/label&gt;&lt;input id=&quot;meeting-time-slider&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1410&quot; step=&quot;30&quot; value=&quot;${selectedMinutes}&quot; aria-label=&quot;Adjust selected meeting time&quot;&gt;&lt;button class=&quot;nudge-time&quot; data-nudge=&quot;30&quot; aria-label=&quot;Move 30 minutes later&quot;&gt;&lt;i data-lucide=&quot;plus&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;adjust-hint&quot;&gt;Drag to explore · or move in 30-minute steps&lt;/div&gt;` : &#x27;&#x27;;
-        return `&lt;section class=&quot;results&quot; aria-label=&quot;Common meeting times&quot;&gt;&lt;div class=&quot;result-heading&quot;&gt;&lt;div&gt;&lt;span&gt;${chosen ? &#x27;Selected time&#x27; : &#x27;Best overlap&#x27;}&lt;/span&gt;&lt;strong data-selected-summary&gt;${chosen ? &#x27;10:00 AM New York · 3:00 PM London&#x27; : &#x27;Two good windows found&#x27;}&lt;/strong&gt;&lt;span&gt;${chosen ? &#x27;Tuesday, 1 September · 60 minutes&#x27; : &#x27;Click a window to choose it&#x27;}&lt;/span&gt;&lt;/div&gt;${chosen ? &#x27;&lt;div class=&quot;share-actions&quot;&gt;&lt;button&gt;&lt;i data-lucide=&quot;copy&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Copy&lt;/button&gt;&lt;button&gt;&lt;i data-lucide=&quot;share-2&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Share&lt;/button&gt;&lt;/div&gt;&#x27; : &#x27;&#x27;}&lt;/div&gt;${adjuster}&lt;div class=&quot;timeline-list&quot;&gt;${rows}&lt;/div&gt;&lt;div class=&quot;axis&quot;&gt;&lt;span&gt;6 AM&lt;/span&gt;&lt;span&gt;12 PM&lt;/span&gt;&lt;span&gt;6 PM&lt;/span&gt;&lt;span&gt;12 AM&lt;/span&gt;&lt;/div&gt;&lt;/section&gt;&lt;div class=&quot;ad-space&quot; aria-label=&quot;Reserved advertising position&quot;&gt;Reserved responsive ad · below the completed task&lt;/div&gt;`;
+        const durationOptions = [[30, &#x27;30 minutes&#x27;], [45, &#x27;45 minutes&#x27;], [60, &#x27;1 hour&#x27;], [90, &#x27;1½ hours&#x27;], [120, &#x27;2 hours&#x27;]].map(([value, label]) =&gt; `&lt;option value=&quot;${value}&quot;${selectedDuration === value ? &#x27; selected&#x27; : &#x27;&#x27;}&gt;${label}&lt;/option&gt;`).join(&#x27;&#x27;);
+        const adjuster = chosen ? `&lt;div class=&quot;day-adjuster&quot;&gt;&lt;button data-day=&quot;-1&quot; aria-label=&quot;Previous day&quot;&gt;&lt;i data-lucide=&quot;chevron-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;&lt;div class=&quot;day-label&quot;&gt;&lt;strong data-date-label&gt;${dateLabel(selectedDate)}&lt;/strong&gt;&lt;span data-date-context&gt;${isToday(selectedDate) ? &#x27;Today&#x27; : &#x27;Meeting date&#x27;}&lt;/span&gt;&lt;/div&gt;&lt;button data-day=&quot;1&quot; aria-label=&quot;Next day&quot;&gt;&lt;i data-lucide=&quot;chevron-right&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;duration-control&quot;&gt;&lt;label for=&quot;meeting-duration&quot;&gt;&lt;i data-lucide=&quot;timer&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Duration&lt;/label&gt;&lt;select id=&quot;meeting-duration&quot; data-duration aria-label=&quot;Meeting duration&quot;&gt;${durationOptions}&lt;/select&gt;&lt;/div&gt;&lt;div class=&quot;time-adjuster&quot;&gt;&lt;button class=&quot;nudge-time&quot; data-nudge=&quot;-30&quot; aria-label=&quot;Move 30 minutes earlier&quot;&gt;&lt;i data-lucide=&quot;minus&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;&lt;label class=&quot;sr-only&quot; for=&quot;meeting-time-slider&quot;&gt;Selected meeting time&lt;/label&gt;&lt;input id=&quot;meeting-time-slider&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1410&quot; step=&quot;30&quot; value=&quot;${selectedMinutes}&quot; aria-label=&quot;Adjust selected meeting time&quot;&gt;&lt;button class=&quot;nudge-time&quot; data-nudge=&quot;30&quot; aria-label=&quot;Move 30 minutes later&quot;&gt;&lt;i data-lucide=&quot;plus&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;adjust-hint&quot;&gt;Change the day or duration, then drag to explore the best time&lt;/div&gt;` : &#x27;&#x27;;
+        return `&lt;section class=&quot;results&quot; aria-label=&quot;Common meeting times&quot;&gt;&lt;div class=&quot;result-heading&quot;&gt;&lt;div&gt;&lt;span&gt;${chosen ? &#x27;Selected time&#x27; : &#x27;Best overlap&#x27;}&lt;/span&gt;&lt;strong data-selected-summary&gt;${chosen ? &#x27;10:00 AM New York · 3:00 PM London&#x27; : &#x27;Two good windows found&#x27;}&lt;/strong&gt;&lt;span data-meeting-meta&gt;${chosen ? &#x27;Tuesday, Sep 1 · 60 minutes&#x27; : &#x27;Click a window to choose it&#x27;}&lt;/span&gt;&lt;/div&gt;${chosen ? &#x27;&lt;div class=&quot;share-actions&quot;&gt;&lt;button&gt;&lt;i data-lucide=&quot;copy&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Copy&lt;/button&gt;&lt;button&gt;&lt;i data-lucide=&quot;share-2&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Share&lt;/button&gt;&lt;/div&gt;&#x27; : &#x27;&#x27;}&lt;/div&gt;${adjuster}&lt;div class=&quot;timeline-list&quot;&gt;${rows}&lt;/div&gt;&lt;div class=&quot;axis&quot;&gt;&lt;span&gt;6 AM&lt;/span&gt;&lt;span&gt;12 PM&lt;/span&gt;&lt;span&gt;6 PM&lt;/span&gt;&lt;span&gt;12 AM&lt;/span&gt;&lt;/div&gt;&lt;/section&gt;&lt;div class=&quot;ad-space&quot; aria-label=&quot;Reserved advertising position&quot;&gt;Reserved responsive ad · below the completed task&lt;/div&gt;`;
       }
 
       function updateSelection(nextMinutes) {
         selectedMinutes = Math.max(0, Math.min(1410, Math.round(nextMinutes / 30) * 30));
         const offsets = [0, 300, 780, 840];
         const markerLeft = (selectedMinutes / 1440) * 100;
-        root.querySelectorAll(&#x27;[data-chosen]&#x27;).forEach(marker =&gt; { marker.style.left = `${markerLeft}%`; });
+        root.querySelectorAll(&#x27;[data-chosen]&#x27;).forEach(marker =&gt; {
+          marker.style.left = `${markerLeft}%`;
+          marker.style.width = `${(selectedDuration / 1440) * 100}%`;
+        });
         const slider = root.querySelector(&#x27;#meeting-time-slider&#x27;);
         if (slider) slider.value = String(selectedMinutes);
         root.querySelectorAll(&#x27;[data-city-time]&#x27;).forEach(label =&gt; {
@@ -1338,6 +1414,20 @@ html&gt;body{padding:0}&lt;/style&gt;
         });
         const summary = root.querySelector(&#x27;[data-selected-summary]&#x27;);
         if (summary) summary.textContent = `${formatTime(selectedMinutes)} New York · ${formatTime(selectedMinutes + 300)} London`;
+        updateMeetingMeta();
+      }
+
+      function updateMeetingMeta() {
+        const meta = root.querySelector(&#x27;[data-meeting-meta]&#x27;);
+        if (meta) meta.textContent = `${dateLabel(selectedDate)} · ${selectedDuration &lt; 60 ? `${selectedDuration} minutes` : selectedDuration === 60 ? &#x27;1 hour&#x27; : `${selectedDuration / 60} hours`}`;
+      }
+
+      function updateDate(nextDate) {
+        selectedDate = nextDate;
+        root.querySelectorAll(&#x27;[data-date-input]&#x27;).forEach(input =&gt; { input.value = dateInputValue(selectedDate); });
+        root.querySelectorAll(&#x27;[data-date-label]&#x27;).forEach(label =&gt; { label.textContent = dateLabel(selectedDate); });
+        root.querySelectorAll(&#x27;[data-date-context]&#x27;).forEach(label =&gt; { label.textContent = isToday(selectedDate) ? &#x27;Today&#x27; : &#x27;Meeting date&#x27;; });
+        updateMeetingMeta();
       }
 
       function render(step) {
@@ -1350,6 +1440,7 @@ html&gt;body{padding:0}&lt;/style&gt;
         buttons.forEach(button =&gt; button.setAttribute(&#x27;aria-pressed&#x27;, String(button.dataset.step === step)));
         if (window.lucide) window.lucide.createIcons({ attrs: { width: 16, height: 16 } });
         if (state.chosen) updateSelection(selectedMinutes);
+        updateDate(selectedDate);
       }
 
       buttons.forEach(button =&gt; button.addEventListener(&#x27;click&#x27;, () =&gt; render(button.dataset.step)));
@@ -1359,6 +1450,13 @@ html&gt;body{padding:0}&lt;/style&gt;
         if (event.target.matches(&#x27;#meeting-time-slider&#x27;)) updateSelection(Number(event.target.value));
       });
       resultsHost.addEventListener(&#x27;click&#x27;, event =&gt; {
+        const day = event.target.closest(&#x27;[data-day]&#x27;);
+        if (day) {
+          const nextDate = new Date(selectedDate);
+          nextDate.setUTCDate(nextDate.getUTCDate() + Number(day.dataset.day));
+          updateDate(nextDate);
+          return;
+        }
         const nudge = event.target.closest(&#x27;[data-nudge]&#x27;);
         if (nudge) {
           updateSelection(selectedMinutes + Number(nudge.dataset.nudge));
@@ -1372,6 +1470,15 @@ html&gt;body{padding:0}&lt;/style&gt;
           }
           const bounds = timeline.getBoundingClientRect();
           updateSelection(((event.clientX - bounds.left) / bounds.width) * 1440);
+        }
+      });
+      root.addEventListener(&#x27;change&#x27;, event =&gt; {
+        if (event.target.matches(&#x27;[data-date-input]&#x27;) &amp;&amp; event.target.value) {
+          updateDate(new Date(`${event.target.value}T00:00:00Z`));
+        }
+        if (event.target.matches(&#x27;[data-duration]&#x27;)) {
+          selectedDuration = Number(event.target.value);
+          updateSelection(selectedMinutes);
         }
       });
       render(&#x27;start&#x27;);
