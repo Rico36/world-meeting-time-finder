@@ -12,7 +12,22 @@ An intuitive, fast, and accessible web utility for finding convenient meeting ti
 
 ## Status
 
-Product wireframing in progress. Implementation will begin after the interaction path is approved.
+First functional draft in progress. The warm and approachable design direction is approved.
+
+## Current draft
+
+The draft is a static, browser-based site that can run on GitHub Pages without a server. It includes:
+
+- Two to five searchable cities
+- Day, start-time, and meeting-duration controls
+- Daylight-saving-aware time conversion through browser time-zone data
+- Working-hours overlap and an adjustable meeting window
+- Informational weekend and public-holiday flags
+- Browser-language detection plus a visible language selector
+- Privacy-conscious analytics hooks without active visitor tracking
+- Responsive layouts with reserved advertising positions
+
+Open `index.html` through a local web server or publish the repository root with GitHub Pages.
 
 ## Wireframes
 
