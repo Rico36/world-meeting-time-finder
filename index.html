@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Find a comfortable meeting time across cities and time zones.">
+  <meta name="theme-color" content="#fbf8f1">
+  <link rel="canonical" href="https://rico36.github.io/world-meeting-time-finder/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Common Hours">
+  <meta property="og:description" content="Find a good time for everyone.">
+  <meta property="og:url" content="https://rico36.github.io/world-meeting-time-finder/">
+  <meta property="og:image" content="https://rico36.github.io/world-meeting-time-finder/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Common Hours">
+  <meta name="twitter:description" content="Find a good time for everyone.">
+  <meta name="twitter:image" content="https://rico36.github.io/world-meeting-time-finder/assets/og.png">
+  <title>Common Hours — World Meeting Time Finder</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Common Hours home">
+      <span class="brand-mark" aria-hidden="true">☀</span>
+      <span>Common Hours</span>
+    </a>
+    <div class="header-actions">
+      <label class="language-field">
+        <span class="sr-only" data-i18n="language">Language</span>
+        <select id="language" aria-label="Language">
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+          <option value="pt">Português</option>
+        </select>
+      </label>
+      <button class="icon-button" id="theme-toggle" type="button" aria-label="Switch color theme">◐</button>
+    </div>
+  </header>
+
+  <div class="page-grid" id="top">
+    <aside class="ad-rail" aria-label="Advertisement"><span data-i18n="advertisement">Advertisement</span></aside>
+
+    <main>
+      <section class="intro">
+        <p class="eyebrow" data-i18n="eyebrow">World meeting time finder</p>
+        <h1 data-i18n="headline">Find a good time for everyone.</h1>
+        <p data-i18n="subhead">Compare cities, choose a day and spot the hours that work—without doing time-zone math.</p>
+      </section>
+
+      <section class="planner-card" aria-labelledby="planner-title">
+        <h2 class="sr-only" id="planner-title" data-i18n="plannerTitle">Plan a meeting</h2>
+
+        <div class="city-list" id="city-list"></div>
+
+        <div class="city-add-row">
+          <label class="city-search-label" for="city-search" data-i18n="addCity">Add another city</label>
+          <div class="city-search-wrap">
+            <input id="city-search" list="city-options" autocomplete="off" data-i18n-placeholder="cityPlaceholder" placeholder="Search city or country…">
+            <button class="secondary-button" id="add-city" type="button" data-i18n="add">Add</button>
+          </div>
+          <datalist id="city-options"></datalist>
+          <p class="field-error" id="city-error" role="alert"></p>
+        </div>
+
+        <div class="meeting-settings">
+          <label>
+            <span data-i18n="meetingDay">Meeting day</span>
+            <input id="meeting-date" type="date">
+          </label>
+          <label>
+            <span data-i18n="duration">Duration</span>
+            <select id="duration">
+              <option value="30">30 minutes</option>
+              <option value="45">45 minutes</option>
+              <option value="60" selected>1 hour</option>
+              <option value="90">1½ hours</option>
+              <option value="120">2 hours</option>
+            </select>
+          </label>
+          <button class="primary-button" id="find-hours" type="button" data-i18n="findHours">Find common hours</button>
+        </div>
+      </section>
+
+      <section class="results-card" id="results" aria-live="polite" aria-labelledby="results-title">
+        <div class="results-heading">
+          <div>
+            <p class="eyebrow" data-i18n="bestOverlap">Best overlap</p>
+            <h2 id="results-title">—</h2>
+            <p id="meeting-summary">—</p>
+          </div>
+          <div class="result-actions">
+            <button class="secondary-button" id="copy-result" type="button" data-i18n="copy">Copy</button>
+            <button class="secondary-button" id="share-result" type="button" data-i18n="share">Share</button>
+          </div>
+        </div>
+
+        <div class="day-stepper" aria-label="Change meeting day">
+          <button class="icon-button" id="previous-day" type="button" aria-label="Previous day">‹</button>
+          <strong id="selected-day">—</strong>
+          <button class="icon-button" id="next-day" type="button" aria-label="Next day">›</button>
+        </div>
+
+        <div class="time-adjuster">
+          <button class="icon-button bordered" id="earlier" type="button" aria-label="30 minutes earlier">−</button>
+          <label>
+            <span class="sr-only" data-i18n="adjustTime">Adjust meeting time</span>
+            <input id="time-slider" type="range" min="0" max="47" step="1" value="20">
+          </label>
+          <button class="icon-button bordered" id="later" type="button" aria-label="30 minutes later">+</button>
+        </div>
+        <p class="adjust-hint" data-i18n="adjustHint">Drag to explore, or move in 30-minute steps.</p>
+
+        <div class="holiday-notices" id="holiday-notices"></div>
+        <div class="timeline" id="timeline"></div>
+        <div class="timeline-axis" aria-hidden="true"><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>12 AM</span></div>
+        <div class="legend" aria-label="Timeline legend">
+          <span><i class="legend-working"></i><span data-i18n="workingHours">Normal working hours</span></span>
+          <span><i class="legend-selected"></i><span data-i18n="selectedMeeting">Selected meeting</span></span>
+          <small data-i18n="legendHelp">Green shows when a city is normally at work; the darker band is your chosen meeting.</small>
+        </div>
+      </section>
+
+      <aside class="inline-ad" aria-label="Advertisement"><span data-i18n="advertisement">Advertisement</span></aside>
+
+      <section class="trust-note">
+        <h2 data-i18n="simpleTitle">Simple by design</h2>
+        <p data-i18n="simpleCopy">No account required. Dates and times stay in your browser. Holiday checks use country-level public calendar data.</p>
+      </section>
+    </main>
+
+    <aside class="ad-rail" aria-label="Advertisement"><span data-i18n="advertisement">Advertisement</span></aside>
+  </div>
+
+  <footer>
+    <span>Common Hours</span>
+    <span data-i18n="footer">A friendly world meeting time finder.</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
