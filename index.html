@@ -16,6 +16,32 @@
   <meta name="twitter:description" content="Free world meeting time finder for finding the best hours across time zones.">
   <meta name="twitter:image" content="https://rico36.github.io/world-meeting-time-finder/assets/og.png">
   <title>Common Hours — World Meeting Time Finder</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://rico36.github.io/world-meeting-time-finder/#website",
+        "url": "https://rico36.github.io/world-meeting-time-finder/",
+        "name": "Common Hours",
+        "alternateName": "World Meeting Time Finder",
+        "description": "A free tool for finding convenient meeting times across cities and time zones."
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://rico36.github.io/world-meeting-time-finder/#app",
+        "name": "Common Hours",
+        "url": "https://rico36.github.io/world-meeting-time-finder/",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript and a modern web browser.",
+        "description": "Compare cities, meeting dates and durations to find convenient working-hour overlaps across time zones.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }
+    ]
+  }
+  </script>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -128,6 +154,25 @@
         <h2 data-i18n="simpleTitle">Simple by design</h2>
         <p data-i18n="simpleCopy">No account required. Dates and times stay in your browser. Holiday checks use country-level public calendar data.</p>
       </section>
+
+      <section class="seo-content" id="how-it-works">
+        <p class="eyebrow">How it works</p>
+        <h2>Plan a meeting across time zones in seconds</h2>
+        <ol class="steps">
+          <li><strong>Add each city.</strong><span>Search for the locations where participants will join.</span></li>
+          <li><strong>Choose the meeting.</strong><span>Set the date and how long the conversation should last.</span></li>
+          <li><strong>Compare common hours.</strong><span>Review local times, normal working hours, weekends and holiday notices.</span></li>
+        </ol>
+      </section>
+
+      <section class="seo-content faq" id="faq">
+        <p class="eyebrow">Frequently asked questions</p>
+        <h2>Meeting time-zone questions</h2>
+        <details><summary>Does Common Hours account for daylight saving time?</summary><p>Yes. Times are calculated for the selected meeting date using each city’s time zone, including applicable daylight-saving changes.</p></details>
+        <details><summary>Are public holidays excluded from the results?</summary><p>No. Holidays are displayed as notices so you can make the final decision rather than having possible meeting times removed automatically.</p></details>
+        <details><summary>What does the green area mean?</summary><p>Green represents normal weekday working hours for each city. The darker band shows the meeting time you are currently considering.</p></details>
+        <details><summary>Do I need an account?</summary><p>No. Common Hours is free to use and does not require registration. Your selected cities and preferences stay in your browser.</p></details>
+      </section>
     </main>
 
     <aside class="ad-rail" aria-label="Advertisement"><span data-i18n="advertisement">Advertisement</span></aside>
@@ -136,6 +181,7 @@
   <footer>
     <span>Common Hours</span>
     <span data-i18n="footer">A friendly world meeting time finder.</span>
+    <nav aria-label="Footer"><a href="#how-it-works">How it works</a><a href="#faq">FAQ</a><a href="privacy.html">Privacy</a></nav>
   </footer>
 
   <script src="app.js"></script>
