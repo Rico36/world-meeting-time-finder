@@ -57,10 +57,10 @@
         <div class="city-add-row">
           <label class="city-search-label" for="city-search" data-i18n="addCity">Add another city</label>
           <div class="city-search-wrap">
-            <input id="city-search" list="city-options" autocomplete="off" data-i18n-placeholder="cityPlaceholder" placeholder="Search city or country…">
+            <input id="city-search" autocomplete="off" aria-autocomplete="list" aria-controls="city-suggestions" data-i18n-placeholder="cityPlaceholder" placeholder="Search city or country…">
             <button class="secondary-button" id="add-city" type="button" data-i18n="add">Add</button>
           </div>
-          <datalist id="city-options"></datalist>
+          <div class="city-suggestions" id="city-suggestions" role="listbox" hidden></div>
           <p class="field-error" id="city-error" role="alert"></p>
         </div>
 
@@ -83,7 +83,7 @@
         </div>
       </section>
 
-      <section class="results-card" id="results" aria-live="polite" aria-labelledby="results-title">
+      <section class="results-card" id="results" aria-live="polite" aria-labelledby="results-title" hidden>
         <div class="results-heading">
           <div>
             <p class="eyebrow" data-i18n="bestOverlap">Best overlap</p>
