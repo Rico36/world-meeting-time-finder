@@ -12,5 +12,11 @@ An intuitive, fast, and accessible web utility for finding convenient meeting ti
 
 ## Status
 
-Initial project setup. Product design and implementation are next.
+Product wireframing in progress. Implementation will begin after the interaction path is approved.
 
+## Wireframes
+
+- [Design direction comparison](wireframes/design-direction-comparison.html)
+- [Interactive user journey](wireframes/common-hours-user-journey.html)
+
+Download or open either HTML file in a browser. The user-journey wireframe includes desktop and mobile states, multiple cities, time selection, sharing controls, language placement, and a reserved advertising position.
