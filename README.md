@@ -18,7 +18,9 @@ First functional draft in progress. The warm and approachable design direction i
 
 The draft is a static, browser-based site that can run on GitHub Pages without a server. It includes:
 
-- Two to five searchable cities
+- A browser-time-zone reference with no arbitrary default city pair
+- Worldwide city and country search with disambiguated place suggestions
+- Two to five selected locations, remembered on the visitor's device
 - Day, start-time, and meeting-duration controls
 - Daylight-saving-aware time conversion through browser time-zone data
 - Working-hours overlap and an adjustable meeting window
