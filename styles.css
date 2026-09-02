@@ -134,14 +134,27 @@ h1 { max-width: 640px; margin: 0 auto 10px; font-family: Georgia, "Times New Rom
 .steps li::before { content: counter(steps); width: 28px; height: 28px; display: grid; place-items: center; margin-bottom: 18px; border-radius: 50%; background: var(--primary-soft); color: var(--primary); font-weight: 800; }
 .steps strong, .steps span { display: block; }
 .steps span { margin-top: 6px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.resource-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.resource-card { min-height: 154px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); color: var(--text); text-decoration: none; transition: border-color .15s ease, transform .15s ease; }
+.resource-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+.resource-card strong { font-family: Georgia, serif; font-size: 20px; font-weight: 500; line-height: 1.2; }
+.resource-card span { color: var(--muted); font-size: 13px; line-height: 1.55; }
 .faq details { padding: 16px 0; border-top: 1px solid var(--border); }
 .faq details:last-child { border-bottom: 1px solid var(--border); }
 .faq summary { font-weight: 750; cursor: pointer; }
 .faq details p { max-width: 720px; margin: 10px 0 0; color: var(--muted); line-height: 1.6; }
-.content-page { width: min(760px, calc(100% - 32px)); margin: 56px auto; }
+.content-page { width: min(820px, calc(100% - 32px)); margin: 56px auto; }
 .content-page h1 { font-family: Georgia, serif; font-size: clamp(34px, 7vw, 54px); font-weight: 500; }
 .content-page h2 { margin-top: 34px; font-size: 20px; }
 .content-page p, .content-page li { color: var(--muted); line-height: 1.7; }
+.content-page .lede { max-width: 720px; font-size: 18px; }
+.content-page .primary-button { display: inline-flex; align-items: center; margin: 10px 0 18px; color: #fff; text-decoration: none; }
+.guide-points { margin: 12px 0 0; padding-left: 22px; }
+.guide-note { margin-top: 28px; padding: 18px 20px; border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0; background: var(--primary-soft); }
+.guide-note p { margin: 0; color: var(--text); }
+.guide-nav { margin-top: 42px; padding-top: 24px; border-top: 1px solid var(--border); }
+.guide-nav h2 { margin-top: 0; }
+.guide-nav a { color: var(--primary); }
 footer { padding: 24px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; }
 footer span:first-child { color: var(--text); font-weight: 700; }
 footer nav { flex-basis: 100%; display: flex; justify-content: center; gap: 18px; }
@@ -165,6 +178,7 @@ footer a { color: var(--muted); }
   .timeline-row { grid-template-columns: 78px minmax(0, 1fr); gap: 7px; }
   .timeline-axis, .legend { margin-left: 85px; }
   .steps { grid-template-columns: 1fr; }
+  .resource-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 430px) {
   .header-actions { gap: 2px; }
