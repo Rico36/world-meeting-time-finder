@@ -21,10 +21,18 @@ const pageCopy = {
   pt:{headline:'Encontre o melhor horário de reunião entre fusos horários',subhead:'Compare cidades, horários de trabalho, datas e feriados para encontrar gratuitamente um horário conveniente para uma reunião internacional.',howEyebrow:'Como funciona',howTitle:'Planeje uma reunião entre fusos horários em segundos',step1Title:'Adicione cada cidade.',step1Copy:'Pesquise os locais de onde os participantes entrarão.',step2Title:'Escolha a reunião.',step2Copy:'Defina a data e quanto tempo a conversa deve durar.',step3Title:'Compare horários em comum.',step3Copy:'Veja horários locais, expediente normal, fins de semana e avisos de feriados.',guidesEyebrow:'Guias úteis',guidesTitle:'Facilite o agendamento internacional',guideConverterTitle:'Conversor de fusos para reuniões',guideConverterCopy:'Entenda os horários locais e converta uma proposta para cada participante.',guidePlannerTitle:'Planejador de reuniões internacionais',guidePlannerCopy:'Use uma lista prática para reuniões justas e viáveis entre países.',guideDstTitle:'Horário de verão e feriados',guideDstCopy:'Evite mudanças de data e feriados que costumam afetar reuniões globais.',faqEyebrow:'Perguntas frequentes',faqTitle:'Perguntas sobre reuniões e fusos horários',faq1Question:'O Common Hours considera o horário de verão?',faq1Answer:'Sim. Os horários são calculados para a data escolhida usando o fuso de cada cidade e as mudanças aplicáveis.',faq2Question:'Os feriados são excluídos dos resultados?',faq2Answer:'Não. Eles aparecem como avisos para que você tome a decisão final.',faq3Question:'O que significa a área verde?',faq3Answer:'O verde representa o expediente normal nos dias úteis. A faixa mais escura mostra a reunião escolhida.',faq4Question:'Preciso de uma conta?',faq4Answer:'Não. O Common Hours é gratuito e não exige cadastro. Cidades e preferências ficam no seu navegador.',navHow:'Como funciona',navGuides:'Guias',navFaq:'Perguntas',navPrivacy:'Privacidade'}
 };
 
-const state = { language:'en', selected:[], date:'', duration:60, slot:20, holidays:new Map(), suggestions:[], restoredFromUrl:false };
+const positioningCopy = {
+  en:{eyebrow:'Holiday-aware international meeting planner',headline:'Find a meeting time that works—and isn’t a holiday there.',subhead:'Compare local working hours and public holidays across countries before scheduling your international meeting.',guideDstTitle:'International public holidays and meeting planning',guideDstCopy:'Check holidays, date changes and daylight-saving shifts before you schedule across countries.',holidayCheck:'Holiday check by location',workingDay:'Working day',checkingHolidays:'Checking local holidays…',holidayUnavailable:'Holiday status unavailable'},
+  es:{eyebrow:'Planificador internacional con festivos',headline:'Encuentra una hora que funcione y que allí no sea festivo.',subhead:'Compara horarios laborales y festivos entre países antes de programar tu reunión internacional.',guideDstTitle:'Festivos internacionales y planificación de reuniones',guideDstCopy:'Comprueba festivos, cambios de fecha y horario antes de programar entre países.',holidayCheck:'Comprobación de festivos por ubicación',workingDay:'Día laborable',checkingHolidays:'Comprobando festivos locales…',holidayUnavailable:'Estado de festivo no disponible'},
+  fr:{eyebrow:'Planificateur international avec jours fériés',headline:'Trouvez une heure qui convient sans tomber sur un jour férié.',subhead:'Comparez les heures de travail et jours fériés entre pays avant de planifier votre réunion internationale.',guideDstTitle:'Jours fériés internationaux et planification',guideDstCopy:'Vérifiez jours fériés, changements de date et d’heure avant de planifier entre pays.',holidayCheck:'Vérification des jours fériés par lieu',workingDay:'Jour ouvré',checkingHolidays:'Vérification des jours fériés…',holidayUnavailable:'Statut du jour férié indisponible'},
+  de:{eyebrow:'Internationaler Planer mit Feiertagsprüfung',headline:'Finde eine Meetingzeit, die passt—und dort kein Feiertag ist.',subhead:'Vergleiche Arbeitszeiten und Feiertage verschiedener Länder, bevor du dein internationales Meeting planst.',guideDstTitle:'Internationale Feiertage und Meetingplanung',guideDstCopy:'Prüfe Feiertage, Datumswechsel und Zeitumstellungen vor der länderübergreifenden Planung.',holidayCheck:'Feiertagsprüfung nach Ort',workingDay:'Arbeitstag',checkingHolidays:'Lokale Feiertage werden geprüft…',holidayUnavailable:'Feiertagsstatus nicht verfügbar'},
+  pt:{eyebrow:'Planejador internacional com feriados',headline:'Encontre um horário que funcione e não seja feriado por lá.',subhead:'Compare horários de trabalho e feriados entre países antes de marcar sua reunião internacional.',guideDstTitle:'Feriados internacionais e planejamento de reuniões',guideDstCopy:'Confira feriados, mudanças de data e de horário antes de agendar entre países.',holidayCheck:'Verificação de feriados por local',workingDay:'Dia útil',checkingHolidays:'Verificando feriados locais…',holidayUnavailable:'Status de feriado indisponível'}
+};
+
+const state = { language:'en', selected:[], date:'', duration:60, slot:20, holidays:new Map(), suggestions:[], restoredFromUrl:false, holidayCheckId:0 };
 const els = Object.fromEntries(['language','city-list','city-search','city-search-label','city-suggestions','city-error','add-city','meeting-date','duration','results','result-label','results-title','meeting-summary','compromise-note','selected-day','time-slider','timeline','holiday-notices','copy-result','share-result','previous-day','next-day','earlier','later','theme-toggle'].map(id => [id.replaceAll('-','_'), document.getElementById(id)]));
 
-function t(key){ return pageCopy[state.language]?.[key] || copy[state.language]?.[key] || pageCopy.en[key] || copy.en[key] || key; }
+function t(key){ return positioningCopy[state.language]?.[key] || pageCopy[state.language]?.[key] || copy[state.language]?.[key] || positioningCopy.en[key] || pageCopy.en[key] || copy.en[key] || key; }
 function track(event, detail={}){ window.dataLayer?.push({event, ...detail}); window.dispatchEvent(new CustomEvent('commonhours:analytics',{detail:{event,...detail}})); }
 function localParts(date, zone){ return Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(date).filter(p=>p.type!=='literal').map(p=>[p.type,p.value])); }
 function offsetAt(date, zone){ const p=localParts(date,zone); return Date.UTC(+p.year,+p.month-1,+p.day,+p.hour,+p.minute)-date.getTime(); }
@@ -132,16 +140,18 @@ function slotIsPerfect(){
 }
 
 async function holidayFor(city,date){
-  if(!city.countryCode) return null;
+  if(!city.countryCode) return false;
   const localDate=isoLocal(date,city.zone); const year=localDate.slice(0,4); const key=`${city.countryCode}-${year}`;
   if(!state.holidays.has(key)){
     try{
       const response=await fetch(`https://nagerholidays.com/api/v4/Holidays/${city.countryCode}/${year}`);
       if(!response.ok) throw new Error('Holiday data unavailable');
       state.holidays.set(key,await response.json());
-    }catch{ state.holidays.set(key,[]); }
+    }catch{ state.holidays.set(key,false); }
   }
-  return state.holidays.get(key).find(h=>h.date===localDate && (h.nationalHoliday || !h.subdivisionCodes?.length || h.subdivisionCodes.includes(city.subdivision)));
+  const holidays=state.holidays.get(key);
+  if(holidays===false) return false;
+  return holidays.find(h=>h.date===localDate && (h.nationalHoliday || !h.subdivisionCodes?.length || h.subdivisionCodes.includes(city.subdivision))) || null;
 }
 
 function renderResults(isCompromise=!slotIsPerfect()){
@@ -165,14 +175,19 @@ function renderResults(isCompromise=!slotIsPerfect()){
 }
 
 async function checkHolidays(start){
+  const checkId=++state.holidayCheckId;
+  els.holiday_notices.innerHTML=`<div class="holiday-notice status-loading">◌ ${t('checkingHolidays')}</div>`;
   const notices=[];
   for(const city of state.selected){
     const parts=localParts(start,city.zone);
-    if(['Sat','Sun'].includes(parts.weekday)) notices.push(`${city.name}: ${t('weekend')}`);
     const holiday=await holidayFor(city,start);
-    if(holiday) notices.push(`${city.name}: ${t('holiday')} — ${holiday.name}`);
+    if(holiday) notices.push({kind:'warning',icon:'⚑',text:`${city.name}: ${t('holiday')} — ${holiday.name}`});
+    else if(['Sat','Sun'].includes(parts.weekday)) notices.push({kind:'warning',icon:'●',text:`${city.name}: ${t('weekend')}`});
+    else if(holiday===false) notices.push({kind:'muted',icon:'○',text:`${city.name}: ${t('holidayUnavailable')}`});
+    else notices.push({kind:'ok',icon:'✓',text:`${city.name}: ${t('workingDay')}`});
   }
-  els.holiday_notices.innerHTML=notices.map(n=>`<div class="holiday-notice">⚑ ${n}</div>`).join('');
+  if(checkId!==state.holidayCheckId) return;
+  els.holiday_notices.innerHTML=notices.map(n=>`<div class="holiday-notice status-${n.kind}">${n.icon} ${n.text}</div>`).join('');
 }
 
 function calculate(){ if(state.selected.length<2){ els.city_error.textContent=t('minimumCities'); els.results.hidden=true; return; } els.city_error.textContent=''; const best=findBestSlot(); state.slot=best.slot; renderResults(!best.perfect); track('overlap_calculated',{cities:state.selected.length,duration:state.duration}); }
