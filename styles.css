@@ -88,9 +88,11 @@ h1 { max-width: 640px; margin: 0 auto 10px; font-family: Georgia, "Times New Rom
 .city-suggestion strong { display: block; }
 .city-suggestion span { color: var(--muted); font-size: 12px; text-align: right; }
 .city-suggestions-status { padding: 12px; color: var(--muted); font-size: 13px; }
-.meeting-settings { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr auto; align-items: end; gap: 12px; }
+.meeting-settings { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 12px; }
 .meeting-settings label { min-width: 0; }
 .meeting-settings input, .meeting-settings select { width: 100%; }
+.auto-update-hint { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 13px; }
+.auto-update-hint::before { content: '✓'; margin-right: 7px; color: var(--primary); font-weight: 800; }
 .primary-button, .secondary-button { min-height: 44px; border-radius: 11px; padding: 0 16px; font-weight: 750; }
 .primary-button { border: 1px solid var(--primary); background: var(--primary); color: #fff; }
 :root[data-theme="dark"] .primary-button { color: #10221b; }
@@ -171,7 +173,6 @@ footer a { color: var(--muted); }
   .language-field select { max-width: 112px; }
   .page-grid { padding: 27px 12px 46px; }
   .meeting-settings { grid-template-columns: 1fr 1fr; }
-  .meeting-settings .primary-button { grid-column: 1 / -1; }
   .results-heading { flex-direction: column; }
   .result-actions { width: 100%; }
   .result-actions button { flex: 1; }
@@ -189,7 +190,6 @@ footer a { color: var(--muted); }
   .city-search-wrap { grid-template-columns: minmax(0, 1fr); }
   .city-search-wrap .secondary-button { width: 100%; }
   .meeting-settings { grid-template-columns: 1fr; }
-  .meeting-settings .primary-button { grid-column: auto; }
   .city-row { grid-template-columns: minmax(0, 1fr) auto; }
   .city-clock { grid-column: 1; grid-row: 2; text-align: left; }
   .remove-city { grid-column: 2; grid-row: 1 / 3; }
