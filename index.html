@@ -3,25 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Find the best meeting time across time zones. Compare cities, working hours, dates and holidays with this free international meeting planner.">
+  <meta name="description" content="Find an international meeting time that works—and check public holidays in every participant’s country before you schedule.">
   <meta name="theme-color" content="#fbf8f1">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="canonical" href="https://findcommonhours.com/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Free World Meeting Time Finder | Common Hours">
-  <meta property="og:description" content="Compare cities, working hours, dates and holidays to find a convenient international meeting time.">
+  <meta property="og:title" content="Holiday-Aware International Meeting Planner | Common Hours">
+  <meta property="og:description" content="Compare local working hours and public holidays across countries before scheduling an international meeting.">
   <meta property="og:url" content="https://findcommonhours.com/">
   <meta property="og:image" content="https://findcommonhours.com/assets/og.jpg">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Free World Meeting Time Finder | Common Hours">
-  <meta name="twitter:description" content="Compare cities, working hours, dates and holidays to find a convenient international meeting time.">
+  <meta name="twitter:title" content="Holiday-Aware International Meeting Planner | Common Hours">
+  <meta name="twitter:description" content="Compare local working hours and public holidays across countries before scheduling an international meeting.">
   <meta name="twitter:image" content="https://findcommonhours.com/assets/og.jpg">
-  <title>Free World Meeting Time Finder | Common Hours</title>
+  <title>Holiday-Aware International Meeting Planner | Common Hours</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4158152621897495" crossorigin="anonymous"></script>
   <script type="application/ld+json">
   {
@@ -33,7 +33,7 @@
         "url": "https://findcommonhours.com/",
         "name": "Common Hours",
         "alternateName": "World Meeting Time Finder",
-        "description": "A free tool for finding convenient meeting times across cities and time zones."
+        "description": "A free tool for finding international meeting times while checking local working hours and public holidays across countries."
       },
       {
         "@type": "WebApplication",
@@ -43,13 +43,13 @@
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Any",
         "browserRequirements": "Requires JavaScript and a modern web browser.",
-        "description": "Compare cities, meeting dates and durations to find convenient working-hour overlaps across time zones.",
+        "description": "Compare cities, meeting dates, working hours and public holidays to find convenient international meeting times.",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
       }
     ]
   }
   </script>
-  <link rel="stylesheet" href="styles.css?v=20260902-1">
+  <link rel="stylesheet" href="styles.css?v=20260902-2">
 </head>
 <body>
   <header class="site-header">
@@ -77,9 +77,9 @@
 
     <main>
       <section class="intro">
-        <p class="eyebrow" data-i18n="eyebrow">Free world meeting time finder</p>
-        <h1 data-i18n="headline">Find the best meeting time across time zones</h1>
-        <p data-i18n="subhead">Compare cities, working hours, dates and holidays to find a convenient international meeting time—free.</p>
+        <p class="eyebrow" data-i18n="eyebrow">Holiday-aware international meeting planner</p>
+        <h1 data-i18n="headline">Find a meeting time that works—and isn’t a holiday there.</h1>
+        <p data-i18n="subhead">Compare local working hours and public holidays across countries before scheduling your international meeting.</p>
       </section>
 
       <section class="planner-card" aria-labelledby="planner-title">
@@ -146,6 +146,7 @@
         </div>
         <p class="adjust-hint" data-i18n="adjustHint">Drag to explore, or move in 30-minute steps.</p>
 
+        <p class="holiday-status-heading" data-i18n="holidayCheck">Holiday check by location</p>
         <div class="holiday-notices" id="holiday-notices"></div>
         <div class="timeline" id="timeline"></div>
         <div class="timeline-axis" aria-hidden="true"><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>12 AM</span></div>
@@ -179,7 +180,7 @@
         <div class="resource-grid">
           <a class="resource-card" href="meeting-time-zone-converter.html"><strong data-i18n="guideConverterTitle">Meeting time-zone converter</strong><span data-i18n="guideConverterCopy">Understand local times and convert a proposed meeting for every participant.</span></a>
           <a class="resource-card" href="international-meeting-planner.html"><strong data-i18n="guidePlannerTitle">International meeting planner</strong><span data-i18n="guidePlannerCopy">Use a practical checklist for fair, workable meetings across countries.</span></a>
-          <a class="resource-card" href="daylight-saving-holidays.html"><strong data-i18n="guideDstTitle">Daylight saving and holidays</strong><span data-i18n="guideDstCopy">Avoid the date changes and public holidays that commonly disrupt global meetings.</span></a>
+          <a class="resource-card" href="daylight-saving-holidays.html"><strong data-i18n="guideDstTitle">International public holidays and meeting planning</strong><span data-i18n="guideDstCopy">Check holidays, date changes and daylight-saving shifts before you schedule across countries.</span></a>
         </div>
       </section>
 
@@ -202,7 +203,7 @@
     <nav aria-label="Footer"><a href="#how-it-works" data-i18n="navHow">How it works</a><a href="#guides" data-i18n="navGuides">Guides</a><a href="#faq" data-i18n="navFaq">FAQ</a><a href="privacy.html" data-i18n="navPrivacy">Privacy</a></nav>
   </footer>
 
-  <script src="app.js?v=20260902-1"></script>
+  <script src="app.js?v=20260902-2"></script>
   <!-- Load analytics after the page is usable so it does not delay the initial render. -->
   <script>
     window.addEventListener('load',()=>{const script=document.createElement('script');script.src='https://static.cloudflareinsights.com/beacon.min.js';script.dataset.cfBeacon='{"token":"1fa3e675ae4f4a6ca7406cb3d20594f0"}';document.head.append(script);},{once:true});
