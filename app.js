@@ -29,6 +29,10 @@ const positioningCopy = {
   pt:{eyebrow:'Planejador internacional com feriados',headline:'Encontre um horário que funcione e não seja feriado por lá.',subhead:'Compare horários de trabalho e feriados entre países antes de marcar sua reunião internacional.',guideDstTitle:'Feriados internacionais e planejamento de reuniões',guideDstCopy:'Confira feriados, mudanças de data e de horário antes de agendar entre países.',holidayCheck:'Verificação de feriados por local',workingDay:'Dia útil',checkingHolidays:'Verificando feriados locais…',holidayUnavailable:'Status de feriado indisponível'}
 };
 
+const builtInNationalHolidays = {
+  IN:{'01-26':'Republic Day','08-15':'Independence Day','10-02':'Gandhi Jayanti'}
+};
+
 const state = { language:'en', selected:[], date:'', duration:60, slot:20, holidays:new Map(), suggestions:[], restoredFromUrl:false, holidayCheckId:0 };
 const els = Object.fromEntries(['language','city-list','city-search','city-search-label','city-suggestions','city-error','add-city','meeting-date','duration','results','result-label','results-title','meeting-summary','compromise-note','selected-day','time-slider','timeline','holiday-notices','copy-result','share-result','previous-day','next-day','earlier','later','theme-toggle'].map(id => [id.replaceAll('-','_'), document.getElementById(id)]));
 
@@ -142,6 +146,8 @@ function slotIsPerfect(){
 async function holidayFor(city,date){
   if(!city.countryCode) return false;
   const localDate=isoLocal(date,city.zone); const year=localDate.slice(0,4); const key=`${city.countryCode}-${year}`;
+  const fixedHoliday=builtInNationalHolidays[city.countryCode]?.[localDate.slice(5)];
+  if(fixedHoliday) return {name:fixedHoliday,nationalHoliday:true,builtIn:true};
   if(!state.holidays.has(key)){
     try{
       const response=await fetch(`https://nagerholidays.com/api/v4/Holidays/${city.countryCode}/${year}`);
