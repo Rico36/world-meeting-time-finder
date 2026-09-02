@@ -103,6 +103,7 @@ h1 { max-width: 640px; margin: 0 auto 10px; font-family: Georgia, "Times New Rom
 .results-card { margin-top: 20px; padding: clamp(18px, 4vw, 28px); }
 .results-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
 .results-heading h2 { margin: 0; font-size: clamp(21px, 3vw, 29px); }
+.compromise-note { max-width: 590px; margin: 8px 0 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
 .results-heading p:last-child { margin: 5px 0 0; color: var(--muted); }
 .result-actions { display: flex; gap: 7px; }
 .day-stepper { width: min(100%, 410px); min-height: 48px; margin: 20px auto 0; display: grid; grid-template-columns: 46px 1fr 46px; align-items: center; text-align: center; border-radius: 13px; background: var(--primary-soft); }
