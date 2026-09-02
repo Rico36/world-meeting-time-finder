@@ -111,8 +111,12 @@ h1 { max-width: 640px; margin: 0 auto 10px; font-family: Georgia, "Times New Rom
 .time-adjuster label { display: block; }
 .time-adjuster input { width: 100%; accent-color: var(--primary); }
 .adjust-hint { margin: 4px 0 0; text-align: center; color: var(--muted); font-size: 12px; }
-.holiday-notices { margin-top: 14px; display: grid; gap: 7px; }
-.holiday-notice { padding: 9px 11px; border-radius: 10px; background: var(--warning); color: var(--warning-text); font-size: 13px; }
+.holiday-status-heading { margin: 18px 0 8px; font-size: 13px; font-weight: 800; }
+.holiday-notices { display: grid; grid-template-columns: repeat(auto-fit,minmax(190px,1fr)); gap: 7px; }
+.holiday-notice { padding: 9px 11px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; }
+.holiday-notice.status-warning { border-color: color-mix(in srgb,var(--warning-text) 25%,var(--border)); background: var(--warning); color: var(--warning-text); font-weight: 700; }
+.holiday-notice.status-ok { background: var(--primary-soft); color: var(--text); }
+.holiday-notice.status-loading,.holiday-notice.status-muted { color: var(--muted); }
 .timeline { margin-top: 18px; display: grid; gap: 10px; }
 .timeline-row { display: grid; grid-template-columns: 126px minmax(0, 1fr); align-items: center; gap: 12px; }
 .timeline-city strong { display: block; font-size: 13px; }
