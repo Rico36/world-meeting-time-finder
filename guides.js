@@ -30,6 +30,14 @@ const guides = {
   }
 };
 
+const holidayGuidePositioning = {
+  en:{title:'International Public Holiday Meeting Planner | Common Hours',description:'Check public holidays across countries before scheduling an international meeting.',eyebrow:'Public holidays across countries',heading:'Know when it’s a holiday there before you schedule',intro:'A time can fit everyone’s working hours and still be the wrong day. International meetings should be checked against each participant’s local public-holiday calendar.',note:'Common Hours flags public holidays for every selected location instead of silently removing the meeting time, so your team can make the final call.'},
+  es:{title:'Planificador de reuniones y festivos internacionales | Common Hours',description:'Comprueba festivos entre países antes de programar una reunión internacional.',eyebrow:'Festivos entre países',heading:'Comprueba si allí es festivo antes de programar',intro:'Una hora puede encajar en todos los horarios laborales y aun así caer en el día equivocado. Comprueba el calendario festivo local de cada participante.',note:'Common Hours señala los festivos de cada ubicación sin eliminar silenciosamente la hora, para que el equipo tome la decisión final.'},
+  fr:{title:'Planificateur de réunions et jours fériés internationaux | Common Hours',description:'Vérifiez les jours fériés de chaque pays avant de planifier une réunion internationale.',eyebrow:'Jours fériés selon les pays',heading:'Vérifiez si c’est un jour férié là-bas avant de planifier',intro:'Une heure peut convenir aux horaires de travail de tous tout en tombant le mauvais jour. Vérifiez le calendrier local de chaque participant.',note:'Common Hours signale les jours fériés de chaque lieu sans masquer l’heure proposée, afin que l’équipe prenne la décision finale.'},
+  de:{title:'Internationaler Feiertags-Meetingplaner | Common Hours',description:'Prüfe Feiertage in verschiedenen Ländern, bevor du ein internationales Meeting planst.',eyebrow:'Feiertage in verschiedenen Ländern',heading:'Prüfe vor der Planung, ob dort Feiertag ist',intro:'Eine Uhrzeit kann in alle Arbeitszeiten passen und trotzdem auf den falschen Tag fallen. Prüfe den lokalen Feiertagskalender aller Teilnehmenden.',note:'Common Hours kennzeichnet Feiertage für jeden Ort, ohne die Meetingzeit auszublenden. So kann das Team selbst entscheiden.'},
+  pt:{title:'Planejador de reuniões e feriados internacionais | Common Hours',description:'Confira feriados entre países antes de marcar uma reunião internacional.',eyebrow:'Feriados em diferentes países',heading:'Saiba se é feriado por lá antes de agendar',intro:'Um horário pode caber no expediente de todos e ainda cair no dia errado. Confira o calendário de feriados local de cada participante.',note:'O Common Hours sinaliza feriados em cada local sem ocultar o horário, deixando a decisão final para a equipe.'}
+};
+
 const guideLinks = {
   converter:'meeting-time-zone-converter.html',
   planner:'international-meeting-planner.html',
@@ -39,7 +47,7 @@ const guideLinks = {
 function renderGuide(language){
   const lang=guideUi[language]?language:'en';
   const key=document.body.dataset.guide;
-  const data=guides[key][lang];
+  const data={...guides[key][lang],...(key==='dst'?holidayGuidePositioning[lang]:{})};
   const ui=guideUi[lang];
   document.documentElement.lang=lang;
   document.title=data.title;
