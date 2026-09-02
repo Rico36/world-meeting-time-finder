@@ -5,16 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Find the best meeting time across time zones. Compare cities, working hours, dates and holidays with this free international meeting planner.">
   <meta name="theme-color" content="#fbf8f1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="canonical" href="https://findcommonhours.com/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Free World Meeting Time Finder | Common Hours">
   <meta property="og:description" content="Compare cities, working hours, dates and holidays to find a convenient international meeting time.">
   <meta property="og:url" content="https://findcommonhours.com/">
-  <meta property="og:image" content="https://findcommonhours.com/assets/og.png">
+  <meta property="og:image" content="https://findcommonhours.com/assets/og.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Free World Meeting Time Finder | Common Hours">
   <meta name="twitter:description" content="Compare cities, working hours, dates and holidays to find a convenient international meeting time.">
-  <meta name="twitter:image" content="https://findcommonhours.com/assets/og.png">
+  <meta name="twitter:image" content="https://findcommonhours.com/assets/og.jpg">
   <title>Free World Meeting Time Finder | Common Hours</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4158152621897495" crossorigin="anonymous"></script>
   <script type="application/ld+json">
@@ -113,9 +119,10 @@
       <section class="results-card" id="results" aria-live="polite" aria-labelledby="results-title" hidden>
         <div class="results-heading">
           <div>
-            <p class="eyebrow" data-i18n="bestOverlap">Best overlap</p>
+            <p class="eyebrow" id="result-label" data-i18n="bestOverlap">Best overlap</p>
             <h2 id="results-title">—</h2>
             <p id="meeting-summary">—</p>
+            <p class="compromise-note" id="compromise-note" hidden></p>
           </div>
           <div class="result-actions">
             <button class="secondary-button" id="copy-result" type="button" data-i18n="copy">Copy</button>
@@ -196,8 +203,9 @@
   </footer>
 
   <script src="app.js"></script>
-  <!-- Cloudflare Web Analytics -->
-  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"1fa3e675ae4f4a6ca7406cb3d20594f0"}'></script>
-  <!-- End Cloudflare Web Analytics -->
+  <!-- Load analytics after the page is usable so it does not delay the initial render. -->
+  <script>
+    window.addEventListener('load',()=>{const script=document.createElement('script');script.src='https://static.cloudflareinsights.com/beacon.min.js';script.dataset.cfBeacon='{"token":"1fa3e675ae4f4a6ca7406cb3d20594f0"}';document.head.append(script);},{once:true});
+  </script>
 </body>
 </html>
