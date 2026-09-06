@@ -34,11 +34,11 @@ goes in the Worker).
 
 ## 4. Deploy the Worker
 
-Install Wrangler once (`npm i -g wrangler`), then from this folder:
+Wrangler is already a dev dependency of this folder (`worker/package.json`), so nothing to install globally. From this folder:
 
 ```bash
-wrangler login
-wrangler deploy
+npx wrangler login
+npx wrangler deploy
 ```
 
 Wrangler prints the Worker's URL, something like
@@ -47,8 +47,8 @@ Wrangler prints the Worker's URL, something like
 ## 5. Store the two secrets
 
 ```bash
-wrangler secret put TURNSTILE_SECRET     # paste the Turnstile secret key
-wrangler secret put GITHUB_TOKEN         # paste the fine-grained token
+npx wrangler secret put TURNSTILE_SECRET     # paste the Turnstile secret key
+npx wrangler secret put GITHUB_TOKEN         # paste the fine-grained token
 ```
 
 They live encrypted in Cloudflare and are never in the repo.
@@ -68,7 +68,7 @@ Bump the asset version (`python tools/bump_assets.py`), commit, push. Done.
 
 Open the site, click **Report a problem**, send a test message. Within a few
 seconds an issue labelled `user-feedback` should appear in the private repo.
-If nothing arrives, the Worker's logs (`wrangler tail`) will say which check
+If nothing arrives, the Worker's logs (`npx wrangler tail`) will say which check
 rejected it.
 
 ## What each control does
@@ -88,6 +88,6 @@ a fake success, so bots do not learn what tripped them.
 ## Rotating or revoking
 
 - Token leaked or expired: revoke it on GitHub, generate a new one, run
-  `wrangler secret put GITHUB_TOKEN` again. The Worker picks it up immediately.
+  `npx wrangler secret put GITHUB_TOKEN` again. The Worker picks it up immediately.
 - Too much spam getting through: switch the Turnstile widget to
   **Non-interactive** or lower `RATE.max` in `feedback-worker.js` and redeploy.

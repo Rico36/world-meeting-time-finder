@@ -1,1 +1,1 @@
-{ "type": "module" }
+{"type":"module","devDependencies":{"wrangler":"^4.129.0"}}

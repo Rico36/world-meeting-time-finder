@@ -15,7 +15,7 @@ ten-minute dependency check, and everything else is event-driven.
 | **Monthly** | Check the two external APIs and the static assets | **Yes** — raises an issue only if something breaks |
 | **Annually** | Regenerate `REGION_CITIES` / `COUNTRY_CITIES` from GeoNames | No — read the output before shipping |
 | **Annually** | Renew the domain | No |
-| **Annually** | Rotate the feedback Worker's GitHub token (fine-grained tokens expire) | No — `wrangler secret put GITHUB_TOKEN` |
+| **Annually** | Rotate the feedback Worker's GitHub token (fine-grained tokens expire) | No — `npx wrangler secret put GITHUB_TOKEN` |
 | **Monthly, 5 min** | Search Console + AdSense policy centre | No |
 
 ## Automation
@@ -208,7 +208,7 @@ The no-login feedback dialog is shipped but inert: `index.html` carries empty
 footer link still falls through to the public GitHub issue chooser. Activating
 it takes about fifteen minutes and is written up step by step in
 `worker/README.md` — a private repo to receive submissions, a fine-grained token
-scoped to that repo's issues, a Turnstile widget, and `wrangler deploy`.
+scoped to that repo's issues, a Turnstile widget, and `npx wrangler deploy`.
 
 Once live, submissions arrive as issues labelled `user-feedback` in the private
 repo. The Worker's abuse controls and how to tune them are documented in the
