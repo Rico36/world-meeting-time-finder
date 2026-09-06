@@ -46,6 +46,47 @@ Actions may open pull requests on this repo (Settings → Actions → General). 
 default token permission is left at read-only; each workflow requests only the
 scopes it needs.
 
+## Reviewing what the automation produces
+
+### The December pull request — a five-minute review
+
+The PR touches `guides.js` and the three guide pages. Check three things:
+
+1. **Spot-check two dates against an independent source.** Open the diff, find
+   the "Clock changes in YYYY" list, and compare New York and London against
+   [timeanddate.com/time/change](https://www.timeanddate.com/time/change/) for
+   that year. If those two are right, the rest almost certainly are — they all
+   come from the same tzdata.
+2. **Read the converter paragraph.** It should name the same US and European
+   dates as the list. If the paragraph and the list disagree, the generator's
+   prose template has drifted from its data.
+3. **Scan for surprises.** A city that has always changed clocks suddenly saying
+   "no clock change", or vice versa, is worth a second look. It might be a real
+   law change (Mexico did this in 2022) or a tzdata quirk.
+
+If all three pass, merge. Deployment is automatic.
+
+**If something is wrong:** close the PR without merging (nothing has deployed),
+fix the cause, then re-run from the Actions tab → *Annual content refresh* →
+*Run workflow*, entering the year. The branch is force-pushed, so re-running is
+safe. The usual causes are a city entry in the `CITIES` list at the top of
+`tools/expand_guides.py`, or the prose template in the same file.
+
+### Dependency-check failures — what each one means
+
+The issue the workflow opens quotes the report line. Match it here:
+
+| Report says | What happened | What to do |
+|---|---|---|
+| `geocoding: response no longer contains ...` | Open-Meteo changed its response shape | Search is degraded but working. Update the field names in `searchPlaces()` in `app.js` to match the new response |
+| `geocoding: request failed` | Open-Meteo is down or moved | Search falls back to the ~60-city seed list automatically. Wait a day; if persistent, check open-meteo.com for a new endpoint |
+| `holidays: US/YYYY returned no entries` | Holiday API down or year not yet published | Holiday panel shows "unavailable". Early in a new year this can be the API lagging; re-run in a week before doing anything |
+| `holidays: coverage APPEARED for ...` | Good news — a missing country now has data | Consider removing that country's hardcoded fallback in `app.js` |
+| `asset: X returned HTTP 404` | A file was renamed or deleted | Find what references it (`grep -rn "X" *.html`) and fix the reference or restore the file |
+
+Close the issue once fixed; the next monthly run will comment on it again if the
+problem persists.
+
 ---
 
 ## 1. December: refresh the dated guide content

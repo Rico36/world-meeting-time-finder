@@ -1,0 +1,16 @@
+name: An idea
+description: Something that would make the planner more useful
+title: "[Idea] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like it to do?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: What were you trying to do when you wished for it?
+      description: The situation matters more than the feature — it helps find the simplest fix.

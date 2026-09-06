@@ -1,0 +1,33 @@
+name: Something didn't work
+description: A city didn't come up, a time looked wrong, or a holiday was missed
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks — the most useful reports say exactly what you typed and what you expected to see.
+  - type: input
+    id: typed
+    attributes:
+      label: What did you type into the city box?
+      placeholder: e.g. New Mexico
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect, and what happened instead?
+      placeholder: I expected Albuquerque to appear. The list showed towns in Australia and Maryland.
+    validations:
+      required: true
+  - type: input
+    id: cities
+    attributes:
+      label: Which cities were already added? (if a time or holiday looked wrong)
+      placeholder: e.g. New York, London, Mexico City on 16 Sep
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device (optional)
+      placeholder: e.g. Safari on iPhone
