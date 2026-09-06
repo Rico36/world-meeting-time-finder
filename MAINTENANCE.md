@@ -88,6 +88,29 @@ The issue the workflow opens quotes the report line. Match it here:
 Close the issue once fixed; the next monthly run will comment on it again if the
 problem persists.
 
+### Feedback form failures — read the Worker's reason log
+
+If a submission shows "Couldn't send", the Worker logs *why* — status, error
+code and a short note, never the message text. Watch it live from `worker/`:
+
+```bash
+npx wrangler tail --format json
+```
+
+then submit again and match the `note`:
+
+| Note in the log | What it means | What to do |
+|---|---|---|
+| `github:403:Resource not accessible by personal access token` | The fine-grained token lacks **Issues: Read and write**, or `findcommonhours-feedback` isn't selected under its repository access | Edit the token on GitHub. Editing permissions in place keeps the same token value, so no `secret put` is needed; if you *regenerate* it instead, run `npx wrangler secret put GITHUB_TOKEN` |
+| `github:401:…` | Token revoked or expired | Generate a new one and `npx wrangler secret put GITHUB_TOKEN` |
+| `github:404:…` | `FEEDBACK_REPO` in `wrangler.toml` names a repo the token can't see | Fix the name or the token's repository access |
+| `turnstile:invalid-input-secret` | The stored `TURNSTILE_SECRET` is wrong | `npx wrangler secret put TURNSTILE_SECRET` with the widget's secret key |
+| `turnstile:invalid-input-response` / `timeout-or-duplicate` | The browser's token was bad or expired (dialog left open too long) | Nothing to fix; the user retries |
+| `dropped:honeypot` / `dropped:timing` / `dropped:links` | Treated as a bot: hidden field filled, sent under 3 s, or 3+ URLs | Expected. A real person who sees this submitted too fast |
+| `403 origin` | Request didn't come from `https://findcommonhours.com` | Only relevant if the site moves domains — update `ALLOWED_ORIGIN` |
+
+Tail captures land in `worker/tail*.log` and are gitignored — they contain IPs.
+
 ---
 
 ## 1. December: refresh the dated guide content
