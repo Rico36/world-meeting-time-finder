@@ -287,5 +287,6 @@ that the obvious test queries missed. Before pushing, check these by hand:
 | `Bayamón` | Every row shows a country — Open-Meteo omits it for territories |
 | `Germany` | Berlin, Hamburg, Munich |
 | `Texas` | Houston, San Antonio, **El Paso** (the Mountain-time city) |
+| *(fresh load, no saved cities)* | Your own city appears as the first row, labelled "Your time zone". If it doesn't for a visitor, their browser may report a **legacy zone name** (Chromium says `Asia/Calcutta`, `Europe/Kiev`) — add it to `ZONE_ALIASES` in `app.js` |
 
 Then add two cities and confirm the timeline and holiday panel still render.

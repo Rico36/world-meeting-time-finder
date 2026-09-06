@@ -25,10 +25,10 @@ const pageCopy = {
 
 const positioningCopy = {
   en:{eyebrow:'Holiday-aware international meeting planner',headline:'Find a meeting time that works—and isn’t a holiday there.',subhead:'Compare local working hours and public holidays across countries before scheduling your international meeting.',guideDstTitle:'International public holidays and meeting planning',guideDstCopy:'Check holidays, date changes and daylight-saving shifts before you schedule across countries.',holidayCheck:'Holiday check by location',workingDay:'Working day',checkingHolidays:'Checking local holidays…',holidayUnavailable:'Holiday status unavailable',holidayEstimated:'expected date — the final day is set by moon sighting'},
-  es:{eyebrow:'Planificador internacional con festivos',headline:'Encuentra una hora que funcione y que allí no sea festivo.',subhead:'Compara horarios laborales y festivos entre países antes de programar tu reunión internacional.',guideDstTitle:'Festivos internacionales y planificación de reuniones',guideDstCopy:'Comprueba festivos, cambios de fecha y horario antes de programar entre países.',holidayCheck:'Comprobación de festivos por ubicación',workingDay:'Día laborable',checkingHolidays:'Comprobando festivos locales…',holidayUnavailable:'Estado de festivo no disponible',holidayEstimated:'fecha prevista; el día definitivo depende del avistamiento de la luna'},
-  fr:{eyebrow:'Planificateur international avec jours fériés',headline:'Trouvez une heure qui convient sans tomber sur un jour férié.',subhead:'Comparez les heures de travail et jours fériés entre pays avant de planifier votre réunion internationale.',guideDstTitle:'Jours fériés internationaux et planification',guideDstCopy:'Vérifiez jours fériés, changements de date et d’heure avant de planifier entre pays.',holidayCheck:'Vérification des jours fériés par lieu',workingDay:'Jour ouvré',checkingHolidays:'Vérification des jours fériés…',holidayUnavailable:'Statut du jour férié indisponible',holidayEstimated:'date prévue ; le jour définitif dépend de l’observation de la lune'},
-  de:{eyebrow:'Internationaler Planer mit Feiertagsprüfung',headline:'Finde eine Meetingzeit, die passt—und dort kein Feiertag ist.',subhead:'Vergleiche Arbeitszeiten und Feiertage verschiedener Länder, bevor du dein internationales Meeting planst.',guideDstTitle:'Internationale Feiertage und Meetingplanung',guideDstCopy:'Prüfe Feiertage, Datumswechsel und Zeitumstellungen vor der länderübergreifenden Planung.',holidayCheck:'Feiertagsprüfung nach Ort',workingDay:'Arbeitstag',checkingHolidays:'Lokale Feiertage werden geprüft…',holidayUnavailable:'Feiertagsstatus nicht verfügbar',holidayEstimated:'voraussichtliches Datum; der endgültige Tag wird durch Mondsichtung festgelegt'},
-  pt:{eyebrow:'Planejador internacional com feriados',headline:'Encontre um horário que funcione e não seja feriado por lá.',subhead:'Compare horários de trabalho e feriados entre países antes de marcar sua reunião internacional.',guideDstTitle:'Feriados internacionais e planejamento de reuniões',guideDstCopy:'Confira feriados, mudanças de data e de horário antes de agendar entre países.',holidayCheck:'Verificação de feriados por local',workingDay:'Dia útil',checkingHolidays:'Verificando feriados locais…',holidayUnavailable:'Status de feriado indisponível',holidayEstimated:'data prevista; o dia definitivo depende da observação da lua'}
+  es:{eyebrow:'Planificador internacional con festivos',headline:'Encuentra una hora que funcione y que allí no sea festivo.',subhead:'Compara horarios laborales y festivos entre países antes de programar tu reunión internacional.',guideDstTitle:'Festivos internacionales y planificación de reuniones',guideDstCopy:'Comprueba festivos, cambios de fecha y horario antes de programar entre países.',holidayCheck:'Comprobación de festivos por ubicación',workingDay:'Día laborable',checkingHolidays:'Comprobando festivos locales…',holidayUnavailable:'Estado de festivo no disponible',holidayEstimated:'fecha prevista; el día definitivo depende del avistamiento de la luna',yourTimeZone:'Tu zona horaria'},
+  fr:{eyebrow:'Planificateur international avec jours fériés',headline:'Trouvez une heure qui convient sans tomber sur un jour férié.',subhead:'Comparez les heures de travail et jours fériés entre pays avant de planifier votre réunion internationale.',guideDstTitle:'Jours fériés internationaux et planification',guideDstCopy:'Vérifiez jours fériés, changements de date et d’heure avant de planifier entre pays.',holidayCheck:'Vérification des jours fériés par lieu',workingDay:'Jour ouvré',checkingHolidays:'Vérification des jours fériés…',holidayUnavailable:'Statut du jour férié indisponible',holidayEstimated:'date prévue ; le jour définitif dépend de l’observation de la lune',yourTimeZone:'Votre fuseau horaire'},
+  de:{eyebrow:'Internationaler Planer mit Feiertagsprüfung',headline:'Finde eine Meetingzeit, die passt—und dort kein Feiertag ist.',subhead:'Vergleiche Arbeitszeiten und Feiertage verschiedener Länder, bevor du dein internationales Meeting planst.',guideDstTitle:'Internationale Feiertage und Meetingplanung',guideDstCopy:'Prüfe Feiertage, Datumswechsel und Zeitumstellungen vor der länderübergreifenden Planung.',holidayCheck:'Feiertagsprüfung nach Ort',workingDay:'Arbeitstag',checkingHolidays:'Lokale Feiertage werden geprüft…',holidayUnavailable:'Feiertagsstatus nicht verfügbar',holidayEstimated:'voraussichtliches Datum; der endgültige Tag wird durch Mondsichtung festgelegt',yourTimeZone:'Deine Zeitzone'},
+  pt:{eyebrow:'Planejador internacional com feriados',headline:'Encontre um horário que funcione e não seja feriado por lá.',subhead:'Compare horários de trabalho e feriados entre países antes de marcar sua reunião internacional.',guideDstTitle:'Feriados internacionais e planejamento de reuniões',guideDstCopy:'Confira feriados, mudanças de data e de horário antes de agendar entre países.',holidayCheck:'Verificação de feriados por local',workingDay:'Dia útil',checkingHolidays:'Verificando feriados locais…',holidayUnavailable:'Status de feriado indisponível',holidayEstimated:'data prevista; o dia definitivo depende da observação da lua',yourTimeZone:'Seu fuso horário'}
 };
 
 const qualityCopy = {
@@ -76,9 +76,9 @@ function meetingUrl(){
 function updateMeetingUrl(){ if(state.selected.length>=2) history.replaceState(null,'',meetingUrl()); }
 function restoreFromUrl(){
   const params=new URLSearchParams(location.search); const encoded=params.getAll('city');
-  if(encoded.length<2) return false;
+  if(encoded.length<1) return false;
   const restored=encoded.slice(0,5).map(value=>{ const [name,zone,countryCode,subdivision,country]=value.split('|'); return {name,zone,countryCode:countryCode||null,subdivision:subdivision||null,country:country||''}; }).filter(city=>city.name&&city.zone);
-  if(restored.length<2) return false;
+  if(restored.length<1) return false;
   state.selected=restored;
   const date=params.get('date'); if(/^\d{4}-\d{2}-\d{2}$/.test(date||'')) state.date=date;
   const duration=Number(params.get('duration')); if([30,45,60,90,120].includes(duration)) state.duration=duration;
@@ -178,12 +178,55 @@ async function searchPlaces(query){
   }catch(error){ if(error.name!=='AbortError'){ const fallback=dedupePlaces([...region,...local]).slice(0,8); state.suggestions=fallback; renderSuggestions(fallback,fallback.length?regionLabel:t('noMatches')); } }
 }
 
+const ZONE_ALIASES={'Asia/Calcutta':'Asia/Kolkata','Asia/Saigon':'Asia/Ho_Chi_Minh','Asia/Katmandu':'Asia/Kathmandu',
+  'Asia/Rangoon':'Asia/Yangon','Asia/Ulan_Bator':'Asia/Ulaanbaatar','Asia/Macao':'Asia/Macau','Asia/Dacca':'Asia/Dhaka',
+  'Asia/Thimbu':'Asia/Thimphu','Asia/Ashkhabad':'Asia/Ashgabat','Asia/Istanbul':'Europe/Istanbul','Europe/Kiev':'Europe/Kyiv',
+  'America/Buenos_Aires':'America/Argentina/Buenos_Aires','America/Godthab':'America/Nuuk','Atlantic/Faeroe':'Atlantic/Faroe',
+  'Africa/Asmera':'Africa/Asmara','Pacific/Ponape':'Pacific/Pohnpei','Pacific/Truk':'Pacific/Chuuk','Pacific/Enderbury':'Pacific/Kanton',
+  'America/Indianapolis':'America/Indiana/Indianapolis','America/Louisville':'America/Kentucky/Louisville','Europe/Nicosia':'Asia/Nicosia'};
+function canonicalZone(zone){ return ZONE_ALIASES[zone]||zone; }
+
+function detectReferenceCity(){
+  // The row renderer and the localStorage restore already understand `detected`
+  // rows (label "Your time zone", never persisted). This is the missing producer:
+  // map the browser's zone to the best-known city in that zone. A wrong guess
+  // (VPN, travel) is one click to remove and is never saved.
+  let zone='';
+  try{ zone=Intl.DateTimeFormat().resolvedOptions().timeZone||''; }catch(error){ zone=''; }
+  if(!zone) return null;
+  // Chromium reports legacy IANA names (Asia/Calcutta) while our data uses the current
+  // ones (Asia/Kolkata); compare both sides through the same canonical form.
+  const same=(a,b)=>canonicalZone(a)===canonicalZone(b);
+  if(state.selected.some(city=>same(city.zone,zone))) return null;
+  const seed=cities.find(city=>same(city.zone,zone));
+  if(seed) return {...seed,admin:'',detected:true};
+  for(const key of Object.keys(COUNTRY_CITIES)){
+    const entry=COUNTRY_CITIES[key]; const hit=entry[2].find(row=>same(row[1],zone));
+    if(hit) return {name:hit[0],country:entry[0],countryCode:entry[1],zone:hit[1],subdivision:null,admin:'',detected:true};
+  }
+  for(const key of Object.keys(REGION_CITIES)){
+    const hit=REGION_CITIES[key].find(row=>same(row[3],zone));
+    if(hit) return {name:hit[0],country:hit[2],countryCode:hit[4],zone:hit[3],subdivision:null,admin:hit[1],detected:true};
+  }
+  return null;
+}
+
 function restoreOrDetectReference(){
-  if(restoreFromUrl()) return;
-  try{
-    const saved=JSON.parse(localStorage.getItem('commonHoursCitiesV2')||'[]');
-    if(Array.isArray(saved)&&saved.length){ state.selected=saved.filter(city=>city?.zone&&city?.name&&!city.detected).slice(0,5); if(state.selected.length)return; }
-  }catch{}
+  const fromUrl=restoreFromUrl();
+  if(!fromUrl){
+    try{
+      const saved=JSON.parse(localStorage.getItem('commonHoursCitiesV2')||'[]');
+      if(Array.isArray(saved)&&saved.length) state.selected=saved.filter(city=>city?.zone&&city?.name&&!city.detected).slice(0,5);
+    }catch(error){}
+  }
+  if(state.selected.length<2){
+    const detected=detectReferenceCity();
+    if(detected){
+      state.selected.unshift(detected); state.selected=state.selected.slice(0,5);
+      // a URL carrying one city plus the detected one is a fresh pair: find the best slot
+      if(fromUrl) state.restoredFromUrl=false;
+    }
+  }
 }
 
 function findBestSlot(){
