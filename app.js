@@ -95,6 +95,19 @@ function addSelectedCity(city){
   track('city_added',{city:city.name,country:city.countryCode||''});
 }
 
+const COUNTRY_BY_CODE = (()=>{ const map={};
+  Object.keys(COUNTRY_CITIES).forEach(key=>{ const entry=COUNTRY_CITIES[key];
+    if(entry[1] && !map[entry[1]]) map[entry[1]]=entry[0]; });
+  return map; })();
+
+function placeDetail(city){
+  // Open-Meteo omits `country` for territories such as PR, GU and VI, which left
+  // rows showing only a municipality name. Recover it from the country code.
+  const country=city.country || COUNTRY_BY_CODE[city.countryCode] || '';
+  const admin=(city.admin && city.admin!==city.name) ? city.admin : '';
+  return [admin,country].filter(Boolean).join(' · ') || city.zone || '';
+}
+
 function zoneNow(zone){
   if(!zone) return {time:'',abbr:''};
   try{
@@ -127,7 +140,7 @@ function renderSuggestions(items,status=''){
     const button=document.createElement('button'); button.type='button'; button.className='city-suggestion'; button.role='option'; button.dataset.suggestion=String(index);
     const main=document.createElement('div'); main.className='city-suggestion-main';
     const name=document.createElement('strong'); name.textContent=city.name;
-    const detail=document.createElement('span'); detail.textContent=[city.admin,city.country].filter(Boolean).join(' · ');
+    const detail=document.createElement('span'); detail.textContent=placeDetail(city);
     main.append(name,detail);
     const clock=document.createElement('div'); clock.className='city-suggestion-time';
     const now=zoneNow(city.zone);
