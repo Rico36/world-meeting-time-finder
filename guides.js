@@ -92,11 +92,114 @@ const guideLinks = {
   dst:'daylight-saving-holidays.html'
 };
 
+const guideReference = {
+ "converter": {
+  "en": [
+   [
+    "The three weeks each year when the gap changes",
+    "North America and Europe do not change their clocks on the same day, so the difference between them shifts twice a year for about three weeks at a time. In 2026 the United States moves on 8 March and 1 November, while the United Kingdom and most of Europe move on 29 March and 25 October. London is normally five hours ahead of New York, but between 8 and 29 March, and again between 25 October and 1 November, it is only four. A recurring call that felt comfortable in February can land an hour early in the middle of March without anyone having touched the invitation."
+   ],
+   [
+    "Why time-zone abbreviations are unreliable",
+    [
+     "CST is used for United States Central Standard Time, China Standard Time and Cuba Standard Time.",
+     "IST is used for India Standard Time, Irish Standard Time and Israel Standard Time.",
+     "EST and EDT are an hour apart, and which one is correct depends entirely on the date.",
+     "BST means British Summer Time in London and Bangladesh Standard Time in Dhaka.",
+     "A city name together with a date is never ambiguous; an abbreviation frequently is."
+    ]
+   ],
+   [
+    "Converting a meeting that repeats",
+    "Choose one city as the anchor — usually where the meeting owner sits — and keep that local time fixed. Everyone else’s local time will then move by an hour whenever their own region changes clocks. That is the real trade-off: either the anchor city stays stable and the others drift, or everyone else stays stable and the anchor moves. Decide which before the first invitation goes out, and re-check the series in March, April, September and October, when most of the world’s transitions fall."
+   ],
+   [
+    "A worked example across the March transition",
+    "A one-hour call is set for 9:00 AM in New York. On 1 March that is 2:00 PM in London and 7:30 PM in Mumbai. On 15 March, after the United States has moved its clocks but Europe has not, the same 9:00 AM in New York becomes 1:00 PM in London, and Mumbai shifts to 6:30 PM. By 1 April, once Europe has moved as well, London is back to 2:00 PM. India never changed anything — Mumbai moved because New York did."
+   ]
+  ]
+ },
+ "planner": {
+  "en": [
+   [
+    "Rotate the burden on recurring calls",
+    "Once a team spans more than about eight hours, someone is always outside normal working hours. A fixed weekly time means the same person absorbs that cost every week, which is a quiet and persistent source of resentment on distributed teams. Rotating the slot — early for the Americas one month, early for Asia-Pacific the next — spreads it. Write the rotation into the calendar invitation itself, so it is visible rather than remembered and a new joiner can see the arrangement is deliberate."
+   ],
+   [
+    "Working weeks are not the same everywhere",
+    [
+     "Several Gulf states, including the United Arab Emirates, Saudi Arabia, Qatar and Kuwait, work Sunday to Thursday, so a Friday meeting excludes them entirely.",
+     "Friday around midday is commonly reserved for prayer across much of the Muslim world.",
+     "Israel also works Sunday to Thursday, with Friday a short day.",
+     "France, Italy and Spain thin out sharply through August, and Japan does the same during Golden Week in late April and early May.",
+     "Lunch in Spain and much of Latin America falls later than the noon-to-one that most scheduling tools quietly assume."
+    ]
+   ],
+   [
+    "When there is genuinely no overlap",
+    "Some pairings have no shared working hours at all. California and India sit close to twelve hours apart, and no hour of the day suits both sides. The realistic options are worth naming plainly: rotate the inconvenience between the two regions, shorten the call so the cost is smaller, split it into two regional calls joined by a written handoff, or drop the meeting and move the decision into a document. A planner that offers the least-bad hour is still telling you something useful, but the honest answer is sometimes that a live meeting is the wrong format for this particular group."
+   ],
+   [
+    "Write an invitation that survives",
+    [
+     "Give the date, the city and the local time together: “Tuesday 14 April, 9:00 AM New York” leaves nothing to interpret.",
+     "Send a calendar invitation with a real time zone attached, so each participant’s own client performs the conversion.",
+     "Avoid writing “EST” in summer — the correct abbreviation is then EDT, and the two are an hour apart.",
+     "State the finish time as well as the start, so nobody discovers the overrun only once it happens.",
+     "For a recurring series, say which city is the anchor and warn that the others will drift around it."
+    ]
+   ]
+  ]
+ },
+ "dst": {
+  "en": [
+   [
+    "Clock changes in 2026 for major business hubs",
+    [
+     "Los Angeles — clocks change on 8 Mar and 1 Nov.",
+     "New York — clocks change on 8 Mar and 1 Nov.",
+     "Mexico City — no clock change at any point in 2026.",
+     "São Paulo — no clock change at any point in 2026.",
+     "Santiago — clocks change on 5 Apr and 6 Sep.",
+     "London — clocks change on 29 Mar and 25 Oct.",
+     "Berlin — clocks change on 29 Mar and 25 Oct.",
+     "Cairo — clocks change on 24 Apr and 30 Oct.",
+     "Johannesburg — no clock change at any point in 2026.",
+     "Dubai — no clock change at any point in 2026.",
+     "Mumbai — no clock change at any point in 2026.",
+     "Singapore — no clock change at any point in 2026.",
+     "Tokyo — no clock change at any point in 2026.",
+     "Sydney — clocks change on 5 Apr and 4 Oct.",
+     "Auckland — clocks change on 5 Apr and 27 Sep."
+    ]
+   ],
+   [
+    "Places that do not change their clocks at all",
+    "Much of Asia, Africa and the Middle East keeps a single offset all year: India, Singapore, Japan, the United Arab Emirates, Nigeria and South Africa never move. Mexico abolished daylight saving nationwide in 2022, though border cities such as Tijuana still follow the United States schedule. Within the United States, Arizona does not change its clocks — except the Navajo Nation, which does. Queensland and Western Australia stay fixed while the rest of Australia moves. These mixed pairings cause the most confusion, because one side of the call shifts and the other simply does not."
+   ],
+   [
+    "Holidays that move from year to year",
+    [
+     "Lunar New Year falls between late January and late February and closes offices across China, Singapore and much of South-East Asia for a week or more.",
+     "Eid al-Fitr and Eid al-Adha follow the lunar calendar and arrive roughly eleven days earlier each year.",
+     "Holidays tied to Easter — Good Friday, Easter Monday, Ascension, Whit Monday — move with it.",
+     "Many countries add a substitute day when a fixed-date holiday falls on a weekend.",
+     "Some bridge a midweek holiday to the nearest weekend, closing offices for several days either side."
+    ]
+   ],
+   [
+    "What a national holiday check cannot tell you",
+    "A country-level calendar is the right place to start and the wrong place to stop. It cannot know about regional holidays that apply in one state, province or canton but not the next; company shutdowns between Christmas and New Year; school holidays that quietly change when parents are available; or ordinary personal leave. Treat a flag as a prompt to ask rather than as an answer. Confirm with the person you are inviting, and remember that a clear public calendar is not the same thing as a free colleague."
+   ]
+  ]
+ }
+};
+
 function renderGuide(language){
   const lang=guideUi[language]?language:'en';
   const key=document.body.dataset.guide;
   const base={...guides[key][lang],...(key==='dst'?holidayGuidePositioning[lang]:{})};
-  const data={...base,sections:[...base.sections,...(guideExpansions[key]?.[lang]||[]),...(guideDeepening[key]?.[lang]||[])]};
+  const data={...base,sections:[...base.sections,...(guideExpansions[key]?.[lang]||[]),...(guideDeepening[key]?.[lang]||[]),...(guideReference[key]?.[lang]||[])]};
   const ui=guideUi[lang];
   document.documentElement.lang=lang;
   document.title=data.title;
