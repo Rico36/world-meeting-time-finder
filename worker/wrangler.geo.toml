@@ -1,0 +1,13 @@
+name = "findcommonhours-geo"
+main = "geo-worker.js"
+compatibility_date = "2026-01-01"
+
+[vars]
+ALLOWED_ORIGIN = "https://findcommonhours.com"
+
+# No secrets. This Worker only echoes Cloudflare's own per-request edge
+# geolocation (request.cf) back to the browser that made the request - it
+# calls no external API and stores nothing, so there is nothing to configure
+# beyond the origin above.
+#
+# Deploy from this folder:  npx wrangler deploy -c wrangler.geo.toml

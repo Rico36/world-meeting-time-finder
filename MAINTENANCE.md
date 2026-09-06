@@ -139,13 +139,12 @@ Change the `year=2026` default in `tools/expand_guides.py` before running.
 
 ### External runtime dependencies
 
-The site has exactly two, both free and neither guaranteed:
-
 | Dependency | Used for | If it fails |
 |---|---|---|
 | `geocoding-api.open-meteo.com` | City search | Search degrades to the ~60-city local seed list in `app.js`. Degrades gracefully; already handled |
 | `nagerholidays.com/api/v4` | Holiday checks | Cities show "Holiday status unavailable" — this is the headline feature, so it fails visibly |
 | Cloudflare Worker + Turnstile (`worker/`) | The "Report a problem" form | The form shows its error message and points people at the GitHub link. Nothing else on the site is affected. Only active once keys are configured — see `worker/README.md` |
+| `findcommonhours-geo` Worker (`worker/geo-worker.js`) | Upgrading the detected reference city from a zone guess to a real city name | Silent no-op — the page keeps showing the zone-only guess it already displayed (e.g. "New York" for the whole US Eastern zone). Nothing else on the site is affected, and this dependency has no secrets and nothing to rotate |
 
 Check both still return the expected shape:
 
@@ -259,6 +258,32 @@ private repo. The one setup mistake made the first time was selecting
 they sit close together and the wrong one fails with *"Resource not accessible
 by personal access token"*.
 
+### Detected-city geolocation — active, no secrets
+
+A browser only knows its **time zone**, never its city — `Intl.DateTimeFormat`
+reports `America/New_York` for anyone in the entire US Eastern zone, and IANA
+just picked New York as that zone's representative name. The first cut of
+"open on the visitor's own city" (6 September 2026) showed that representative
+city as if it were a precise answer, which is honest about the zone but
+overclaims about the location — a visitor in Atlanta saw "New York".
+
+`findcommonhours-geo.ricky-freyre.workers.dev` (source in `worker/geo-worker.js`,
+config in `worker/wrangler.geo.toml`) fixes this by echoing Cloudflare's own
+per-request edge geolocation (`request.cf`) back to the browser as JSON — no
+external API call, no key, nothing stored or logged. `app.js` shows the
+zone-only guess immediately, exactly as before, then fires this lookup in the
+background and swaps in the real city name **only if** the result arrives
+within 1.5s and its time zone agrees with the browser's own. A mismatch
+(VPN, travel, a stale system clock, or Cloudflare's IP database simply being
+wrong for that connection) leaves the honest zone-only name in place rather
+than showing a city next to the wrong time zone.
+
+Nothing to rotate here: no secrets, no expiring token, no third-party account.
+The only failure mode is the Worker being unreachable, which the site already
+handles by design — see the dependency table above. Redeploy with
+`npx wrangler deploy -c wrangler.geo.toml` from `worker/` if the source changes;
+`node worker/geo-worker.test.mjs` covers it (7 cases).
+
 Run `node worker/feedback-worker.test.mjs` after any change to the Worker, and
 `npx wrangler deploy` from `worker/` to ship it.
 
@@ -287,6 +312,6 @@ that the obvious test queries missed. Before pushing, check these by hand:
 | `Bayamón` | Every row shows a country — Open-Meteo omits it for territories |
 | `Germany` | Berlin, Hamburg, Munich |
 | `Texas` | Houston, San Antonio, **El Paso** (the Mountain-time city) |
-| *(fresh load, no saved cities)* | Your own city appears as the first row, labelled "Your time zone". If it doesn't for a visitor, their browser may report a **legacy zone name** (Chromium says `Asia/Calcutta`, `Europe/Kiev`) — add it to `ZONE_ALIASES` in `app.js` |
+| *(fresh load, no saved cities)* | Your own city appears as the first row within about a second, labelled "Your reference". It may briefly show the zone's representative city (e.g. "New York") before upgrading to your real city (e.g. "Alpharetta") once the geo lookup resolves — that upgrade only happens if it agrees with your browser's zone. If no city appears at all, the browser may report a **legacy zone name** (Chromium says `Asia/Calcutta`, `Europe/Kiev`) — add it to `ZONE_ALIASES` in `app.js` |
 
 Then add two cities and confirm the timeline and holiday panel still render.

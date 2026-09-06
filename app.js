@@ -211,6 +211,43 @@ function detectReferenceCity(){
   return null;
 }
 
+// Intl only ever gives a TIME ZONE, which IANA names after one representative
+// city per zone - "America/New_York" covers the whole US Eastern zone, not
+// literally New York. detectReferenceCity() above is the honest baseline: the
+// best-known city for that zone. This upgrades the DISPLAY NAME with real
+// IP-based geolocation from a Worker that echoes Cloudflare's own per-request
+// edge data - no new dependency, no key, and no delay to the initial render:
+// it runs after the page has already shown the zone-based guess, and only
+// touches the name if it resolves in time and agrees with the browser's own
+// zone. The zone driving the actual meeting-time math never changes here.
+async function upgradeDetectedCityWithGeo(browserZone){
+  const endpoint=(document.body.dataset.geoEndpoint||'').trim();
+  if(!endpoint) return;
+  let data;
+  try{
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),1500);
+    const response=await fetch(endpoint,{signal:controller.signal,cache:'no-store'});
+    clearTimeout(timer);
+    if(!response.ok) return;
+    data=await response.json();
+  }catch(error){ return; }
+  if(!data||!data.city||!data.timezone) return;
+  // If the IP-derived zone disagrees with the device's own clock (VPN, travel,
+  // a stale system setting, or the edge geo database simply being wrong for
+  // that IP), showing its city name next to a different zone would be worse
+  // than the honest zone-only guess - so only upgrade when they agree.
+  if(canonicalZone(data.timezone)!==canonicalZone(browserZone)) return;
+  const index=state.selected.findIndex(city=>city.detected);
+  if(index===-1) return; // the user already removed or replaced the detected row
+  if(canonicalZone(state.selected[index].zone)!==canonicalZone(browserZone)) return;
+  state.selected[index]={...state.selected[index],name:data.city,admin:data.region||'',
+    country:COUNTRY_BY_CODE[data.countryCode]||state.selected[index].country,
+    countryCode:data.countryCode||state.selected[index].countryCode};
+  renderCities();
+  if(state.selected.length>=2) calculate();
+}
+
 function restoreOrDetectReference(){
   const fromUrl=restoreFromUrl();
   if(!fromUrl){
@@ -225,6 +262,7 @@ function restoreOrDetectReference(){
       state.selected.unshift(detected); state.selected=state.selected.slice(0,5);
       // a URL carrying one city plus the detected one is a fresh pair: find the best slot
       if(fromUrl) state.restoredFromUrl=false;
+      upgradeDetectedCityWithGeo(detected.zone); // fire-and-forget; never blocks the initial render
     }
   }
 }
