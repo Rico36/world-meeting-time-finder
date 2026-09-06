@@ -1,0 +1,67 @@
+name: Dependency check
+
+# The site depends on two free third-party APIs with no SLA, and on a handful of
+# static assets that have silently 404'd before (og.png was renamed to og.jpg
+# while the meta tag still pointed at the old name). This runs the checks that
+# would otherwise be a manual quarterly chore and raises an issue if anything
+# breaks, so nobody has to remember to look.
+
+on:
+  schedule:
+    - cron: '0 7 1 * *'       # 07:00 UTC on the 1st of each month
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run dependency checks
+        id: check
+        run: |
+          set +e
+          python tools/check_dependencies.py | tee report.txt
+          echo "status=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Raise an issue if anything failed
+        if: steps.check.outputs.status != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXISTING=$(gh issue list --label dependency-check --state open \
+                       --json number --jq '.[0].number // empty')
+          BODY="A scheduled dependency check failed.
+
+          \`\`\`
+          $(cat report.txt)
+          \`\`\`
+
+          See \`MAINTENANCE.md\` for what each dependency does and how the site
+          degrades when it is unavailable. Search falls back to a local seed list;
+          holiday checks fail visibly, which matters because they are the headline
+          feature.
+
+          Run: \`${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\`"
+
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "$BODY"
+            echo "Commented on existing issue #$EXISTING"
+          else
+            gh label create dependency-check --color D93F0B \
+              --description "Automated external dependency check" 2>/dev/null || true
+            gh issue create --title "Dependency check failed" \
+              --label dependency-check --body "$BODY"
+          fi
+
+      - name: Fail the run so it shows red
+        if: steps.check.outputs.status != '0'
+        run: exit 1

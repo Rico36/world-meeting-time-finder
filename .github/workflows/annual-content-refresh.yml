@@ -1,0 +1,96 @@
+name: Annual content refresh
+
+# The guides name specific clock-change dates for a given year, so they go stale
+# on 1 January. This regenerates them from IANA tzdata and opens a pull request.
+# It deliberately does NOT push straight to main: the generators have produced
+# plausible nonsense before (a Cyprus base offered for "UK"), so the diff gets
+# read by a human before it reaches a live, monetised site.
+
+on:
+  schedule:
+    - cron: '0 6 1 12 *'      # 06:00 UTC on 1 December
+  workflow_dispatch:
+    inputs:
+      year:
+        description: 'Year to generate (default: next calendar year)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Decide which year to generate
+        id: year
+        run: |
+          if [ -n "${{ inputs.year }}" ]; then
+            YEAR="${{ inputs.year }}"
+          else
+            YEAR=$(( $(date -u +%Y) + 1 ))
+          fi
+          echo "year=$YEAR" >> "$GITHUB_OUTPUT"
+          echo "Generating content for $YEAR"
+
+      - name: Regenerate dated guide content
+        run: |
+          python tools/expand_guides.py "${{ steps.year.outputs.year }}"
+          node tools/sync_guide_html.js
+          python tools/bump_assets.py
+
+      - name: Verify the result still parses
+        run: |
+          node --check app.js
+          node --check guides.js
+          test -s guides.js
+
+      - name: Show what changed
+        run: git --no-pager diff --stat
+
+      - name: Open a pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          YEAR: ${{ steps.year.outputs.year }}
+        run: |
+          if git diff --quiet; then
+            echo "No changes - the guides are already current for $YEAR."
+            exit 0
+          fi
+          BRANCH="content-refresh-$YEAR"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add -A
+          git commit -m "Refresh dated guide content for $YEAR
+
+          Regenerated from IANA tzdata by tools/expand_guides.py. Updates the
+          clock-change table in the daylight-saving guide and the transition
+          dates named in the converter guide's prose, then mirrors both into
+          the static HTML and bumps the asset cache-busting version.
+
+          Check the clock-change dates look sane before merging."
+          git push -u origin "$BRANCH" --force
+          gh pr create \
+            --title "Refresh dated guide content for $YEAR" \
+            --body "Automated annual refresh.
+
+          The guides name specific clock-change dates, which go stale on 1 January.
+          This regenerates them for **$YEAR** from IANA tzdata.
+
+          Please skim the diff before merging — confirm the transition dates look
+          right and no city has acquired an odd entry. Merging deploys to
+          findcommonhours.com automatically." \
+            --base main --head "$BRANCH" || echo "PR may already exist for $BRANCH"

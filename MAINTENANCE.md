@@ -9,13 +9,42 @@ ten-minute dependency check, and everything else is event-driven.
 
 ## The calendar
 
-| When | Job | Why it can't be skipped |
+| When | Job | Automated? |
 |---|---|---|
-| **Every December** | Regenerate the 2026 dates in the guides | They are written as literal years and go stale on 1 January |
-| **Quarterly** | Check the two external APIs and the static assets | Both APIs are free, third-party and have no SLA |
-| **Annually** | Regenerate `REGION_CITIES` / `COUNTRY_CITIES` from GeoNames | Populations drift; countries occasionally change DST law |
-| **Annually** | Renew the domain | Expiry takes the whole site down |
-| **Monthly, 5 min** | Search Console + AdSense policy centre | Catches indexing and policy problems early |
+| **Every December** | Regenerate the dated content in the guides | **Yes** — opens a PR you review and merge |
+| **Monthly** | Check the two external APIs and the static assets | **Yes** — raises an issue only if something breaks |
+| **Annually** | Regenerate `REGION_CITIES` / `COUNTRY_CITIES` from GeoNames | No — read the output before shipping |
+| **Annually** | Renew the domain | No |
+| **Monthly, 5 min** | Search Console + AdSense policy centre | No |
+
+## Automation
+
+Two workflows in `.github/workflows/` cover the two scheduled jobs.
+
+**`annual-content-refresh.yml`** runs at 06:00 UTC on 1 December, regenerates
+the guides for the following year, bumps the asset versions, checks the result
+still parses, and opens a pull request. It deliberately does not push to `main`:
+these generators have produced plausible nonsense before, so a human reads the
+diff before it reaches a live, monetised site. Merging deploys automatically.
+
+You can also run it any time from the Actions tab, optionally passing a year.
+
+**`dependency-check.yml`** runs monthly. It confirms the geocoding API still
+returns the fields the ranking depends on — a silent field removal would degrade
+results with no error anywhere — that the holiday API still answers, and that no
+static asset has started 404ing. It is quiet when healthy: it opens an issue only
+on failure, and comments on the existing issue rather than filing duplicates. It
+also reports if holiday coverage ever *appears* for the seven missing countries,
+which would be a cue to drop the hardcoded fallback.
+
+> **Watch for this:** GitHub disables scheduled workflows in repositories with no
+> commit activity for 60 days. This repo can easily go quiet for that long. GitHub
+> emails the owner first, and re-enabling is one click in the Actions tab — but if
+> December passes with no pull request, that is the first thing to check.
+
+Actions may open pull requests on this repo (Settings → Actions → General). The
+default token permission is left at read-only; each workflow requests only the
+scopes it needs.
 
 ---
 
@@ -28,7 +57,7 @@ daylight-saving guide, and sentences like "In 2026 the United States moves on
 value is being accurate about dates.
 
 ```bash
-python tools/expand_guides.py      # regenerates the dated sections from IANA tzdata
+python tools/expand_guides.py 2027   # regenerates the dated sections from IANA tzdata
 node tools/sync_guide_html.js      # mirrors the result into the static HTML
 ```
 
