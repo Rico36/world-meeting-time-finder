@@ -49,7 +49,7 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="styles.css?v=20260906-5">
+  <link rel="stylesheet" href="styles.css?v=20260906-6">
 </head>
 <body>
   <header class="site-header">
@@ -208,8 +208,21 @@
     <span data-i18n="footer">A friendly world meeting time finder.</span>
     <nav aria-label="Footer"><a href="#how-it-works" data-i18n="navHow">How it works</a><a href="#guides" data-i18n="navGuides">Guides</a><a href="#faq" data-i18n="navFaq">FAQ</a><a href="privacy.html" data-i18n="navPrivacy">Privacy</a><a href="https://github.com/Rico36/world-meeting-time-finder/issues/new/choose" rel="noopener" target="_blank" data-i18n="navFeedback">Report a problem</a></nav>
   </footer>
+  <dialog id="feedback-dialog" class="feedback-dialog" data-endpoint="" data-sitekey="" aria-labelledby="feedback-title">
+    <form class="feedback-form" novalidate>
+      <h2 id="feedback-title" data-i18n="fbTitle">Report a problem or share an idea</h2>
+      <label><span data-i18n="fbMessage">What happened, and what did you expect?</span><textarea name="message" rows="4" maxlength="2000" required></textarea></label>
+      <label><span data-i18n="fbCities">Cities you had added (optional)</span><input name="cities" maxlength="300" autocomplete="off"></label>
+      <label><span data-i18n="fbContact">Email, only if you want a reply (optional)</span><input name="contact" type="email" maxlength="200" autocomplete="off"></label>
+      <div class="feedback-honeypot" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <div id="feedback-turnstile"></div>
+      <p class="feedback-status" role="status" aria-live="polite"></p>
+      <p class="feedback-privacy" data-i18n="fbPrivacy">No account needed. Nothing else is collected.</p>
+      <div class="feedback-actions"><button type="button" class="secondary-button" data-feedback-cancel data-i18n="fbCancel">Cancel</button><button type="submit" class="primary-button" data-i18n="fbSend">Send</button></div>
+    </form>
+  </dialog>
 
-  <script src="app.js?v=20260906-5"></script>
+  <script src="app.js?v=20260906-6"></script>
   <!-- Load analytics after the page is usable so it does not delay the initial render. -->
   <script>
     window.addEventListener('load',()=>{const script=document.createElement('script');script.src='https://static.cloudflareinsights.com/beacon.min.js';script.dataset.cfBeacon='{"token":"1fa3e675ae4f4a6ca7406cb3d20594f0"}';document.head.append(script);},{once:true});

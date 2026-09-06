@@ -1,0 +1,20 @@
+name = "findcommonhours-feedback"
+main = "feedback-worker.js"
+compatibility_date = "2026-01-01"
+
+[vars]
+ALLOWED_ORIGIN = "https://findcommonhours.com"
+# A PRIVATE repo. Submissions become issues here, so they never appear publicly.
+FEEDBACK_REPO = "Rico36/findcommonhours-feedback"
+
+# Secrets are NOT stored here. Set them once with:
+#   wrangler secret put TURNSTILE_SECRET
+#   wrangler secret put GITHUB_TOKEN
+#
+# Optional per-IP rate limiting (5 submissions per hour). Create a KV namespace
+# with `wrangler kv namespace create RATE_KV`, then uncomment and paste the id.
+# Without it the Worker still works; Turnstile alone stops nearly all abuse.
+#
+# [[kv_namespaces]]
+# binding = "RATE_KV"
+# id = "PASTE_NAMESPACE_ID_HERE"
