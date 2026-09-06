@@ -313,5 +313,6 @@ that the obvious test queries missed. Before pushing, check these by hand:
 | `Germany` | Berlin, Hamburg, Munich |
 | `Texas` | Houston, San Antonio, **El Paso** (the Mountain-time city) |
 | *(fresh load, no saved cities)* | Your own city appears as the first row within about a second, labelled "Your reference". It may briefly show the zone's representative city (e.g. "New York") before upgrading to your real city (e.g. "Alpharetta") once the geo lookup resolves — that upgrade only happens if it agrees with your browser's zone. If no city appears at all, the browser may report a **legacy zone name** (Chromium says `Asia/Calcutta`, `Europe/Kiev`) — add it to `ZONE_ALIASES` in `app.js` |
+| *(add your detected city plus 2+ others, then reload)* | Your detected city is still the first row after reloading. This broke once already: restoring 3+ saved cities correctly strips the one flagged `detected` before trusting storage, but the two that were left had been silently read as "already have enough" — the re-detection gate must key off "is a detected row present", not a city count |
 
 Then add two cities and confirm the timeline and holiday panel still render.

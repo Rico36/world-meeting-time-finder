@@ -256,7 +256,16 @@ function restoreOrDetectReference(){
       if(Array.isArray(saved)&&saved.length) state.selected=saved.filter(city=>city?.zone&&city?.name&&!city.detected).slice(0,5);
     }catch(error){}
   }
-  if(state.selected.length<2){
+  // Re-detect whenever no detected row is present - NOT merely "fewer than two
+  // cities". With three or more cities saved (the detected one plus two others
+  // the visitor added), the filter above strips the detected one down to two
+  // real cities, which used to read as "already have enough" and silently
+  // skipped detection: the visitor's own city never came back on a return
+  // visit. The one exception is a link that already names two or more cities -
+  // a fully-specified shared link should not be silently modified by adding
+  // whoever happens to be viewing it.
+  const skipDetection=fromUrl&&state.selected.length>=2;
+  if(!skipDetection&&!state.selected.some(city=>city.detected)){
     const detected=detectReferenceCity();
     if(detected){
       state.selected.unshift(detected); state.selected=state.selected.slice(0,5);
