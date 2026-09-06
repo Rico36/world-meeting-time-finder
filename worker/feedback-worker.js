@@ -51,14 +51,14 @@ export default {
     if (contact && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)) return json({ error: 'contact' }, 400, cors);
 
     // 3. honeypot — silently accept so bots think it worked, but file nothing
-    if (typeof body.website === 'string' && body.website.trim() !== '') return json({ ok: true }, 200, cors);
+    if (typeof body.website === 'string' && body.website.trim() !== '') return json({ ok: true }, 200, cors, 'dropped:honeypot');
 
     // 4. timing
-    if (elapsed < MIN_ELAPSED_MS) return json({ ok: true }, 200, cors);
+    if (elapsed < MIN_ELAPSED_MS) return json({ ok: true }, 200, cors, 'dropped:timing');
 
     // 5. link density
     const links = (message.match(/https?:\/\/|www\./gi) || []).length;
-    if (links > 2) return json({ ok: true }, 200, cors);
+    if (links > 2) return json({ ok: true }, 200, cors, 'dropped:links');
 
     // 6. rate limit (optional)
     const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
@@ -75,8 +75,11 @@ export default {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ secret: env.TURNSTILE_SECRET, response: token, remoteip: ip }),
-    }).then(r => r.json()).catch(() => ({ success: false }));
-    if (!verify.success) return json({ error: 'captcha' }, 400, cors);
+    }).then(r => r.json()).catch(() => ({ success: false, 'error-codes': ['siteverify-unreachable'] }));
+    if (!verify.success) {
+      // "invalid-input-secret" = the stored TURNSTILE_SECRET is wrong; "invalid-input-response" = bad/expired token
+      return json({ error: 'captcha' }, 400, cors, 'turnstile:' + ((verify['error-codes'] || []).join(',') || 'unknown'));
+    }
 
     // File the issue
     const title = message.replace(/\s+/g, ' ').slice(0, 80) + (message.length > 80 ? '…' : '');
@@ -100,7 +103,11 @@ export default {
       },
       body: JSON.stringify({ title, body: issueBody, labels: ['user-feedback'] }),
     });
-    if (!gh.ok) return json({ error: 'upstream' }, 502, cors);
+    if (!gh.ok) {
+      // Surface GitHub's own reason (401 bad token, 403 missing Issues permission, 404 wrong repo) - never the token.
+      const detail = await gh.json().then(j => j && j.message).catch(() => '') || '';
+      return json({ error: 'upstream' }, 502, cors, 'github:' + gh.status + (detail ? ':' + detail.slice(0, 80) : ''));
+    }
 
     return json({ ok: true }, 200, cors);
   },
@@ -122,7 +129,9 @@ function corsHeaders(origin, allowed) {
   };
 }
 
-function json(data, status, headers) {
+function json(data, status, headers, note) {
+  // Reason-only log for `wrangler tail`: status and code, never user content.
+  console.log(JSON.stringify({ status, error: data && data.error, note }));
   return new Response(JSON.stringify(data), {
     status,
     headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...headers },
