@@ -224,19 +224,25 @@ major fixed-date holidays in those countries; add a second holiday source and
 merge; or state the coverage limit plainly in the UI rather than showing a bare
 "unavailable".
 
-### Feedback form — setup pending
+### Feedback form — active
 
-The no-login feedback dialog is shipped but inert: `index.html` carries empty
-`data-endpoint` and `data-sitekey` attributes on `#feedback-dialog`, so the
-footer link still falls through to the public GitHub issue chooser. Activating
-it takes about fifteen minutes and is written up step by step in
-`worker/README.md` — a private repo to receive submissions, a fine-grained token
-scoped to that repo's issues, a Turnstile widget, and `npx wrangler deploy`.
+The no-login feedback dialog is live and was verified end to end on
+6 September 2026: a real submission from the site cleared every control,
+including Turnstile, and arrived as issue #1 labelled `user-feedback` in the
+private `Rico36/findcommonhours-feedback` repo. **Check that repo for new
+feedback** — nothing notifies you otherwise unless you turn on issue
+notifications for it on GitHub.
 
-Once live, submissions arrive as issues labelled `user-feedback` in the private
-repo. The Worker's abuse controls and how to tune them are documented in the
-same README. Run `node worker/feedback-worker.test.mjs` after any change to the
-Worker.
+Moving parts: the Worker at `findcommonhours-feedback.ricky-freyre.workers.dev`
+(source and setup in `worker/`), a Turnstile widget for `findcommonhours.com`,
+and a fine-grained GitHub token holding only **Issues: Read and write** on the
+private repo. The one setup mistake made the first time was selecting
+"Repository advisories" instead of "Issues" in the token's permission list —
+they sit close together and the wrong one fails with *"Resource not accessible
+by personal access token"*.
+
+Run `node worker/feedback-worker.test.mjs` after any change to the Worker, and
+`npx wrangler deploy` from `worker/` to ship it.
 
 ### Content volume
 
