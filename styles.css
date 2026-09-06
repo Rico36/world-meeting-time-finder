@@ -88,6 +88,12 @@ h1 { max-width: 640px; margin: 0 auto 10px; font-family: Georgia, "Times New Rom
 .city-suggestion strong { display: block; }
 .city-suggestion span { color: var(--muted); font-size: 12px; text-align: right; }
 .city-suggestions-status { padding: 12px; color: var(--muted); font-size: 13px; }
+.city-suggestion-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.city-suggestion-main span { text-align: left; }
+.city-suggestion-time { display: flex; flex-direction: column; gap: 2px; align-items: flex-end; white-space: nowrap; }
+.city-suggestion-time strong { font-size: 13px; color: var(--text); }
+.city-suggestion-time span { color: var(--muted); font-size: 11px; text-align: right; }
+
 .meeting-settings { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 12px; }
 .meeting-settings label { min-width: 0; }
 .meeting-settings input, .meeting-settings select { width: 100%; }
