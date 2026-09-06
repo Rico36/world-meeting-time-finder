@@ -97,7 +97,7 @@ const guideReference = {
   "en": [
    [
     "The three weeks each year when the gap changes",
-    "North America and Europe do not change their clocks on the same day, so the difference between them shifts twice a year for about three weeks at a time. In 2026 the United States moves on 8 March and 1 November, while the United Kingdom and most of Europe move on 29 March and 25 October. London is normally five hours ahead of New York, but between 8 and 29 March, and again between 25 October and 1 November, it is only four. A recurring call that felt comfortable in February can land an hour early in the middle of March without anyone having touched the invitation."
+    "North America and Europe do not change their clocks on the same day, so the difference between them shifts twice a year for about three weeks at a time. In 2027 the United States moves on 14 March and 7 November, while the United Kingdom and most of Europe move on 28 March and 31 October. London is normally five hours ahead of New York, but between 14 and 28 March, and again between 31 October and 7 November, it is only four. A recurring call that felt comfortable in February can land an hour early in the middle of March without anyone having touched the invitation."
    ],
    [
     "Why time-zone abbreviations are unreliable",
@@ -154,23 +154,23 @@ const guideReference = {
  "dst": {
   "en": [
    [
-    "Clock changes in 2026 for major business hubs",
+    "Clock changes in 2027 for major business hubs",
     [
-     "Los Angeles — clocks change on 8 Mar and 1 Nov.",
-     "New York — clocks change on 8 Mar and 1 Nov.",
-     "Mexico City — no clock change at any point in 2026.",
-     "São Paulo — no clock change at any point in 2026.",
-     "Santiago — clocks change on 5 Apr and 6 Sep.",
-     "London — clocks change on 29 Mar and 25 Oct.",
-     "Berlin — clocks change on 29 Mar and 25 Oct.",
-     "Cairo — clocks change on 24 Apr and 30 Oct.",
-     "Johannesburg — no clock change at any point in 2026.",
-     "Dubai — no clock change at any point in 2026.",
-     "Mumbai — no clock change at any point in 2026.",
-     "Singapore — no clock change at any point in 2026.",
-     "Tokyo — no clock change at any point in 2026.",
-     "Sydney — clocks change on 5 Apr and 4 Oct.",
-     "Auckland — clocks change on 5 Apr and 27 Sep."
+     "Los Angeles — clocks change on 14 Mar and 7 Nov.",
+     "New York — clocks change on 14 Mar and 7 Nov.",
+     "Mexico City — no clock change at any point in 2027.",
+     "São Paulo — no clock change at any point in 2027.",
+     "Santiago — clocks change on 4 Apr and 5 Sep.",
+     "London — clocks change on 28 Mar and 31 Oct.",
+     "Berlin — clocks change on 28 Mar and 31 Oct.",
+     "Cairo — clocks change on 30 Apr and 29 Oct.",
+     "Johannesburg — no clock change at any point in 2027.",
+     "Dubai — no clock change at any point in 2027.",
+     "Mumbai — no clock change at any point in 2027.",
+     "Singapore — no clock change at any point in 2027.",
+     "Tokyo — no clock change at any point in 2027.",
+     "Sydney — clocks change on 4 Apr and 3 Oct.",
+     "Auckland — clocks change on 4 Apr and 26 Sep."
     ]
    ],
    [
