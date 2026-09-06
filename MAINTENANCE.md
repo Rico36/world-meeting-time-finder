@@ -15,6 +15,7 @@ ten-minute dependency check, and everything else is event-driven.
 | **Monthly** | Check the two external APIs and the static assets | **Yes** — raises an issue only if something breaks |
 | **Annually** | Regenerate `REGION_CITIES` / `COUNTRY_CITIES` from GeoNames | No — read the output before shipping |
 | **Annually** | Renew the domain | No |
+| **Annually** | Rotate the feedback Worker's GitHub token (fine-grained tokens expire) | No — `wrangler secret put GITHUB_TOKEN` |
 | **Monthly, 5 min** | Search Console + AdSense policy centre | No |
 
 ## Automation
@@ -120,6 +121,7 @@ The site has exactly two, both free and neither guaranteed:
 |---|---|---|
 | `geocoding-api.open-meteo.com` | City search | Search degrades to the ~60-city local seed list in `app.js`. Degrades gracefully; already handled |
 | `nagerholidays.com/api/v4` | Holiday checks | Cities show "Holiday status unavailable" — this is the headline feature, so it fails visibly |
+| Cloudflare Worker + Turnstile (`worker/`) | The "Report a problem" form | The form shows its error message and points people at the GitHub link. Nothing else on the site is affected. Only active once keys are configured — see `worker/README.md` |
 
 Check both still return the expected shape:
 
@@ -198,6 +200,20 @@ Options, roughly in order of effort: extend the hardcoded fallback to cover the
 major fixed-date holidays in those countries; add a second holiday source and
 merge; or state the coverage limit plainly in the UI rather than showing a bare
 "unavailable".
+
+### Feedback form — setup pending
+
+The no-login feedback dialog is shipped but inert: `index.html` carries empty
+`data-endpoint` and `data-sitekey` attributes on `#feedback-dialog`, so the
+footer link still falls through to the public GitHub issue chooser. Activating
+it takes about fifteen minutes and is written up step by step in
+`worker/README.md` — a private repo to receive submissions, a fine-grained token
+scoped to that repo's issues, a Turnstile widget, and `wrangler deploy`.
+
+Once live, submissions arrive as issues labelled `user-feedback` in the private
+repo. The Worker's abuse controls and how to tune them are documented in the
+same README. Run `node worker/feedback-worker.test.mjs` after any change to the
+Worker.
 
 ### Content volume
 
