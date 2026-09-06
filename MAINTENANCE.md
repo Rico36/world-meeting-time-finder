@@ -124,6 +124,7 @@ value is being accurate about dates.
 ```bash
 python tools/expand_guides.py 2027   # regenerates the dated sections from IANA tzdata
 node tools/sync_guide_html.js      # mirrors the result into the static HTML
+python tools/gen_holidays.py 2027 2028   # holiday fallback for the seven uncovered countries
 ```
 
 Then bump the `?v=` query string on `styles.css`, `app.js` and `guides.js` across
@@ -207,22 +208,39 @@ edges.
 
 ## 5. Known open issues
 
-### Holiday coverage gaps (product issue, not a bug)
+### Holiday coverage for countries the live API skips
 
-`nagerholidays.com` returns **no data at all** for seven significant markets.
-Verified 6 September 2026:
+`nagerholidays.com` returns nothing for **India, UAE, Saudi Arabia, Pakistan,
+Thailand, Malaysia and Israel** — not by accident: their holidays are announced
+rather than fixed (moon sighting, cabinet decrees, lunar calendars), and no free
+API attempts them. `date.nager.at` covers 204 countries and none of these.
 
-> India, UAE, Pakistan, Saudi Arabia, Thailand, Malaysia, Israel
+These are now served from **`holidays-fallback.json`**, generated at build time
+by `tools/gen_holidays.py` from the `python-holidays` library, which models the
+lunar and Islamic calendars. `app.js` reads it only when the live API has nothing
+for a country, and only for the years the file covers — outside those it still
+shows "unavailable" rather than guessing. Entries use the live API's own shape,
+so the matching code is shared.
 
-These fail visibly as "Holiday status unavailable", and they are precisely the
-places where holidays surprise Western schedulers most — Diwali, Eid, and the
-Sunday-to-Thursday working week. `app.js` already carries a hardcoded fallback
-for three fixed Indian national holidays; the other six have nothing.
+**Estimated dates are shown as such.** The library marks moon-sighting holidays
+(Eid, Arafah, Islamic New Year, Prophet's Birthday, Ashura) as estimates, and the
+UI renders them with *"expected date — the final day is set by moon sighting"*.
+Saudi Arabia carries no estimates because it publishes its calendar in advance.
+Don't remove that hedge: being honest about what can't be known ahead is the
+feature.
 
-Options, roughly in order of effort: extend the hardcoded fallback to cover the
-major fixed-date holidays in those countries; add a second holiday source and
-merge; or state the coverage limit plainly in the UI rather than showing a bare
-"unavailable".
+Regeneration is part of the December workflow (two years ahead, so January is
+never blind). To do it by hand:
+
+```bash
+pip install holidays
+python tools/gen_holidays.py 2027 2028
+```
+
+To add a country, put its ISO code in `COUNTRIES` in the generator. To retire one
+because the live API gained it, remove it there — the monthly dependency check
+reports when that happens. What the file still can't know: same-week substitute
+days and the ±1 day when a moon sighting differs from the estimate.
 
 ### Feedback form — active
 

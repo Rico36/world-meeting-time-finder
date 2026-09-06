@@ -24,11 +24,11 @@ const pageCopy = {
 };
 
 const positioningCopy = {
-  en:{eyebrow:'Holiday-aware international meeting planner',headline:'Find a meeting time that works—and isn’t a holiday there.',subhead:'Compare local working hours and public holidays across countries before scheduling your international meeting.',guideDstTitle:'International public holidays and meeting planning',guideDstCopy:'Check holidays, date changes and daylight-saving shifts before you schedule across countries.',holidayCheck:'Holiday check by location',workingDay:'Working day',checkingHolidays:'Checking local holidays…',holidayUnavailable:'Holiday status unavailable'},
-  es:{eyebrow:'Planificador internacional con festivos',headline:'Encuentra una hora que funcione y que allí no sea festivo.',subhead:'Compara horarios laborales y festivos entre países antes de programar tu reunión internacional.',guideDstTitle:'Festivos internacionales y planificación de reuniones',guideDstCopy:'Comprueba festivos, cambios de fecha y horario antes de programar entre países.',holidayCheck:'Comprobación de festivos por ubicación',workingDay:'Día laborable',checkingHolidays:'Comprobando festivos locales…',holidayUnavailable:'Estado de festivo no disponible'},
-  fr:{eyebrow:'Planificateur international avec jours fériés',headline:'Trouvez une heure qui convient sans tomber sur un jour férié.',subhead:'Comparez les heures de travail et jours fériés entre pays avant de planifier votre réunion internationale.',guideDstTitle:'Jours fériés internationaux et planification',guideDstCopy:'Vérifiez jours fériés, changements de date et d’heure avant de planifier entre pays.',holidayCheck:'Vérification des jours fériés par lieu',workingDay:'Jour ouvré',checkingHolidays:'Vérification des jours fériés…',holidayUnavailable:'Statut du jour férié indisponible'},
-  de:{eyebrow:'Internationaler Planer mit Feiertagsprüfung',headline:'Finde eine Meetingzeit, die passt—und dort kein Feiertag ist.',subhead:'Vergleiche Arbeitszeiten und Feiertage verschiedener Länder, bevor du dein internationales Meeting planst.',guideDstTitle:'Internationale Feiertage und Meetingplanung',guideDstCopy:'Prüfe Feiertage, Datumswechsel und Zeitumstellungen vor der länderübergreifenden Planung.',holidayCheck:'Feiertagsprüfung nach Ort',workingDay:'Arbeitstag',checkingHolidays:'Lokale Feiertage werden geprüft…',holidayUnavailable:'Feiertagsstatus nicht verfügbar'},
-  pt:{eyebrow:'Planejador internacional com feriados',headline:'Encontre um horário que funcione e não seja feriado por lá.',subhead:'Compare horários de trabalho e feriados entre países antes de marcar sua reunião internacional.',guideDstTitle:'Feriados internacionais e planejamento de reuniões',guideDstCopy:'Confira feriados, mudanças de data e de horário antes de agendar entre países.',holidayCheck:'Verificação de feriados por local',workingDay:'Dia útil',checkingHolidays:'Verificando feriados locais…',holidayUnavailable:'Status de feriado indisponível'}
+  en:{eyebrow:'Holiday-aware international meeting planner',headline:'Find a meeting time that works—and isn’t a holiday there.',subhead:'Compare local working hours and public holidays across countries before scheduling your international meeting.',guideDstTitle:'International public holidays and meeting planning',guideDstCopy:'Check holidays, date changes and daylight-saving shifts before you schedule across countries.',holidayCheck:'Holiday check by location',workingDay:'Working day',checkingHolidays:'Checking local holidays…',holidayUnavailable:'Holiday status unavailable',holidayEstimated:'expected date — the final day is set by moon sighting'},
+  es:{eyebrow:'Planificador internacional con festivos',headline:'Encuentra una hora que funcione y que allí no sea festivo.',subhead:'Compara horarios laborales y festivos entre países antes de programar tu reunión internacional.',guideDstTitle:'Festivos internacionales y planificación de reuniones',guideDstCopy:'Comprueba festivos, cambios de fecha y horario antes de programar entre países.',holidayCheck:'Comprobación de festivos por ubicación',workingDay:'Día laborable',checkingHolidays:'Comprobando festivos locales…',holidayUnavailable:'Estado de festivo no disponible',holidayEstimated:'fecha prevista; el día definitivo depende del avistamiento de la luna'},
+  fr:{eyebrow:'Planificateur international avec jours fériés',headline:'Trouvez une heure qui convient sans tomber sur un jour férié.',subhead:'Comparez les heures de travail et jours fériés entre pays avant de planifier votre réunion internationale.',guideDstTitle:'Jours fériés internationaux et planification',guideDstCopy:'Vérifiez jours fériés, changements de date et d’heure avant de planifier entre pays.',holidayCheck:'Vérification des jours fériés par lieu',workingDay:'Jour ouvré',checkingHolidays:'Vérification des jours fériés…',holidayUnavailable:'Statut du jour férié indisponible',holidayEstimated:'date prévue ; le jour définitif dépend de l’observation de la lune'},
+  de:{eyebrow:'Internationaler Planer mit Feiertagsprüfung',headline:'Finde eine Meetingzeit, die passt—und dort kein Feiertag ist.',subhead:'Vergleiche Arbeitszeiten und Feiertage verschiedener Länder, bevor du dein internationales Meeting planst.',guideDstTitle:'Internationale Feiertage und Meetingplanung',guideDstCopy:'Prüfe Feiertage, Datumswechsel und Zeitumstellungen vor der länderübergreifenden Planung.',holidayCheck:'Feiertagsprüfung nach Ort',workingDay:'Arbeitstag',checkingHolidays:'Lokale Feiertage werden geprüft…',holidayUnavailable:'Feiertagsstatus nicht verfügbar',holidayEstimated:'voraussichtliches Datum; der endgültige Tag wird durch Mondsichtung festgelegt'},
+  pt:{eyebrow:'Planejador internacional com feriados',headline:'Encontre um horário que funcione e não seja feriado por lá.',subhead:'Compare horários de trabalho e feriados entre países antes de marcar sua reunião internacional.',guideDstTitle:'Feriados internacionais e planejamento de reuniões',guideDstCopy:'Confira feriados, mudanças de data e de horário antes de agendar entre países.',holidayCheck:'Verificação de feriados por local',workingDay:'Dia útil',checkingHolidays:'Verificando feriados locais…',holidayUnavailable:'Status de feriado indisponível',holidayEstimated:'data prevista; o dia definitivo depende da observação da lua'}
 };
 
 const qualityCopy = {
@@ -207,17 +207,37 @@ function slotIsPerfect(){
   return state.selected.every(city=>Array.from({length:needed},(_,part)=>isWorking(slotDate(state.slot+part),city,30)).every(Boolean));
 }
 
+let fallbackHolidaysPromise=null;
+function loadFallbackHolidays(){
+  // Static list generated by tools/gen_holidays.py for countries the live API does not cover.
+  // no-cache = revalidate against GitHub Pages' ETag, so a regenerated file is picked up promptly.
+  if(!fallbackHolidaysPromise){
+    fallbackHolidaysPromise=fetch('holidays-fallback.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null);
+  }
+  return fallbackHolidaysPromise;
+}
+
 async function holidayFor(city,date){
   if(!city.countryCode) return false;
   const localDate=isoLocal(date,city.zone); const year=localDate.slice(0,4); const key=`${city.countryCode}-${year}`;
   const fixedHoliday=builtInNationalHolidays[city.countryCode]?.[localDate.slice(5)];
   if(fixedHoliday) return {name:fixedHoliday,nationalHoliday:true,builtIn:true};
   if(!state.holidays.has(key)){
+    let list=false;
     try{
       const response=await fetch(`https://nagerholidays.com/api/v4/Holidays/${city.countryCode}/${year}`);
       if(!response.ok) throw new Error('Holiday data unavailable');
-      state.holidays.set(key,await response.json());
-    }catch{ state.holidays.set(key,false); }
+      const data=await response.json();
+      if(Array.isArray(data)&&data.length) list=data;
+    }catch{ list=false; }
+    if(list===false){
+      // The live API has nothing for countries whose holidays are announced rather than fixed
+      // (moon sighting, decrees, lunar calendars). Use the generated list, only for years it covers.
+      const fallback=await loadFallbackHolidays();
+      const rows=fallback&&fallback.countries&&fallback.countries[city.countryCode];
+      if(rows&&Array.isArray(fallback.years)&&fallback.years.includes(Number(year))) list=rows.filter(h=>h.date.slice(0,4)===year);
+    }
+    state.holidays.set(key,list);
   }
   const holidays=state.holidays.get(key);
   if(holidays===false) return false;
@@ -251,7 +271,7 @@ async function checkHolidays(start){
   for(const city of state.selected){
     const parts=localParts(start,city.zone);
     const holiday=await holidayFor(city,start);
-    if(holiday) notices.push({kind:'warning',icon:'⚑',text:`${city.name}: ${t('holiday')} — ${holiday.name}`});
+    if(holiday) notices.push({kind:'warning',icon:'⚑',text:`${city.name}: ${t('holiday')} — ${holiday.name}${holiday.estimated?` (${t('holidayEstimated')})`:''}`});
     else if(['Sat','Sun'].includes(parts.weekday)) notices.push({kind:'warning',icon:'●',text:`${city.name}: ${t('weekend')}`});
     else if(holiday===false) notices.push({kind:'muted',icon:'○',text:`${city.name}: ${t('holidayUnavailable')}`});
     else notices.push({kind:'ok',icon:'✓',text:`${city.name}: ${t('workingDay')}`});

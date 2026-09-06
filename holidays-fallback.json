@@ -1,0 +1,1599 @@
+{
+ "generated": "2026-09-06",
+ "source": "python-holidays 0.103",
+ "years": [
+  2026,
+  2027
+ ],
+ "countries": {
+  "IN": [
+   {
+    "date": "2026-01-26",
+    "name": "Republic Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-04",
+    "name": "Holi",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-21",
+    "name": "Eid al-Fitr",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-26",
+    "name": "Ram Navami",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-31",
+    "name": "Mahavira's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-04-03",
+    "name": "Good Friday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-04-14",
+    "name": "Dr. B. R. Ambedkar's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-01",
+    "name": "Buddha Purnima",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-27",
+    "name": "Eid al-Adha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-06-26",
+    "name": "Ashura",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-08-15",
+    "name": "Independence Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-08-26",
+    "name": "Prophet's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-09-04",
+    "name": "Janmashtami (Vaishnava)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-10-02",
+    "name": "Mahatma Gandhi's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-10-20",
+    "name": "Dussehra",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-11-08",
+    "name": "Diwali (Deepavali)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-11-24",
+    "name": "Guru Nanak's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-12-25",
+    "name": "Christmas",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-01-26",
+    "name": "Republic Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-03-06",
+    "name": "Maha Shivaratri",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-03-10",
+    "name": "Eid al-Fitr",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-03-22",
+    "name": "Holi",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-03-26",
+    "name": "Good Friday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-04-14",
+    "name": "Dr. B. R. Ambedkar's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-04-15",
+    "name": "Ram Navami",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-04-18",
+    "name": "Mahavira's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-05-17",
+    "name": "Eid al-Adha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-05-20",
+    "name": "Buddha Purnima",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-06-16",
+    "name": "Ashura",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-08-15",
+    "name": "Independence Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-08-15",
+    "name": "Prophet's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-08-25",
+    "name": "Janmashtami (Vaishnava)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-10-02",
+    "name": "Mahatma Gandhi's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-10-09",
+    "name": "Dussehra",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-10-29",
+    "name": "Diwali (Deepavali)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-11-14",
+    "name": "Guru Nanak's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-12-25",
+    "name": "Christmas",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   }
+  ],
+  "AE": [
+   {
+    "date": "2026-01-01",
+    "name": "New Year's Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-20",
+    "name": "Eid al-Fitr",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-03-21",
+    "name": "Eid al-Fitr Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-03-22",
+    "name": "Eid al-Fitr Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-05-26",
+    "name": "Day of Arafah",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-05-27",
+    "name": "Eid al-Adha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-05-28",
+    "name": "Eid al-Adha Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-05-29",
+    "name": "Eid al-Adha Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-06-16",
+    "name": "Islamic New Year",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-08-25",
+    "name": "Prophet's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-12-02",
+    "name": "National Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-12-03",
+    "name": "National Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-01-01",
+    "name": "New Year's Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-03-09",
+    "name": "Eid al-Fitr",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-03-10",
+    "name": "Eid al-Fitr Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-03-11",
+    "name": "Eid al-Fitr Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-05-15",
+    "name": "Day of Arafah",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-05-16",
+    "name": "Eid al-Adha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-05-17",
+    "name": "Eid al-Adha Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-05-18",
+    "name": "Eid al-Adha Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-06-06",
+    "name": "Islamic New Year",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-08-14",
+    "name": "Prophet's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-12-02",
+    "name": "National Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-12-03",
+    "name": "National Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   }
+  ],
+  "SA": [
+   {
+    "date": "2026-02-22",
+    "name": "Founding Day Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-19",
+    "name": "Eid al-Fitr Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-20",
+    "name": "Eid al-Fitr Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-21",
+    "name": "Eid al-Fitr Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-22",
+    "name": "Eid al-Fitr Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-23",
+    "name": "Eid al-Fitr Holiday (observed)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-24",
+    "name": "Eid al-Fitr Holiday (observed)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-26",
+    "name": "Day of Arafah",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-27",
+    "name": "Eid al-Adha Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-28",
+    "name": "Eid al-Adha Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-29",
+    "name": "Eid al-Adha Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-31",
+    "name": "Eid al-Adha Holiday (observed)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-09-23",
+    "name": "National Day Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-02-22",
+    "name": "Founding Day Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-03-09",
+    "name": "Eid al-Fitr Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-03-10",
+    "name": "Eid al-Fitr Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-03-11",
+    "name": "Eid al-Fitr Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-03-12",
+    "name": "Eid al-Fitr Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-03-14",
+    "name": "Eid al-Fitr Holiday (observed)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-05-15",
+    "name": "Day of Arafah",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-05-16",
+    "name": "Eid al-Adha Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-05-17",
+    "name": "Eid al-Adha Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-05-18",
+    "name": "Eid al-Adha Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-05-19",
+    "name": "Eid al-Adha Holiday (observed)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-09-23",
+    "name": "National Day Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   }
+  ],
+  "PK": [
+   {
+    "date": "2026-02-05",
+    "name": "Kashmir Solidarity Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-20",
+    "name": "Eid al-Fitr",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-03-21",
+    "name": "Eid al-Fitr",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-03-22",
+    "name": "Eid al-Fitr",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-03-23",
+    "name": "Pakistan Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-01",
+    "name": "Labor Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-27",
+    "name": "Eid al-Adha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-05-28",
+    "name": "Eid al-Adha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-05-28",
+    "name": "Youm-e-Takbeer",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-29",
+    "name": "Eid al-Adha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-06-24",
+    "name": "Ashura",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-06-25",
+    "name": "Ashura",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-08-14",
+    "name": "Independence Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-08-25",
+    "name": "Prophet's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2026-11-09",
+    "name": "Iqbal Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-12-25",
+    "name": "Quaid-e-Azam Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-02-05",
+    "name": "Kashmir Solidarity Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-03-09",
+    "name": "Eid al-Fitr",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-03-10",
+    "name": "Eid al-Fitr",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-03-11",
+    "name": "Eid al-Fitr",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-03-23",
+    "name": "Pakistan Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-05-01",
+    "name": "Labor Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-05-16",
+    "name": "Eid al-Adha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-05-17",
+    "name": "Eid al-Adha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-05-18",
+    "name": "Eid al-Adha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-05-28",
+    "name": "Youm-e-Takbeer",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-06-14",
+    "name": "Ashura",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-06-15",
+    "name": "Ashura",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-08-14",
+    "name": "Independence Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-08-14",
+    "name": "Prophet's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-11-09",
+    "name": "Iqbal Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-12-25",
+    "name": "Quaid-e-Azam Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   }
+  ],
+  "TH": [
+   {
+    "date": "2026-01-01",
+    "name": "New Year's Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-01-02",
+    "name": "Bridge Public Holiday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-01-10",
+    "name": "National Children's Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-03",
+    "name": "Makha Bucha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-04-06",
+    "name": "Chakri Memorial Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-04-13",
+    "name": "Songkran Festival",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-04-14",
+    "name": "Songkran Festival",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-04-15",
+    "name": "Songkran Festival",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-01",
+    "name": "National Labor Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-04",
+    "name": "Coronation Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-31",
+    "name": "Visakha Bucha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-06-01",
+    "name": "Visakha Bucha (in lieu)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-06-03",
+    "name": "HM Queen Suthida's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-07-28",
+    "name": "HM King Maha Vajiralongkorn's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-07-29",
+    "name": "Asarnha Bucha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-07-30",
+    "name": "Buddhist Lent Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-08-12",
+    "name": "HM Queen Sirikit The Queen Mother's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-08-12",
+    "name": "National Mother's Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-10-13",
+    "name": "HM King Bhumibol Adulyadej Memorial Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-10-23",
+    "name": "HM King Chulalongkorn Memorial Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-12-05",
+    "name": "HM King Bhumibol Adulyadej the Great's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-12-05",
+    "name": "National Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-12-05",
+    "name": "National Father's Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-12-07",
+    "name": "HM King Bhumibol Adulyadej the Great's Birthday (in lieu)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-12-07",
+    "name": "National Day (in lieu)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-12-07",
+    "name": "National Father's Day (in lieu)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-12-10",
+    "name": "Constitution Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-12-31",
+    "name": "New Year's Eve",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-01-01",
+    "name": "New Year's Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-01-09",
+    "name": "National Children's Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-02-21",
+    "name": "Makha Bucha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-02-22",
+    "name": "Makha Bucha (in lieu)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-04-06",
+    "name": "Chakri Memorial Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-04-13",
+    "name": "Songkran Festival",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-04-14",
+    "name": "Songkran Festival",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-04-15",
+    "name": "Songkran Festival",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-05-01",
+    "name": "National Labor Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-05-03",
+    "name": "National Labor Day (in lieu)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-05-04",
+    "name": "Coronation Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-05-20",
+    "name": "Visakha Bucha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-06-03",
+    "name": "HM Queen Suthida's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-07-18",
+    "name": "Asarnha Bucha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-07-19",
+    "name": "Buddhist Lent Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-07-20",
+    "name": "Asarnha Bucha (in lieu)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-07-28",
+    "name": "HM King Maha Vajiralongkorn's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-08-12",
+    "name": "HM Queen Sirikit The Queen Mother's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-08-12",
+    "name": "National Mother's Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-10-13",
+    "name": "HM King Bhumibol Adulyadej Memorial Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-10-23",
+    "name": "HM King Chulalongkorn Memorial Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-10-25",
+    "name": "HM King Chulalongkorn Memorial Day (in lieu)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-12-05",
+    "name": "HM King Bhumibol Adulyadej the Great's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-12-05",
+    "name": "National Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-12-05",
+    "name": "National Father's Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-12-06",
+    "name": "HM King Bhumibol Adulyadej the Great's Birthday (in lieu)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-12-06",
+    "name": "National Day (in lieu)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-12-06",
+    "name": "National Father's Day (in lieu)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-12-10",
+    "name": "Constitution Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-12-31",
+    "name": "New Year's Eve",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   }
+  ],
+  "MY": [
+   {
+    "date": "2026-02-17",
+    "name": "Chinese New Year",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-02-18",
+    "name": "Chinese New Year (Second Day)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-20",
+    "name": "Eid al-Fitr (additional holiday)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-21",
+    "name": "Eid al-Fitr",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-22",
+    "name": "Eid al-Fitr (Second Day)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-03-23",
+    "name": "Eid al-Fitr (Second Day) (observed)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-01",
+    "name": "Labor Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-27",
+    "name": "Eid al-Adha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-31",
+    "name": "Vesak Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-06-01",
+    "name": "Birthday of HM Yang di-Pertuan Agong",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-06-02",
+    "name": "Vesak Day (observed)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-06-17",
+    "name": "Islamic New Year",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-08-25",
+    "name": "Prophet Muhammad's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-08-31",
+    "name": "National Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-09-16",
+    "name": "Malaysia Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-12-25",
+    "name": "Christmas Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-02-06",
+    "name": "Chinese New Year",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-02-07",
+    "name": "Chinese New Year (Second Day)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-02-08",
+    "name": "Chinese New Year (Second Day) (observed, estimated)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-03-09",
+    "name": "Eid al-Fitr",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-03-10",
+    "name": "Eid al-Fitr (Second Day)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-05-01",
+    "name": "Labor Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-05-16",
+    "name": "Eid al-Adha",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-05-17",
+    "name": "Eid al-Adha (observed, estimated)",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-05-20",
+    "name": "Vesak Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-06-06",
+    "name": "Islamic New Year",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-06-07",
+    "name": "Birthday of HM Yang di-Pertuan Agong",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-08-14",
+    "name": "Prophet Muhammad's Birthday",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": true
+   },
+   {
+    "date": "2027-08-31",
+    "name": "National Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-09-16",
+    "name": "Malaysia Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-12-25",
+    "name": "Christmas Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   }
+  ],
+  "IL": [
+   {
+    "date": "2026-04-02",
+    "name": "Pesach",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-04-08",
+    "name": "Seventh day of Pesach",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-04-22",
+    "name": "Independence Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-05-22",
+    "name": "Shavuot",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-09-12",
+    "name": "Rosh Hashanah",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-09-13",
+    "name": "Rosh Hashanah",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-09-21",
+    "name": "Yom Kippur",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-09-26",
+    "name": "Sukkot",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2026-10-03",
+    "name": "Simchat Torah / Shemini Atzeret",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-04-22",
+    "name": "Pesach",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-04-28",
+    "name": "Seventh day of Pesach",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-05-12",
+    "name": "Independence Day",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-06-11",
+    "name": "Shavuot",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-10-02",
+    "name": "Rosh Hashanah",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-10-03",
+    "name": "Rosh Hashanah",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-10-11",
+    "name": "Yom Kippur",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-10-16",
+    "name": "Sukkot",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   },
+   {
+    "date": "2027-10-23",
+    "name": "Simchat Torah / Shemini Atzeret",
+    "nationalHoliday": true,
+    "subdivisionCodes": null,
+    "estimated": false
+   }
+  ]
+ }
+}

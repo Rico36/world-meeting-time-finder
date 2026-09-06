@@ -45,10 +45,14 @@ jobs:
           echo "year=$YEAR" >> "$GITHUB_OUTPUT"
           echo "Generating content for $YEAR"
 
-      - name: Regenerate dated guide content
+      - name: Regenerate dated guide content and the holiday fallback
         run: |
+          pip install --quiet holidays
           python tools/expand_guides.py "${{ steps.year.outputs.year }}"
           node tools/sync_guide_html.js
+          # holidays-fallback.json covers countries the live holiday API does not;
+          # generate the target year and the one after so January is never blind
+          python tools/gen_holidays.py "${{ steps.year.outputs.year }}" "$(( ${{ steps.year.outputs.year }} + 1 ))"
           python tools/bump_assets.py
 
       - name: Verify the result still parses
