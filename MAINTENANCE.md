@@ -287,11 +287,50 @@ handles by design — see the dependency table above. Redeploy with
 Run `node worker/feedback-worker.test.mjs` after any change to the Worker, and
 `npx wrangler deploy` from `worker/` to ship it.
 
-### Content volume
+### Content volume — city-pair pages
 
-Five pages, roughly 3,500 words. Guides sit at 870–980 words each after the
-September 2026 expansion. Page *count* is now the weaker axis than words per
-page.
+AdSense returned **"Needs attention: Low value content"** on 11 September 2026,
+with the site still at 5 pages / ~3,700 words. The guides were substantive by
+then, so page *count* was the binding constraint: Google weighs the size of the
+indexable site, and a single interactive tool plus a few articles reads as small
+regardless of how good each article is.
+
+`tools/gen_city_pairs.py` now generates **232 pages** under `time/` — 210 pairs
+of 21 major business hubs, 21 per-city hubs, and an index — totalling roughly
+91,000 words. Every page is computed, not spun: the real offset and every date
+range where the gap shifts across the year, a 9am–5pm overlap window (or an
+honest "no shared working hours, here is the least-bad compromise"), both
+cities' clock-change dates, both countries' next public holidays, and a link
+into the planner pre-filled through the `?city=` URL scheme.
+
+```bash
+pip install holidays
+python tools/gen_city_pairs.py     # rewrites time/ and sitemap.xml
+```
+
+**Regenerate every few months.** The "upcoming public holidays" block is
+relative to the generation date and decays as those dates pass; the clock-change
+dates roll over each year. The generator clears `time/*.html` first, so
+re-running is safe and removes orphans.
+
+Two traps, both hit on the first run:
+
+- **One canonical slug.** Pair filenames and every internal link must come from
+  the same `pair_slug()`. Deriving the filename from the city-list order and the
+  links from an alphabetical sort produced **934 broken links** across 106
+  targets. Sort by *slug*, not name — "São Paulo" sorts after "Seoul" by name
+  but before it as `sao-paulo`.
+- **No live claims on static pages.** The FAQ originally said "X o'clock in
+  Tokyo *right now*", which is wrong for most of the year on a page generated
+  once. It now states the majority-of-year offset and points to the planner.
+
+Deliberately not an exhaustive cross-product of every city in the app's data —
+that yields obscure, low-intent pairs that read as doorway pages, which is
+Google's separate and worse "scaled content abuse" policy. All 21 cities are
+independently defensible hubs.
+
+If more pages are needed later, add cities to `CITIES` in the generator; the
+pair count grows as n(n−1)/2, so 25 cities would give 300 pairs.
 
 ### Multilingual SEO
 
