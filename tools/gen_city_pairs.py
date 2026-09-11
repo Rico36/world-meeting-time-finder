@@ -419,13 +419,36 @@ def render_city_hub(city, all_cities):
         else:
             gap_txt = f"{gap_h:g} h {'ahead' if typical > 0 else 'behind'}"
         rows.append(f'<li><a href="{pair}">{esc(name)} and {esc(other[0])}</a> — {esc(other[0])} is {gap_txt}</li>')
+
+    # A hub that is only a link list reads as thin. These facts are already
+    # computed for the pair pages, so each hub carries its own city's detail too.
+    jan = offset_minutes(zone, datetime(TODAY.year, 1, 1, 12))
+    jul = offset_minutes(zone, datetime(TODAY.year, 7, 1, 12))
+    if jan == jul:
+        zone_para = (f"{name} stays on {fmt_offset(jan)} all year. It does not observe daylight "
+                      f"saving, so its difference from any other fixed-offset city never moves — "
+                      f"and its difference from cities that do change clocks shifts twice a year "
+                      f"without {name} doing anything.")
+    else:
+        zone_para = (f"{name} moves between {fmt_offset(min(jan, jul))} and {fmt_offset(max(jan, jul))} "
+                      f"across the year. {dst_line(name, zone)} Any city pairing below that involves a "
+                      f"fixed-offset city will shift by an hour on those dates.")
+    hol = upcoming_holidays(cc, limit=5)
+    hol_html = ("".join(f"<li>{fmt_date(d)} — {esc(n)}</li>" for d, n in hol)
+                 if hol else f"<li>No upcoming public holidays found for {country}.</li>")
+
     body = (
         f'{head(title, description, "time/" + slug, 1)}\n<body>\n  {header(1)}\n'
         f'  <main class="content-page">\n'
         f'    <p class="eyebrow">Time zone meeting planner</p>\n'
         f'    <h1>Meeting times between {esc(name)} and other major cities</h1>\n'
-        f'    <p class="lede">{esc(description)} {esc(dst_line(name, zone))}</p>\n'
+        f'    <p class="lede">{esc(description)}</p>\n'
         f'    <a class="primary-button" href="{SITE}/">Open the free planner</a>\n'
+        f'    <section><h2>The {esc(name)} time zone</h2><p>{zone_para}</p></section>\n'
+        f'    <section><h2>Upcoming public holidays in {esc(country)}</h2>'
+        f'<ul class="guide-points">{hol_html}</ul>'
+        f'<p>Country-level public calendars only — regional observances and company shutdowns '
+        f'are not included.</p></section>\n'
         f'    <section><h2>{esc(name)} paired with</h2><ul class="guide-points">{"".join(rows)}</ul></section>\n'
         f'    <nav class="guide-nav" aria-label="All city pairs"><h2>More</h2>'
         f'<ul><li><a href="./">All city pairs</a></li>'
