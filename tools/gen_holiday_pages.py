@@ -191,6 +191,97 @@ def render_stub(pretty, slug, parent_pretty, parent_slug):
         f'</body>\n</html>\n'
     )
 
+# What a country calls its first-level divisions. Getting this right is most of
+# what makes the section read as knowledge rather than as generated filler -
+# calling Swiss cantons "regions" is the kind of detail a reader from there
+# notices immediately. Anything not listed falls back to "regions".
+REGION_NOUN = {
+    "CH": "cantons", "CA": "provinces and territories", "US": "states",
+    "AU": "states and territories", "ES": "autonomous communities",
+    "DE": "federal states", "GB": "nations", "IT": "provinces",
+    "IN": "states and union territories", "BR": "states", "AR": "provinces",
+    "MY": "states", "PT": "districts and regions", "FR": "overseas regions",
+    "NZ": "regions", "AT": "federal states", "BE": "regions", "JP": "prefectures",
+    "CN": "regions", "ZA": "provinces", "MX": "states", "NG": "states",
+    "ID": "provinces", "PH": "regions", "BA": "entities", "BO": "departments",
+}
+
+def regional_holidays(code, national_dates):
+    """Dates observed in some of a country's regions but not nationally.
+
+    This is the honest fix for the site's thinnest pages. Switzerland showed 4
+    national holidays and read as a stub; it has 44 more that are real, dated
+    and cantonal. India - one of the seven countries the live holiday API does
+    not cover at all - gains 159. The data was always there, one argument away.
+
+    Returns [(date, name, [region names])], date-ordered. Cheap: all 624
+    subdivisions across all 35 countries resolve in about a second.
+    """
+    try:
+        base = holidays.country_holidays(code, years=YEARS)
+        subs = list(getattr(base, "subdivisions", ()) or ())
+    except Exception:
+        return []
+    if not subs:
+        return []
+
+    # subdivisions_aliases maps name -> code, and a code can have several names
+    # ("Bern" and "Berne"). Reverse it and keep the first, which is the
+    # library's canonical spelling.
+    pretty_sub = {}
+    for name, sub_code in (getattr(base, "subdivisions_aliases", {}) or {}).items():
+        for c in (sub_code if isinstance(sub_code, (list, tuple)) else [sub_code]):
+            pretty_sub.setdefault(c, name)
+
+    found = {}
+    for s in subs:
+        h = english_holidays(code, YEARS, subdiv=s)
+        for d, raw in (h.items() if hasattr(h, "items") else []):
+            if d in national_dates:
+                continue
+            for label in str(raw).split("; "):
+                clean = re.sub(r"\s*\(estimated\)\s*", "", label).strip()
+                if clean:
+                    found.setdefault((d, clean), []).append(pretty_sub.get(s, s))
+    return [(d, n, sorted(set(regions)))
+            for (d, n), regions in sorted(found.items())]
+
+def render_regional(code, rows, total_subs, noun):
+    """Collapsed by default: the page stays as light as it was at first glance,
+    and the reader chooses to open it. Forcing 159 extra rows on someone who
+    came to check one date would make the page worse, not better."""
+    if not rows:
+        return "", 0
+    this_year = [r for r in rows if r[0].year == TODAY.year]
+    next_year = [r for r in rows if r[0].year == TODAY.year + 1]
+
+    def block(items, year):
+        if not items:
+            return ""
+        out = [f'<h3>{year}</h3><div class="holiday-table regional">']
+        for d, name, regions in items:
+            # Naming twenty regions is noise; a count is the useful fact. Below
+            # four, the names themselves are what the reader wants.
+            if len(regions) <= 4:
+                where = ", ".join(regions)
+            else:
+                where = f"{len(regions)} of {total_subs} {noun}"
+            out.append(f'<div data-date="{d.isoformat()}"><span class="when">'
+                       f'{WEEKDAY[d.weekday()]} {d.day} {M_LONG[d.month-1]}</span>'
+                       f'<span class="what">{esc(name)}</span>'
+                       f'<span class="where">{esc(where)}</span></div>')
+        out.append("</div>")
+        return "".join(out)
+
+    return (f'<section class="regional-section"><details><summary>'
+            f'<span class="summary-title">Regional holidays</span>'
+            f'<span class="summary-count">{len(rows)} more dates observed in '
+            f'individual {noun}</span></summary>'
+            f'{block(this_year, TODAY.year)}{block(next_year, TODAY.year + 1)}'
+            f'<p class="note">These are not observed nationwide. Confirm the '
+            f'specific region before assuming someone is working.</p>'
+            f'</details></section>\n'), len(rows)
+
 def classify(d, name):
     """Notes that make a bare date genuinely useful for meeting planning."""
     tags = []
@@ -276,15 +367,30 @@ def render_country(pretty, code, hub_cities, follows=()):
     weekend_txt = ("" if not weekend_count else
                    f", of which {weekend_count} "
                    f"{'falls' if weekend_count == 1 else 'fall'} on a weekend")
-    # A short national list usually means the rest are set regionally (Switzerland
-    # has 4 national days and the rest by canton). Saying so turns a sparse-looking
-    # page into a useful one.
-    short_note = (f" Only {len(this_year)} are set nationally — where the national list is this "
-                  f"short, the remaining days are usually fixed by state, province or canton, so "
-                  f"check the specific region."
-                  if 0 < len(this_year) <= 6 else
-                  " Dates below are national holidays; regions, states and individual companies "
-                  "often add their own, so confirm with the person you are scheduling with.")
+    # Regional dates. Until these were added, a short national list could only be
+    # apologised for ("the rest are usually fixed by canton, so check"); now the
+    # page can show them, so the note points at them instead.
+    national_dates = {d for d, _, _ in rows}
+    reg_rows = regional_holidays(code, national_dates)
+    try:
+        total_subs = len(list(getattr(holidays.country_holidays(code, years=YEARS),
+                                      "subdivisions", ()) or ()))
+    except Exception:
+        total_subs = 0
+    noun = REGION_NOUN.get(code, "regions")
+    regional_html, reg_count = render_regional(code, reg_rows, total_subs, noun)
+
+    if reg_count:
+        short_note = (f" A further {reg_count} dates are observed in individual {noun} "
+                      f"rather than nationwide — they are listed below.")
+    elif 0 < len(this_year) <= 6:
+        short_note = (f" Only {len(this_year)} are set nationally — where the national list is "
+                      f"this short, the remaining days are usually fixed by state, province or "
+                      f"canton, so check the specific region.")
+    else:
+        short_note = (" Dates below are national holidays; regions, states and individual "
+                      "companies often add their own, so confirm with the person you are "
+                      "scheduling with.")
     intro = f"{pretty} has {len(this_year)} public holidays in {TODAY.year}{weekend_txt}.{short_note}"
 
     hub_links = "".join(
@@ -319,6 +425,7 @@ def render_country(pretty, code, hub_cities, follows=()):
         f'    {glance}\n'
         f'    <section><h2>{TODAY.year}</h2>{table(this_year)}</section>\n'
         f'    <section><h2>{TODAY.year + 1}</h2>{table(next_year)}</section>\n'
+        f'    {regional_html}'
         f'    {follows_html}'
         f'    <section><h2>How to use this</h2><p>A public holiday does not always mean nobody is '
         f'working, and a clear calendar does not mean your colleague is free. Treat these dates as a '

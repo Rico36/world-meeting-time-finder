@@ -80,6 +80,8 @@ jobs:
           PUB = "ca-pub-4158152621897495"
           missing_ads = 0
           stubs = 0
+          regional = 0
+          expanded = []
 
           for sub in ("time", "holidays"):
               d = os.path.join(".", sub)
@@ -98,6 +100,12 @@ jobs:
                       continue
                   if PUB not in html or "adsbygoogle.js" not in html:
                       missing_ads += 1
+                  if "regional-section" in html:
+                      regional += 1
+                      # These carry hundreds of rows. Shipping one expanded
+                      # would bury the national dates the page exists for.
+                      if re.search(r"<details[^>]*\bopen\b", html):
+                          expanded.append(f)
                   body = re.sub(r"<(script|style)[^>]*>.*?</\1>", "", html, flags=re.S | re.I)
                   words += len(re.sub(r"<[^>]+>", " ", body).split())
                   for h in re.findall(r'href="([^"]+)"', html):
@@ -129,6 +137,19 @@ jobs:
           # this catches an order-of-magnitude mistake before it ships.
           if stubs > 40:
               problems.append(f"{stubs} redirect stubs - the merge threshold looks wrong")
+
+          # Regional dates are what lifted the thinnest pages (Switzerland from
+          # 229 words to 596, India to 1,883). If an upstream change stops
+          # exposing subdivisions the sections vanish silently: the pages still
+          # build, still link correctly, and still clear the word floor.
+          if regional < 20:
+              problems.append(f"only {regional} pages have regional holidays - "
+                              f"subdivision data may have stopped resolving")
+          else:
+              print(f"Regional holidays on {regional} country pages.")
+          if expanded:
+              problems.append(f"{len(expanded)} regional section(s) ship expanded: "
+                              f"{', '.join(expanded[:3])}")
 
           if problems:
               print(f"\n{len(problems)} problem(s):")

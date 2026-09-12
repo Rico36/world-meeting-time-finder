@@ -87,20 +87,29 @@ def fmt_date(d):
     return f"{d.day} {M_LONG[d.month-1]} {d.year}" if d.year != TODAY.year else f"{d.day} {M_LONG[d.month-1]}"
 
 _holiday_cache = {}
-def english_holidays(cc, years):
-    key = (cc, tuple(years))
+def english_holidays(cc, years, subdiv=None):
+    """National holidays, or one subdivision's when `subdiv` is given.
+
+    Subdivision names need the language pass as much as national ones do:
+    Zurich's holidays come back as "Karfreitag" and "Auffahrt" unless en_US is
+    requested explicitly.
+    """
+    key = (cc, tuple(years), subdiv)
     if key in _holiday_cache:
         return _holiday_cache[key]
     result = None
     for lang in ("en_US", "en_GB", "en"):
         try:
-            h = holidays.country_holidays(cc, years=years, language=lang)
+            h = holidays.country_holidays(cc, years=years, language=lang, subdiv=subdiv)
             if any(re.search(r"[A-Za-z]", str(n)) for n in h.values()):
                 result = h; break
         except Exception:
             continue
     if result is None:
-        result = holidays.country_holidays(cc, years=years)
+        try:
+            result = holidays.country_holidays(cc, years=years, subdiv=subdiv)
+        except Exception:
+            result = {}
     _holiday_cache[key] = result
     return result
 

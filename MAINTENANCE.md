@@ -413,6 +413,46 @@ both workflows, install the same version locally, regenerate, and read the diff
 before committing — that diff is the upstream's holiday corrections, which is
 exactly what deserves a human glance.
 
+### Regional holidays — how the thin pages were fixed
+
+Switzerland's page once showed 4 national holidays and read like a stub at 229
+words. It now shows 44 more, by canton, at 596 words. The data was always there,
+one argument away: `holidays.country_holidays(code, subdiv=...)`. 30 countries
+have it; India gains 159 dates and Italy 194.
+
+This mattered beyond page length. India is one of the seven countries the live
+holiday API does not cover at all, so its page was leaning entirely on the
+fallback — it is now the richest country page on the site.
+
+Three decisions worth keeping:
+
+- **The section is collapsed by default** (`<details>`). A reader who came to
+  check one date should not have to scroll past 159 rows to reach the national
+  ones. The page opens as lightly as it did before and the reader chooses to
+  expand — which is the same principle the homepage follows. Google indexes
+  content inside a collapsed `<details>`, so nothing is lost by hiding it.
+- **Large region lists are counted, not named.** "24 of 27 cantons" is the
+  useful fact; enumerating 24 names is noise. Below five, the names *are* the
+  useful fact, so they are spelled out.
+- **`REGION_NOUN` names each country's divisions properly** — cantons, provinces
+  and territories, autonomous communities, union territories. Calling Swiss
+  cantons "regions" is exactly the detail that makes generated content read as
+  generated. Unlisted countries fall back to "regions".
+
+The subdivision pass costs about a second for all 624 subdivisions, so there was
+no reason to cache or precompute it.
+
+`tests/regional_test.py` guards this, and the monthly workflow fails if fewer
+than 20 pages carry a section (upstream could stop exposing subdivisions and
+everything else would still pass) or if any section ships expanded.
+
+**Six pages remain under 300 words** — Antarctica, Uruguay, Tokelau, Mexico,
+Pitcairn Islands, Laos. These have no subdivisions and genuinely few holidays,
+so they are short because they are complete, not because they are missing
+something. Antarctica is the one genuine oddity: a public-holiday page for a
+continent with no civilian population. It is a candidate for retirement if the
+low-value-content review ever needs another gesture.
+
 ### Territories that share a sovereign's calendar
 
 Twelve territory pages are retired into the sovereign page whose calendar they
