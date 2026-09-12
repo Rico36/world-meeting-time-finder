@@ -61,6 +61,7 @@ function renderCities(){
   const now=new Date();
   els.city_list.innerHTML=state.selected.map((city,index)=>`<div class="city-row"><div class="city-name"><strong>${city.name}</strong><span>${city.country?`${city.country} · `:''}${city.zone}</span></div><div class="city-clock"><strong>${formatTime(now,city.zone)}</strong><span>${index===0?'Your reference':'Local time now'}</span></div><button class="remove-city" type="button" data-remove="${index}" aria-label="Remove ${city.name}">×</button></div>`).join('');
   els.city_search_label.textContent=state.selected.length?t('addCity'):t('startCity');
+  if(typeof renderWorldMap==='function') renderWorldMap();
 }
 function setLanguage(lang){ state.language=copy[lang]?lang:'en'; document.documentElement.lang=state.language; els.language.value=state.language; document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n)}); document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{el.placeholder=t(el.dataset.i18nPlaceholder)}); renderCities(); if(state.selected.length>=2) renderResults(); localStorage.setItem('commonHoursLanguage',state.language); }
 function applyTheme(theme){ document.documentElement.dataset.theme=theme; localStorage.setItem('commonHoursTheme',theme); }
@@ -491,7 +492,9 @@ function renderWorldMap(){
   const figure=document.getElementById('world-map-figure');
   const svg=document.getElementById('world-map');
   if(!figure||!svg) return;
-  if(state.selected.length<2){ figure.hidden=true; return; }
+  // shown from the first city: it is the only visual on the page, and gating it
+  // behind a second city meant a first-time visitor never saw it at all
+  if(state.selected.length<1){ figure.hidden=true; return; }
   loadMapData().then(({land,zones})=>{
     if(!land||!land.paths){ figure.hidden=true; return; }
     const desc=svg.querySelector('desc');

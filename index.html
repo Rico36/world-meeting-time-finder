@@ -49,7 +49,7 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="styles.css?v=20260912-1">
+  <link rel="stylesheet" href="styles.css?v=20260912-3">
 </head>
 <body data-geo-endpoint="https://findcommonhours-geo.ricky-freyre.workers.dev">
   <header class="site-header">
@@ -153,6 +153,8 @@
           <span><i class="legend-selected"></i><span data-i18n="selectedMeeting">Selected meeting</span></span>
           <small data-i18n="legendHelp">Green shows when a city is normally at work; the darker band is your chosen meeting.</small>
         </div>
+      </section>
+
 
         <figure class="world-map-figure" id="world-map-figure" hidden>
           <figcaption data-i18n="mapCaption">Where everyone is right now</figcaption>
@@ -160,7 +162,7 @@
                aria-labelledby="world-map-desc"><desc id="world-map-desc" data-i18n="mapDesc">A world map showing the selected cities and which parts of the world are currently in darkness.</desc></svg>
           <small class="map-note" data-i18n="mapNote">Shaded areas are in night now. Positions are approximate; no time zone borders are drawn.</small>
         </figure>
-      </section>
+
 
       <section class="trust-note">
         <h2 data-i18n="simpleTitle">Simple by design</h2>
@@ -235,7 +237,7 @@
     </form>
   </dialog>
 
-  <script src="app.js?v=20260912-1"></script>
+  <script src="app.js?v=20260912-3"></script>
   <!-- Load analytics after the page is usable so it does not delay the initial render. -->
   <script>
     window.addEventListener('load',()=>{const script=document.createElement('script');script.src='https://static.cloudflareinsights.com/beacon.min.js';script.dataset.cfBeacon='{"token":"1fa3e675ae4f4a6ca7406cb3d20594f0"}';document.head.append(script);},{once:true});

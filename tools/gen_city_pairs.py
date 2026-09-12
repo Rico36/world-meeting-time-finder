@@ -196,6 +196,27 @@ THEME_SCRIPT = ("document.documentElement.dataset.theme=localStorage.getItem('co
 CF_BEACON = ('<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" '
              'data-cf-beacon=\'{"token":"1fa3e675ae4f4a6ca7406cb3d20594f0"}\'></script>')
 
+# The at-a-glance "next public holiday" is recomputed on load from the dates in
+# the holidays list. A baked-in value is wrong as soon as that date passes, on
+# pages regenerated only every few months.
+PAIR_SCRIPT = """(function(){
+  var M=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var box=document.querySelector('[data-next-holiday]');
+  if(!box) return;
+  var items=[].slice.call(document.querySelectorAll('li[data-date]'));
+  var today=new Date(); today.setHours(0,0,0,0);
+  var best=null;
+  items.forEach(function(li){
+    var p=li.getAttribute('data-date').split('-');
+    var d=new Date(+p[0],+p[1]-1,+p[2]);
+    if(d>=today&&(!best||d<best.date)) best={date:d,city:li.getAttribute('data-city'),name:li.getAttribute('data-holiday')};
+  });
+  if(!best){ box.hidden=true; return; }
+  box.querySelector('[data-next-date]').textContent=best.date.getDate()+' '+M[best.date.getMonth()];
+  box.querySelector('[data-next-name]').textContent=best.name;
+  box.querySelector('[data-next-city]').textContent=best.city;
+})();"""
+
 def esc(s):
     return (str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;"))
 
@@ -335,7 +356,9 @@ def render_pair_page(city_a, city_b, all_cities):
     hol_a, hol_b = upcoming_holidays(cc_a), upcoming_holidays(cc_b)
     def hol_list(name, rows):
         if not rows: return f"<li>No upcoming public holidays found for {name}.</li>"
-        return "".join(f"<li>{fmt_date(d)} — {name}: {esc(n)}</li>" for d, n in rows)
+        return "".join(f'<li data-date="{d.isoformat()}" data-city="{esc(name)}" '
+                       f'data-holiday="{esc(n)}">{fmt_date(d)} — {name}: {esc(n)}</li>'
+                       for d, n in rows)
     hol_points = f'<ul class="guide-points">{hol_list(name_a, hol_a)}{hol_list(name_b, hol_b)}</ul>'
 
     both_no_dst = (offset_minutes(zone_a, datetime(TODAY.year,1,1,12)) == offset_minutes(zone_a, datetime(TODAY.year,7,1,12))
@@ -395,8 +418,12 @@ def render_pair_page(city_a, city_b, all_cities):
         f'<span class="sub">{"identical local clocks" if typical == 0 else esc(ahead) + " ahead"}</span></div>'
         f'<div><span class="label">Best meeting time</span><strong>{meet_big}</strong>'
         f'<span class="sub">{esc(meet_sub)}</span></div>'
-        + (f'<div><span class="label">Next public holiday</span><strong>{fmt_date(next_hol[0])}</strong>'
-           f'<span class="sub">{esc(next_hol[1])} — {esc(next_hol_city)}</span></div>' if next_hol else "")
+        # recomputed on load from the data-date attributes in the holidays list,
+        # so this does not silently go stale between regenerations
+        + (f'<div data-next-holiday><span class="label">Next public holiday</span>'
+           f'<strong data-next-date>{fmt_date(next_hol[0])}</strong>'
+           f'<span class="sub"><span data-next-name>{esc(next_hol[1])}</span> — '
+           f'<span data-next-city>{esc(next_hol_city)}</span></span></div>' if next_hol else "")
         + '</div>')
 
     body = (
@@ -419,7 +446,7 @@ def render_pair_page(city_a, city_b, all_cities):
         f'  </main>\n  {footer(1)}\n'
         f'  <script type="application/ld+json">{json.dumps(breadcrumb_ld)}</script>\n'
         f'  <script type="application/ld+json">{json.dumps(faq_ld)}</script>\n'
-        f'  <script>{THEME_SCRIPT}</script>{CF_BEACON}\n'
+        f'  <script>{THEME_SCRIPT}{PAIR_SCRIPT}</script>{CF_BEACON}\n'
         f'</body>\n</html>\n'
     )
     return slug, body

@@ -53,6 +53,26 @@ def continent_map():
             out[f[0]] = CONTINENTS.get(f[8].strip(), "Other")
     return out
 
+HOLIDAY_SCRIPT = """(function(){
+  var M=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var box=document.querySelector('[data-next-holiday]');
+  if(!box) return;
+  var rows=[].slice.call(document.querySelectorAll('.holiday-table div[data-date]'));
+  var today=new Date(); today.setHours(0,0,0,0);
+  var next=null;
+  for(var i=0;i<rows.length;i++){
+    var parts=rows[i].getAttribute('data-date').split('-');
+    var d=new Date(+parts[0],+parts[1]-1,+parts[2]);
+    if(d>=today){ next={date:d,name:(rows[i].querySelector('.what')||{}).textContent||''}; break; }
+  }
+  if(!next){ box.hidden=true; return; }
+  var days=Math.round((next.date-today)/86400000);
+  box.querySelector('[data-next-date]').textContent=next.date.getDate()+' '+M[next.date.getMonth()];
+  box.querySelector('[data-next-name]').textContent=next.name;
+  box.querySelector('[data-next-away]').textContent=
+    ' \\u2014 '+(days===0?'today':days===1?'tomorrow':'in '+days+' days');
+})();"""
+
 FILTER_SCRIPT = """(function(){
   var box=document.getElementById('filter'),count=document.getElementById('filter-count');
   if(!box) return;
@@ -128,18 +148,22 @@ def render_country(pretty, code, hub_cities):
         for d, name, est in items:
             tags = classify(d, name + (" (estimated)" if est else ""))
             tag_html = "".join(f'<span class="tag">{esc(t)}</span>' for t in tags)
-            out.append(f'<div><span class="when">{WEEKDAY[d.weekday()]} {d.day} {M_LONG[d.month-1]}'
+            out.append(f'<div data-date="{d.isoformat()}"><span class="when">'
+                       f'{WEEKDAY[d.weekday()]} {d.day} {M_LONG[d.month-1]}'
                        f'</span><span class="what">{esc(name)}</span>{tag_html}</div>')
         out.append('</div>')
         return "".join(out)
 
     if nxt:
-        days_away = (nxt[0] - TODAY).days
-        away = "today" if days_away == 0 else ("tomorrow" if days_away == 1 else f"in {days_away} days")
+        # The date, the name and the countdown are all recomputed on load from the
+        # data-date attributes below. A static "in 81 days" is wrong the next day,
+        # and a static "next holiday" is wrong once that date passes - on a page
+        # that is only regenerated every few months.
         glance = ('<div class="at-a-glance">'
-                  f'<div><span class="label">Next public holiday</span>'
-                  f'<strong>{nxt[0].day} {M_LONG[nxt[0].month-1]}</strong>'
-                  f'<span class="sub">{esc(nxt[1])} — {away}</span></div>'
+                  f'<div data-next-holiday><span class="label">Next public holiday</span>'
+                  f'<strong data-next-date>{nxt[0].day} {M_LONG[nxt[0].month-1]}</strong>'
+                  f'<span class="sub"><span data-next-name>{esc(nxt[1])}</span>'
+                  f'<span data-next-away></span></span></div>'
                   f'<div><span class="label">{TODAY.year}</span><strong>{len(this_year)} days</strong>'
                   f'<span class="sub">public holidays in total</span></div>'
                   f'<div><span class="label">{TODAY.year+1}</span><strong>{len(next_year)} days</strong>'
@@ -203,7 +227,7 @@ def render_country(pretty, code, hub_cities):
         f'  </main>\n  {footer(1)}\n'
         f'  <script type="application/ld+json">{json.dumps(crumb_ld)}</script>\n'
         f'  <script type="application/ld+json">{json.dumps(faq_ld)}</script>\n'
-        f'  <script>{THEME_SCRIPT}</script>{CF_BEACON}\n'
+        f'  <script>{THEME_SCRIPT}{HOLIDAY_SCRIPT}</script>{CF_BEACON}\n'
         f'</body>\n</html>\n'
     )
     return slug, body

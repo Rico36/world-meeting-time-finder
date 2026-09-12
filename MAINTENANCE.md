@@ -13,6 +13,7 @@ ten-minute dependency check, and everything else is event-driven.
 |---|---|---|
 | **Every December** | Regenerate the dated content in the guides | **Yes** — opens a PR you review and merge |
 | **Monthly** | Check the two external APIs and the static assets | **Yes** — raises an issue only if something breaks |
+| **Monthly** | Rebuild the 479 generated pages so their holiday lists move forward | **Yes** — commits straight to main once structural checks pass |
 | **Annually** | Regenerate `REGION_CITIES` / `COUNTRY_CITIES` from GeoNames | No — read the output before shipping |
 | **Annually** | Renew the domain | No |
 | **Annually** | Rotate the feedback Worker's GitHub token (fine-grained tokens expire) | No — `npx wrangler secret put GITHUB_TOKEN` |
@@ -37,6 +38,28 @@ static asset has started 404ing. It is quiet when healthy: it opens an issue onl
 on failure, and comments on the existing issue rather than filing duplicates. It
 also reports if holiday coverage ever *appears* for the seven missing countries,
 which would be a cue to drop the hardcoded fallback.
+
+**`refresh-generated-pages.yml`** runs on the 1st of every month. It rebuilds
+the 479 pages under `time/` and `holidays/`, checks the result structurally
+(link integrity, page counts, and that the word count has not collapsed), and
+commits straight to `main` if anything moved.
+
+Two deliberate differences from the December workflow, both worth understanding
+before changing them:
+
+- **Monthly, not quarterly.** Scheduled workflows are disabled after 60 days
+  without commit activity. A quarterly schedule has 90-day gaps, so it would
+  switch itself off before its second run and nobody would notice until the
+  dates went stale. Monthly stays inside the window, and **each run's own
+  commit resets the clock** — the schedule keeps itself alive.
+- **It commits rather than opening a PR.** December regenerates prose, which
+  has produced plausible nonsense before and needs a human to read it. This
+  only advances dates from deterministic generators, so a structural check is
+  the useful gate. A PR nobody merges would also fail to reset the 60-day
+  clock, defeating the point.
+
+If you would rather review these, change the final step to open a PR — but then
+merge them promptly, or the schedule will eventually disable itself.
 
 > **Watch for this:** GitHub disables scheduled workflows in repositories with no
 > commit activity for 60 days. This repo can easily go quiet for that long. GitHub
@@ -429,6 +452,21 @@ PY
 
 Strip the query string first — `styles.css?v=…` is not a missing file, and a
 checker that forgets this reports several hundred false positives.
+
+### Dates that correct themselves
+
+The at-a-glance "next public holiday" on both the country pages and the pair
+pages is **recomputed in the browser** from `data-date` attributes on the
+dates already in the page. It is not baked in.
+
+That matters because these pages are rebuilt monthly, not daily: a static
+"in 81 days" is wrong the next morning, and a static "next holiday" is wrong
+the moment that date passes. Regeneration moves the *lists* forward; the
+browser keeps the *highlight* correct in between.
+
+If you edit either generator, keep the `data-date` attributes — without them
+the scripts find nothing and the block hides itself rather than showing
+something false.
 
 ### Index pages: grouping and filter
 

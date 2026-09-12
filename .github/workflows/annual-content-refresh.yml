@@ -53,6 +53,10 @@ jobs:
           # holidays-fallback.json covers countries the live holiday API does not;
           # generate the target year and the one after so January is never blind
           python tools/gen_holidays.py "${{ steps.year.outputs.year }}" "$(( ${{ steps.year.outputs.year }} + 1 ))"
+          # the 479 generated pages carry clock-change dates and holiday lists of
+          # their own; without these two they would keep last year's dates
+          python tools/gen_city_pairs.py
+          python tools/gen_holiday_pages.py
           python tools/bump_assets.py
 
       - name: Verify the result still parses
