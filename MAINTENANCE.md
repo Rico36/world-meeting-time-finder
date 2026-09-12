@@ -360,6 +360,50 @@ No data for Ukraine or three uninhabited territories; those are skipped.
 still produces a complete sitemap and the two can never drift. Currently 484
 URLs.
 
+### The day/night map
+
+`tools/gen_map_data.py` builds two assets the planner's map needs:
+
+```bash
+python tools/gen_map_data.py     # -> assets/world-land.json, assets/zone-points.json
+```
+
+- `world-land.json` — Natural Earth 110m land, **public domain (CC0)**, reduced
+  to 84 SVG paths in a 360×180 equirectangular space (`x = lon+180`,
+  `y = 90-lat`). ~53 KB. Specks under 1.2 square degrees are dropped.
+- `zone-points.json` — the tz database's own `zone1970.tab` coordinates for 312
+  zones, used to place a city whose real latitude and longitude we do not have
+  (URL-restored cities, the local seed list). Geocoding results carry real
+  coordinates and are preferred. Legacy zone names go through `canonicalZone()`
+  first, so `Asia/Calcutta` still resolves.
+
+Regenerate only if the land outline or the tz database changes; neither moves
+often.
+
+**No time zone boundaries are drawn, deliberately.** Real borders are jagged
+and political — China spans five geographic bands on a single zone, Nepal is
++5:45 — so a band map would be approximate in a way that undercuts a site that
+hedges moon-sighting holiday dates for accuracy. The map claims two things,
+both exactly true: these cities are here, and it is night here.
+
+The terminator is computed live in `subsolarPoint()` in `app.js`. If you touch
+that maths, check it the way it was checked originally: June must give a
+declination near +23.44 with the north pole lit, December near −23.43 with it
+dark, and the equinoxes near 0. The night polygon closes along whichever pole
+is in darkness and **that edge flips at the equinox** — test both solstices
+rather than discovering it in December.
+
+### Where the planner CTA belongs
+
+Generated pages do **not** carry "Open the meeting planner" above their
+content. A visitor on a holiday page came for holidays; a call to action for a
+different tool in front of that is a distraction, and every generated page
+already links to the planner from its footer and its related-links nav.
+
+The one exception is the pair pages, whose CTA is contextual — it opens the
+planner with both cities pre-filled — so it sits under "Best time to meet"
+and names the two cities rather than advertising the planner generically.
+
 ### Checking generated output
 
 After running either generator, verify links before pushing. This caught 934
