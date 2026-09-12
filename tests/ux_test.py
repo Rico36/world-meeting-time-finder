@@ -47,10 +47,23 @@ with sync_playwright() as p:
     check("homepage: methodology is now a stub with a link",
           pg.eval_on_selector_all('#holiday-methodology a[href="holiday-data-accuracy.html"]', "e=>e.length") == 1)
     check("homepage: planner anchor exists", pg.eval_on_selector_all("#planner", "e=>e.length") == 1)
-    pg.select_option("#language", "es"); pg.wait_for_timeout(500)
-    check("homepage: new strings translate",
-          "Tres formas" in pg.inner_text("#tools"), pg.inner_text("#tools")[:60])
-    pg.select_option("#language", "en"); pg.wait_for_timeout(400)
+    # The site is English-only by decision, not by omission. The selector
+    # translated index.html and nothing else - 1 page of 485, with no hreflang -
+    # so picking Spanish gave a Spanish homepage that led only into English.
+    # These checks exist so it is not reintroduced by accident.
+    check("homepage: no language selector",
+          pg.eval_on_selector_all("#language, .language-field", "e=>e.length") == 0)
+    check("homepage: declares itself English",
+          pg.eval_on_selector("html", "e=>e.lang") == "en")
+    check("homepage: copy is in English",
+          "Three ways" in pg.inner_text("#tools") or "ways" in pg.inner_text("#tools").lower(),
+          pg.inner_text("#tools")[:60])
+    check("homepage: a stale saved language does not resurface",
+          pg.evaluate("""()=>{localStorage.setItem('commonHoursLanguage','es');return true;}"""))
+    pg.reload(wait_until="networkidle", timeout=60000); pg.wait_for_timeout(900)
+    check("homepage: still English after a stale 'es' in storage",
+          pg.eval_on_selector("html", "e=>e.lang") == "en"
+          and pg.evaluate("()=>localStorage.getItem('commonHoursLanguage')") is None)
 
     # ---- new accuracy page ----
     pg.goto(f"{BASE}/holiday-data-accuracy.html", wait_until="networkidle", timeout=60000)

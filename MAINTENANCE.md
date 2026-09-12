@@ -384,6 +384,46 @@ Each pair page opens with an **at-a-glance block** — time gap, best meeting
 time, next holiday — before any prose. A visitor from search gets the answer
 without reading; the detail still follows for anyone who wants it.
 
+### The site is English-only — deliberately
+
+The language selector (English, Spanish, French, German, Portuguese) was removed
+on 12 Sep 2026. It was not broken so much as never finished:
+
+- **1 of 485 pages carried translations.** 506 words out of ~210,000. Picking
+  Spanish gave a Spanish homepage whose every link led into English.
+- **No `hreflang` anywhere**, and the canonical was always `/`, so the five
+  languages produced no SEO value at all.
+- On the three guide pages the selector was present but the content had **no
+  translatable strings**, so choosing a language changed nothing visible. That
+  is what the site owner reported as "it reverts to English after a second" —
+  nothing reverted; the rest of the site was simply never translated.
+
+Separate per-country domains were considered and rejected: they split domain
+authority five ways from a standing start, multiply maintenance by five, and
+each needs its own AdSense review — a poor move while a low-value-content flag
+is open.
+
+Removing it deleted ~25 KB from `app.js` (112 → 87) and ~31 KB from `guides.js`
+(52 → 20), since those files shipped four unused dictionaries to every visitor.
+
+What remains, and why:
+
+- `t()` and the `[data-i18n]` pass stay. They are how the copy reaches the page;
+  they simply have one dictionary now. Do not inline the strings — the guide
+  generators read the same objects.
+- `?lang=` on a shared link is **ignored, not rejected**. Links shared before
+  this change still carry it and must still open.
+- Start-up clears any stored `commonHoursLanguage`, so a visitor who had chosen
+  Spanish is not stranded on a language the site no longer serves.
+- `tools/sync_guide_html.js` already hardcoded `lang = 'en'` and
+  `tools/expand_guides.py` already emitted `{"en": ...}` only, so neither
+  generator needed changing — the static guide HTML was English all along.
+
+If multilingual is ever revisited, do it as `/es/` subdirectories with hreflang,
+and start with the holiday pages: `python-holidays` ships **native** holiday
+names (`Año Nuevo`, `Confraternização Universal`, `ईद-उल-फितर`), so those 247
+pages can be translated properly by generation rather than machine-translated.
+
 ### One clock format per screen
 
 Times appear in five places on the planner: the city rows, the result heading,
