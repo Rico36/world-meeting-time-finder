@@ -49,7 +49,7 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="styles.css?v=20260912-13">
+  <link rel="stylesheet" href="styles.css?v=20260912-15">
 </head>
 <body data-geo-endpoint="https://findcommonhours-geo.ricky-freyre.workers.dev">
   <header class="site-header">
@@ -168,7 +168,7 @@
 
       <section class="seo-content" id="how-it-works">
         <p class="eyebrow" data-i18n="howEyebrow">How it works</p>
-        <h2 data-i18n="howTitle">Plan a meeting across time zones in seconds</h2>
+        <h2 data-i18n="howTitle">Work out when to meet across time zones in seconds</h2>
         <ol class="steps">
           <li><strong data-i18n="step1Title">Add each city.</strong><span data-i18n="step1Copy">Search for the locations where participants will join.</span></li>
           <li><strong data-i18n="step2Title">Choose the meeting.</strong><span data-i18n="step2Copy">Set the date and how long the conversation should last.</span></li>
@@ -209,6 +209,7 @@
         <details><summary data-i18n="faq1Question">Does Common Hours account for daylight saving time?</summary><p data-i18n="faq1Answer">Yes. Times are calculated for the selected meeting date using each city’s time zone, including applicable daylight-saving changes.</p></details>
         <details><summary data-i18n="faq2Question">Are public holidays excluded from the results?</summary><p data-i18n="faq2Answer">No. Holidays are displayed as notices so you can make the final decision rather than having possible meeting times removed automatically.</p></details>
         <details><summary data-i18n="faq3Question">What does the green area mean?</summary><p data-i18n="faq3Answer">Green represents normal weekday working hours for each city. The darker band shows the meeting time you are currently considering.</p></details>
+        <details><summary data-i18n="faq5Question">How do I decide when to meet across time zones?</summary><p data-i18n="faq5Answer">Add every participant’s city, then look for where the green working-hours bands overlap — that overlap is when to meet without asking anyone to join at midnight. When there is no overlap, the planner shows the closest compromise instead of hiding the problem, and the fair answer is usually to alternate which side takes the awkward hour. Check the public-holiday notices before you send the invite.</p></details>
         <details><summary data-i18n="faq4Question">Do I need an account?</summary><p data-i18n="faq4Answer">No. Common Hours is free to use and does not require registration. Your selected cities and preferences stay in your browser.</p></details>
       </section>
     </main>
@@ -234,7 +235,7 @@
     </form>
   </dialog>
 
-  <script src="app.js?v=20260912-13"></script>
+  <script src="app.js?v=20260912-15"></script>
   <!-- Load analytics after the page is usable so it does not delay the initial render. -->
   <script>
     window.addEventListener('load',()=>{const script=document.createElement('script');script.src='https://static.cloudflareinsights.com/beacon.min.js';script.dataset.cfBeacon='{"token":"1fa3e675ae4f4a6ca7406cb3d20594f0"}';document.head.append(script);},{once:true});

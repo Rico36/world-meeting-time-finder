@@ -396,7 +396,27 @@ def render_pair_page(city_a, city_b, all_cities):
     else:
         dst_answer = f"Both cities observe daylight saving, but not always on the same dates — see the clock-change dates above."
 
+    # "when to meet" is a phrase people actually type and the site used nowhere.
+    # It gets a real answer built from the same computed window as the section
+    # above, not a restatement - a question whose answer is "see above" is worse
+    # than no question.
+    if ov:
+        when_answer = (f"Aim for <strong>{hm(ov[0])} in {name_a}</strong>, which is "
+                       f"{hm(ov[1])} in {name_b}. That keeps both sides inside a normal "
+                       f"9 AM–5 PM day, so neither is dialling in before breakfast or "
+                       f"after dinner. Check the date against each country's public "
+                       f"holidays before sending the invite.")
+    else:
+        c_when = best_compromise(oa, ob)
+        when_answer = (f"There is no hour that is inside normal working time in both "
+                       f"cities, so someone has to stretch. The least painful slot is "
+                       f"<strong>{hm(c_when[0])} in {name_a}</strong> / "
+                       f"<strong>{hm(c_when[1])} in {name_b}</strong>. At this distance "
+                       f"the fair answer is usually to alternate which side takes the "
+                       f"awkward hour rather than fixing one time forever.")
+
     faq = [
+        (f"When is the best time to meet between {name_a} and {name_b}?", when_answer),
         (f"What time is it in {name_b} when it is 9 AM in {name_a}?",
          # computed from the majority-of-year offsets, not "now" - this is a static
          # page, so claiming a live time would be wrong for most of the year
