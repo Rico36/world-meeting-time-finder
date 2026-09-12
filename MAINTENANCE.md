@@ -384,6 +384,51 @@ Each pair page opens with an **at-a-glance block** — time gap, best meeting
 time, next holiday — before any prose. A visitor from search gets the answer
 without reading; the detail still follows for anyone who wants it.
 
+### Territories that share a sovereign's calendar
+
+Twelve territory pages are retired into the sovereign page whose calendar they
+actually observe — Svalbard into Norway, Åland into Finland, seven French
+overseas territories into France, and so on. This was done because they were the
+site's worst near-duplicates: `svalbard-and-jan-mayen.html` was a **92%** textual
+match for `norway.html`, which is the exact shape AdSense treats as scaled,
+low-value content. A second URL that says nothing the first does not is a
+liability, not extra coverage.
+
+**How the decision is made.** `SOVEREIGN` in `tools/gen_holiday_pages.py` is a
+curated map of territory → sovereign. It supplies only the *direction*, because
+the data cannot: ranking countries by holiday count proposes "American Samoa is
+the parent of the United States" and "Benin is the parent of Switzerland", since
+a superset relationship is not a sovereignty relationship.
+
+Whether a merge actually happens is then decided from the holiday data on every
+run. A territory is retired only if its sovereign's calendar already covers
+**≥ 90%** of its dates (`MERGE_THRESHOLD`). Of 38 listed territories, 12 pass.
+Puerto Rico (64%), Jersey (50%) and Gibraltar (46%) keep their own pages because
+their calendars genuinely differ — which is the point. The goal is removing
+pages that say nothing new, not shrinking the site.
+
+Because the gate is re-evaluated every run, **adding a territory to `SOVEREIGN`
+does not retire its page**, and a territory comes back automatically if the
+upstream library ever gains distinct dates for it. Nobody has to notice.
+
+**What a retirement produces:**
+
+- A redirect stub at the old URL, marked `<!--redirect-stub-->`. GitHub Pages
+  cannot issue a 301, so the stub is the static equivalent: `rel="canonical"` to
+  the surviving page plus an instant meta refresh, which Google consolidates.
+- **No ad code on the stub.** Ads on a body-less redirect page are precisely the
+  "little or no content" case AdSense prohibits. `write_sitemap()` and the
+  workflow's ad assertion both skip stubs by that marker — if you change the
+  marker, change it in all three places.
+- The territory stays listed on `holidays/index.html` and stays findable by the
+  filter, linking to the parent with a "· France calendar" note. Dropping it
+  would turn a duplication fix into a coverage loss.
+- The parent page gains a "Where else these dates apply" section naming every
+  territory it absorbed, so someone searching for Svalbard lands somewhere that
+  confirms the answer.
+
+`tests/merge_test.py` guards all of this — run it after touching the generator.
+
 ### Public holidays by country
 
 `tools/gen_holiday_pages.py` generates `holidays/` — one page per country for

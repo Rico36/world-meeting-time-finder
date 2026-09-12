@@ -108,6 +108,89 @@ def country_list():
         out.append((pretty, code))
     return sorted(set(out))
 
+# Territories that observe a sovereign state's calendar. This is the *direction*
+# only - which page would absorb which - and it is curated because the data
+# cannot supply it: ranking by holiday count alone proposes "American Samoa is
+# the parent of the United States" and "Benin is the parent of Switzerland",
+# since a superset relationship is not a sovereignty relationship.
+#
+# Whether a merge actually happens is decided by the data, in merge_plan()
+# below. Listing a territory here does not retire its page.
+SOVEREIGN = {
+    "AX": "FI",
+    "SJ": "NO",
+    "FO": "DK", "GL": "DK",
+    "GF": "FR", "GP": "FR", "MQ": "FR", "RE": "FR", "YT": "FR", "BL": "FR",
+    "MF": "FR", "PM": "FR", "TF": "FR", "NC": "FR", "PF": "FR", "WF": "FR",
+    "IM": "GB", "JE": "GB", "GG": "GB", "GI": "GB", "FK": "GB", "SH": "GB",
+    "BQ": "NL", "SX": "NL", "CW": "NL", "AW": "NL",
+    "AS": "US", "GU": "US", "MP": "US", "PR": "US", "VI": "US", "UM": "US",
+    "NF": "AU", "CX": "AU", "CC": "AU",
+    "TK": "NZ", "NU": "NZ", "CK": "NZ",
+}
+
+# How much of a territory's calendar the sovereign must already cover before the
+# territory's page is retired into it. At 0.90, twelve of the thirty-eight
+# listed territories merge; Puerto Rico (64%), Jersey (50%) and Gibraltar (46%)
+# keep their own pages because their calendars genuinely differ, which is the
+# point - the goal is removing pages that say nothing new, not shrinking the
+# site.
+MERGE_THRESHOLD = 0.90
+
+# Marks a retired URL. Both write_sitemap() and the AdSense assertion in
+# .github/workflows/refresh-generated-pages.yml look for this: a stub is not a
+# content page, so it stays out of the sitemap and deliberately carries no ad
+# code - ads on a body-less redirect page are exactly the "little or no content"
+# case AdSense prohibits.
+STUB_MARKER = "<!--redirect-stub-->"
+
+def merge_plan(countries):
+    """Decide which territory pages fold into a sovereign's page.
+
+    Returns (retired, followers): retired maps a territory code to its
+    sovereign's code; followers maps a sovereign's code to the list of
+    territory names its page now speaks for.
+
+    The decision is re-made from the holiday data on every run, so if the
+    upstream library ever gains distinct dates for one of these territories,
+    its page comes back automatically and nobody has to notice.
+    """
+    names = {code: pretty for pretty, code in countries}
+    sets = {}
+    for pretty, code in countries:
+        sets[code] = {(d, str(v)) for d, v in english_holidays(code, YEARS).items()}
+
+    retired, followers = {}, {}
+    for terr, sov in sorted(SOVEREIGN.items()):
+        if terr not in names or sov not in names:
+            continue
+        st, ss = sets.get(terr) or set(), sets.get(sov) or set()
+        if not st or not ss:
+            continue
+        if len(st & ss) / len(st) >= MERGE_THRESHOLD:
+            retired[terr] = sov
+            followers.setdefault(sov, []).append(names[terr])
+    for sov in followers:
+        followers[sov].sort()
+    return retired, followers
+
+def render_stub(pretty, slug, parent_pretty, parent_slug):
+    """A retired URL. GitHub Pages cannot issue a 301, so this is the static
+    equivalent: a canonical pointing at the surviving page plus an instant meta
+    refresh, which Google treats as a redirect and consolidates. It is kept out
+    of the sitemap and carries no ads."""
+    return (
+        f'<!doctype html>\n<html lang="en">\n<head>\n{STUB_MARKER}\n'
+        f'  <meta charset="utf-8">\n'
+        f'  <title>Public holidays in {esc(pretty)} — see {esc(parent_pretty)}</title>\n'
+        f'  <link rel="canonical" href="{SITE}/holidays/{parent_slug}">\n'
+        f'  <meta http-equiv="refresh" content="0; url=./{parent_slug}">\n'
+        f'</head>\n<body>\n'
+        f'  <p>{esc(pretty)} observes the {esc(parent_pretty)} public holiday calendar. '
+        f'Redirecting to <a href="./{parent_slug}">public holidays in {esc(parent_pretty)}</a>.</p>\n'
+        f'</body>\n</html>\n'
+    )
+
 def classify(d, name):
     """Notes that make a bare date genuinely useful for meeting planning."""
     tags = []
@@ -122,7 +205,7 @@ def classify(d, name):
         tags.append("date set by moon sighting")
     return tags
 
-def render_country(pretty, code, hub_cities):
+def render_country(pretty, code, hub_cities, follows=()):
     slug = f"{slugify(pretty)}.html"
     h = english_holidays(code, YEARS)
     rows = []
@@ -140,6 +223,23 @@ def render_country(pretty, code, hub_cities):
     description = (f"Every public holiday in {pretty} for {TODAY.year} and {TODAY.year+1}, "
                     f"with the weekday for each and which ones fall on a weekend. "
                     f"Check before scheduling an international meeting.")
+
+    # Territories whose page folded into this one. Naming them is what makes the
+    # merge honest: someone searching for Svalbard still lands somewhere that
+    # confirms the answer rather than on a page that never mentions it.
+    if follows:
+        listed = (follows[0] if len(follows) == 1
+                  else ", ".join(follows[:-1]) + " and " + follows[-1])
+        description += f" Also observed in {listed}."
+        follows_html = (
+            f'<section><h2>Where else these dates apply</h2>'
+            f'<p>The same calendar is observed in {esc(listed)}. '
+            f'{"It keeps" if len(follows) == 1 else "They keep"} the '
+            f'{esc(pretty)} public holiday schedule, so the dates below apply there too. '
+            f'Local observances can still be added on top, so confirm anything '
+            f'that falls close to a deadline.</p></section>\n')
+    else:
+        follows_html = ""
 
     def table(items):
         if not items:
@@ -219,6 +319,7 @@ def render_country(pretty, code, hub_cities):
         f'    {glance}\n'
         f'    <section><h2>{TODAY.year}</h2>{table(this_year)}</section>\n'
         f'    <section><h2>{TODAY.year + 1}</h2>{table(next_year)}</section>\n'
+        f'    {follows_html}'
         f'    <section><h2>How to use this</h2><p>A public holiday does not always mean nobody is '
         f'working, and a clear calendar does not mean your colleague is free. Treat these dates as a '
         f'prompt to ask rather than an answer — especially the ones marked as set by moon sighting, '
@@ -232,7 +333,12 @@ def render_country(pretty, code, hub_cities):
     )
     return slug, body
 
-def render_index(countries):
+def render_index(countries, retired=None):
+    # Retired territories stay listed and stay findable by the filter - they
+    # just point at the page that actually answers the question. Dropping them
+    # from the index would make the merge a loss of coverage rather than a
+    # removal of duplication.
+    retired = retired or {}
     title = f"Public Holidays by Country — {TODAY.year} and {TODAY.year+1} | Common Hours"
     description = (f"Public holiday dates for {len(countries)} countries, with weekdays and weekend "
                     f"clashes marked. Check before scheduling an international meeting.")
@@ -242,10 +348,20 @@ def render_index(countries):
         grouped.setdefault(cmap.get(code, "Other"), []).append((name, code))
     order = [c for c in CONTINENT_ORDER if c in grouped] + \
             [c for c in sorted(grouped) if c not in CONTINENT_ORDER]
+    pretty_of = {code: name for name, code in countries}
+
+    def link(name, code):
+        sov = retired.get(code)
+        if not sov:
+            return f'<li><a href="{slugify(name)}.html">{esc(name)}</a></li>'
+        parent = pretty_of.get(sov, "")
+        return (f'<li><a href="{slugify(parent)}.html" '
+                f'title="Observes the {esc(parent)} calendar">{esc(name)}'
+                f'<span class="muted"> · {esc(parent)} calendar</span></a></li>')
+
     groups_html = ""
     for cont in order:
-        items = "".join(f'<li><a href="{slugify(n)}.html">{esc(n)}</a></li>'
-                        for n, _ in sorted(grouped[cont]))
+        items = "".join(link(n, c) for n, c in sorted(grouped[cont]))
         groups_html += (f'<div class="link-group"><h3>{esc(cont)} ({len(grouped[cont])})</h3>'
                         f'<ul class="link-grid">{items}</ul></div>')
     body = (
@@ -280,11 +396,20 @@ def main():
     for c in CITIES:
         by_code.setdefault(c[2], []).append(c)
 
+    retired, followers = merge_plan(countries)
+    pretty_of = {code: name for name, code in countries}
+
     for pretty, code in countries:
-        slug, html = render_country(pretty, code, by_code.get(code, []))
+        if code in retired:
+            parent = pretty_of[retired[code]]
+            slug = f"{slugify(pretty)}.html"
+            html = render_stub(pretty, slug, parent, f"{slugify(parent)}.html")
+        else:
+            slug, html = render_country(pretty, code, by_code.get(code, []),
+                                        followers.get(code, ()))
         open(os.path.join(OUT_DIR, slug), "w", encoding="utf-8").write(html)
 
-    slug, html = render_index(countries)
+    slug, html = render_index(countries, retired)
     open(os.path.join(OUT_DIR, slug), "w", encoding="utf-8").write(html)
 
     total = write_sitemap()
@@ -294,7 +419,10 @@ def main():
         t = re.sub(r"<(script|style)[^>]*>.*?</\1>", "", t, flags=re.S | re.I)
         words += len(re.sub(r"<[^>]+>", " ", t).split())
     print(f"  countries:  {len(countries)}")
-    print(f"  pages:      {len(countries) + 1}")
+    print(f"  merged:     {len(retired)} territory page(s) retired into a sovereign's")
+    for terr, sov in sorted(retired.items(), key=lambda kv: pretty_of[kv[0]]):
+        print(f"                {pretty_of[terr]} -> {pretty_of[sov]}")
+    print(f"  pages:      {len(countries) + 1 - len(retired)} content, {len(retired)} redirect")
     print(f"  sitemap:    {total} URLs (all sections)")
     print(f"  words:      {words:,}")
 

@@ -567,12 +567,19 @@ def write_sitemap():
     urls = [f"{SITE}/"]
     urls += sorted(f"{SITE}/{f}" for f in os.listdir(REPO)
                    if f.endswith(".html") and f != "index.html")
+    def is_stub(path):
+        """Retired URLs redirect to the page that absorbed them. Listing a
+        redirect in the sitemap asks Google to index a page with no content."""
+        with open(path, encoding="utf-8") as fh:
+            return "<!--redirect-stub-->" in fh.read(400)
+
     for sub in ("time", "holidays"):
         d = os.path.join(REPO, sub)
         if not os.path.isdir(d): continue
         urls.append(f"{SITE}/{sub}/")
         urls += sorted(f"{SITE}/{sub}/{f}" for f in os.listdir(d)
-                       if f.endswith(".html") and f != "index.html")
+                       if f.endswith(".html") and f != "index.html"
+                       and not is_stub(os.path.join(d, f)))
     xml = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for u in urls:

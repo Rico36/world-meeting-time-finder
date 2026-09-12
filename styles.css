@@ -209,6 +209,9 @@ h1 { max-width: 640px; margin: 0 auto 10px; font-family: Georgia, "Times New Rom
 .link-grid a { display: block; padding: 5px 0; color: var(--text); text-decoration: none; border-bottom: 1px solid transparent; }
 .link-grid a:hover { color: var(--primary); border-bottom-color: var(--primary-soft); }
 .link-group[hidden], .link-grid li[hidden] { display: none; }
+/* Marks a territory that observes another country's calendar, so the row says
+   where the link actually goes before it is clicked. */
+.link-grid .muted { color: var(--muted); font-size: 0.85em; }
 .holiday-table { margin: 16px 0 0; border-top: 1px solid var(--border); }
 .holiday-table div { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding: 10px 2px; border-bottom: 1px solid var(--border); }
 .holiday-table .when { min-width: 148px; font-weight: 600; }

@@ -68,6 +68,7 @@ jobs:
           # link-and-word-count checks below would pass green while it happened.
           PUB = "ca-pub-4158152621897495"
           missing_ads = 0
+          stubs = 0
 
           for sub in ("time", "holidays"):
               d = os.path.join(".", sub)
@@ -77,6 +78,13 @@ jobs:
               for f in files:
                   if not f.endswith(".html"): continue
                   html = open(os.path.join(d, f), encoding="utf-8").read()
+                  # Redirect stubs are retired URLs pointing at the page that
+                  # absorbed them. They are deliberately ad-free and near
+                  # wordless, so they are excluded from both the ad assertion
+                  # and the word count rather than failing them.
+                  if "<!--redirect-stub-->" in html:
+                      stubs += 1
+                      continue
                   if PUB not in html or "adsbygoogle.js" not in html:
                       missing_ads += 1
                   body = re.sub(r"<(script|style)[^>]*>.*?</\1>", "", html, flags=re.S | re.I)
@@ -102,7 +110,14 @@ jobs:
           if missing_ads:
               problems.append(f"{missing_ads} page(s) lost the AdSense loader")
           else:
-              print("AdSense loader present on every generated page.")
+              print(f"AdSense loader present on every content page "
+                    f"({stubs} redirect stub(s) correctly ad-free).")
+
+          # A merge gone wrong - a bad threshold, a sovereign that lost its own
+          # data - would retire pages wholesale. Twelve is the expected number;
+          # this catches an order-of-magnitude mistake before it ships.
+          if stubs > 40:
+              problems.append(f"{stubs} redirect stubs - the merge threshold looks wrong")
 
           if problems:
               print(f"\n{len(problems)} problem(s):")
