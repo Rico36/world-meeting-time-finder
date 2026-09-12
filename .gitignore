@@ -20,3 +20,8 @@ Thumbs.db
 
 tools/.cache/
 worker/tail*.log
+
+# Python bytecode. Without this the monthly refresh workflow commits whatever
+# .pyc files the generators happen to produce on the runner.
+__pycache__/
+*.py[cod]

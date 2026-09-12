@@ -13,7 +13,16 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 PATTERN = re.compile(r'(styles\.css|app\.js|guides\.js)\?v=([0-9A-Za-z\-]+)')
 
-files = sorted(glob.glob(os.path.join(REPO, "*.html")))
+# The generated pages under time/ and holidays/ link the same three assets
+# (as ../styles.css?v=...), so they must be bumped too. Leaving them out is a
+# silent bug rather than a loud one: annual-content-refresh.yml runs the
+# generators and *then* this script, so the generated pages would be written
+# with the old version and never corrected, serving a stale stylesheet to 479
+# of the site's 490 pages until the next regeneration happened to pick the new
+# version up out of index.html.
+files = sorted(glob.glob(os.path.join(REPO, "*.html")) +
+               glob.glob(os.path.join(REPO, "time", "*.html")) +
+               glob.glob(os.path.join(REPO, "holidays", "*.html")))
 current = set()
 for f in files:
     current.update(m.group(2) for m in PATTERN.finditer(open(f, encoding="utf-8").read()))
@@ -39,4 +48,4 @@ for f in files:
 
 print("version:", version)
 print("previous:", ", ".join(sorted(current)) or "none")
-print("updated:", ", ".join(changed) if changed else "nothing (already current)")
+print("updated:", "%d file(s)" % len(changed) if changed else "nothing (already current)")

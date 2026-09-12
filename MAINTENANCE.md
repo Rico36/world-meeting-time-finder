@@ -192,6 +192,20 @@ for p in favicon.ico favicon.svg apple-touch-icon.png assets/og.jpg ads.txt robo
 done
 ```
 
+Every page must also agree on the `?v=` cache-busting version. `bump_assets.py`
+rewrites the root pages **and** the 485 generated ones under `time/` and
+`holidays/` — it originally did only the root, which meant the December workflow
+(generators first, bump second) wrote the generated pages with the *old* version
+and left 479 of the site's 490 pages serving a stale stylesheet. If this ever
+prints more than one line, something bumped a subset:
+
+```bash
+grep -rhoE 'styles\.css\?v=[0-9A-Za-z-]+' --include=*.html . | sort | uniq -c
+```
+
+The monthly refresh deliberately does not bump at all, so it should never move
+this version.
+
 ---
 
 ## 3. Annually: regenerate the place data
