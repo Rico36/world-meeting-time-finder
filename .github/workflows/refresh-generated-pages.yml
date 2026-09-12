@@ -49,7 +49,10 @@ jobs:
           pip install --quiet holidays
           python tools/gen_city_pairs.py
           python tools/gen_holiday_pages.py
-          python tools/bump_assets.py
+          # deliberately NOT bump_assets.py: this changes page content, not CSS or
+          # JS, so bumping would bust every visitor's cache for nothing - and since
+          # it rewrites a version on every run it would also make the "did anything
+          # change?" check below always true.
 
       - name: Sanity-check the output before it can reach the site
         run: |
