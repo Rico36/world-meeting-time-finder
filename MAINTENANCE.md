@@ -384,6 +384,40 @@ Each pair page opens with an **at-a-glance block** — time gap, best meeting
 time, next holiday — before any prose. A visitor from search gets the answer
 without reading; the detail still follows for anyone who wants it.
 
+### One clock format per screen
+
+Times appear in five places on the planner: the city rows, the result heading,
+the meeting summary, each timeline row label, and the timeline axis. They must
+all agree.
+
+They did not, and the reason is worth knowing before touching any of them.
+`hour:'numeric'` in `Intl.DateTimeFormat` resolves to **12-hour under `en` and
+24-hour under `fr`** — so the format silently followed whichever locale string
+was passed. The axis was worse: static markup reading `12 AM / 6 AM / 12 PM /
+6 PM`, which followed nothing. A French visitor got 24-hour times above a
+12-hour axis.
+
+The rules now:
+
+- `clockOpts()` in `app.js` is the single source. It passes `hour12` **explicitly**
+  rather than letting the locale decide. Never call `Intl.DateTimeFormat` with
+  `hour`/`minute` directly — go through `formatTime()` or `clockOpts()`.
+- The axis is built by `renderAxis()` from the same setting. It cannot be static.
+- 24-hour is padded to `hh:mm`; some locales otherwise write `0:00` next to
+  `22:00` in one column. 12-hour is left unpadded, because `08:00 AM` is not how
+  anyone writes it.
+- The default comes from the **visitor's own locale**, via
+  `Intl.…resolvedOptions().hour12`, not from the site language and not
+  hard-coded. Forcing 12-hour would show `8:00 PM` to a German visitor, which no
+  clock there displays; forcing 24-hour does the same to an American. The `12h` /
+  `24h` toggle in the header overrides it and persists in `commonHoursClock`.
+- The initial paint calls `applyClock(state.clock, false)` — `persist=false`, so
+  the locale-derived default is not frozen into storage. Only an actual click
+  persists a choice.
+
+`tests/clock_test.py` checks all five surfaces agree, in three locales, before
+and after toggling, and across a reload.
+
 ### Tests live in `tests/` — run them after any change
 
 ```bash

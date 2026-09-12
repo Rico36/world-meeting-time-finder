@@ -24,6 +24,7 @@ python tests/detect_test.py
 
 | Suite | Covers |
 |---|---|
+| `clock_test.py` | One clock format per screen, the 12/24h toggle, locale defaults |
 | `detect_test.py` | Visitor-city detection, legacy zone aliases, the geo upgrade and its refusals |
 | `feedback_test.py` | Feedback dialog: what leaves the browser, what does not, what the visitor is told |
 | `freshness_test.py` | Dates that recompute on load, map visibility |

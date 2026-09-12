@@ -12,6 +12,7 @@ the only coverage of visitor-city detection and the feedback form with them.
 import os, subprocess, sys, time
 
 SUITES = [
+    ("clock",     "One clock format per screen, and the 12/24h toggle"),
     ("detect",    "Visitor-city detection, zone aliases, geo upgrade"),
     ("feedback",  "Feedback dialog: what is sent, and what is not"),
     ("freshness", "Self-correcting dates and the map's visibility"),

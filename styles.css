@@ -52,6 +52,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .icon-button { min-width: 44px; min-height: 44px; border: 0; border-radius: 11px; background: transparent; color: var(--text); font-size: 21px; }
 .icon-button:hover { background: var(--primary-soft); }
 .icon-button.bordered { border: 1px solid var(--border); background: var(--surface-strong); }
+/* A text label, not a glyph: 21px is sized for "◐" and makes "12h" shout. */
+#clock-toggle { font-size: 13px; font-weight: 600; letter-spacing: 0.01em; color: var(--muted); }
+#clock-toggle:hover { color: var(--text); }
 
 .page-grid { width: min(884px, 100%); margin: 0 auto; padding: 38px 22px 60px; }
 main { min-width: 0; }

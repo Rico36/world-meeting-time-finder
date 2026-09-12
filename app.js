@@ -43,15 +43,32 @@ const builtInNationalHolidays = {
   IN:{'01-26':'Republic Day','08-15':'Independence Day','10-02':'Gandhi Jayanti'}
 };
 
-const state = { language:'en', selected:[], date:'', duration:60, slot:20, holidays:new Map(), suggestions:[], restoredFromUrl:false, holidayCheckId:0 };
-const els = Object.fromEntries(['language','city-list','city-search','city-search-label','city-suggestions','city-error','add-city','meeting-date','duration','results','result-label','results-title','meeting-summary','compromise-note','selected-day','time-slider','timeline','holiday-notices','copy-result','share-result','previous-day','next-day','earlier','later','theme-toggle'].map(id => [id.replaceAll('-','_'), document.getElementById(id)]));
+const state = { language:'en', clock:'12', selected:[], date:'', duration:60, slot:20, holidays:new Map(), suggestions:[], restoredFromUrl:false, holidayCheckId:0 };
+const els = Object.fromEntries(['language','city-list','city-search','city-search-label','city-suggestions','city-error','add-city','meeting-date','duration','results','result-label','results-title','meeting-summary','compromise-note','selected-day','time-slider','timeline','timeline-axis','holiday-notices','copy-result','share-result','previous-day','next-day','earlier','later','theme-toggle','clock-toggle'].map(id => [id.replaceAll('-','_'), document.getElementById(id)]));
 
 function t(key){ return qualityCopy[state.language]?.[key] || positioningCopy[state.language]?.[key] || pageCopy[state.language]?.[key] || copy[state.language]?.[key] || qualityCopy.en[key] || positioningCopy.en[key] || pageCopy.en[key] || copy.en[key] || key; }
 function track(event, detail={}){ window.dataLayer?.push({event, ...detail}); window.dispatchEvent(new CustomEvent('commonhours:analytics',{detail:{event,...detail}})); }
 function localParts(date, zone){ return Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(date).filter(p=>p.type!=='literal').map(p=>[p.type,p.value])); }
 function offsetAt(date, zone){ const p=localParts(date,zone); return Date.UTC(+p.year,+p.month-1,+p.day,+p.hour,+p.minute)-date.getTime(); }
 function zonedMidnight(dateText, zone){ const [y,m,d]=dateText.split('-').map(Number); const guess=new Date(Date.UTC(y,m-1,d,0,0)); return new Date(guess.getTime()-offsetAt(guess,zone)); }
-function formatTime(date, zone){ return new Intl.DateTimeFormat(state.language,{timeZone:zone,hour:'numeric',minute:'2-digit'}).format(date); }
+// ONE decision for clock format, used by every time on the page.
+//
+// Letting Intl pick per locale is what produced a page showing "12:21" in the
+// city rows, "5:30 PM" in a timeline label and a hardcoded "6 PM" axis all at
+// once: `hour:'numeric'` means 12-hour under `en` and 24-hour under `fr`, and
+// the axis was static markup that followed neither. Formats may differ between
+// visitors; they must never differ within one screen.
+//
+// `hour12` is passed explicitly rather than left to the locale, so the setting
+// is the only thing that decides.
+// 24-hour is padded to hh:mm on purpose. Left as 'numeric' some locales write
+// "0:00" next to "22:00" in the same column, which reads as ragged in the city
+// list. 12-hour stays unpadded because "08:00 AM" is not how anyone writes it.
+function clockOpts(zone){
+  return {timeZone:zone, hour:state.clock==='12'?'numeric':'2-digit',
+          minute:'2-digit', hour12:state.clock==='12'};
+}
+function formatTime(date, zone){ return new Intl.DateTimeFormat(state.language,clockOpts(zone)).format(date); }
 function formatDay(date, zone){ return new Intl.DateTimeFormat(state.language,{timeZone:zone,weekday:'short',month:'short',day:'numeric'}).format(date); }
 function isoLocal(date, zone){ const p=localParts(date,zone); return `${p.year}-${p.month}-${p.day}`; }
 function slotDate(slot){ const start=zonedMidnight(state.date,state.selected[0].zone); return new Date(start.getTime()+slot*30*60000); }
@@ -63,7 +80,40 @@ function renderCities(){
   els.city_search_label.textContent=state.selected.length?t('addCity'):t('startCity');
   if(typeof renderWorldMap==='function') renderWorldMap();
 }
-function setLanguage(lang){ state.language=copy[lang]?lang:'en'; document.documentElement.lang=state.language; els.language.value=state.language; document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n)}); document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{el.placeholder=t(el.dataset.i18nPlaceholder)}); renderCities(); if(state.selected.length>=2) renderResults(); localStorage.setItem('commonHoursLanguage',state.language); }
+// The axis spans one local day: midnight, 06:00, noon, 18:00, midnight. The
+// labels come from the same formatter as everything else, so switching the
+// clock format moves them with the rest of the page.
+function renderAxis(){
+  if(!els.timeline_axis) return;
+  const zone=state.selected[0]?.zone||'UTC';
+  const base=new Date(Date.UTC(2026,0,5)); // an arbitrary Monday; only the hours are read
+  const label=hour=>{
+    const d=new Date(base.getTime()+hour*3600000);
+    // minutes are dropped in 12-hour mode: the ticks are whole hours and
+    // "12 AM" carries the meaning that "12:00 AM" only lengthens
+    return new Intl.DateTimeFormat(state.language,{timeZone:'UTC',
+      hour:state.clock==='12'?'numeric':'2-digit',
+      minute:state.clock==='12'?undefined:'2-digit',
+      hour12:state.clock==='12'}).format(d);
+  };
+  els.timeline_axis.innerHTML=[0,6,12,18,24].map(h=>`<span>${label(h%24)}</span>`).join('');
+}
+
+// persist=false on the initial paint: storing the locale-derived default would
+// freeze it, so a visitor who later changes their system locale would keep a
+// clock format they never chose.
+function applyClock(clock, persist=true){
+  state.clock=clock==='24'?'24':'12';
+  if(persist) localStorage.setItem('commonHoursClock',state.clock);
+  if(els.clock_toggle){
+    els.clock_toggle.textContent=state.clock==='12'?'12h':'24h';
+    els.clock_toggle.setAttribute('aria-pressed',String(state.clock==='24'));
+  }
+  renderCities(); renderAxis();
+  if(state.selected.length>=2) renderResults();
+}
+
+function setLanguage(lang){ state.language=copy[lang]?lang:'en'; document.documentElement.lang=state.language; els.language.value=state.language; document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n)}); document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{el.placeholder=t(el.dataset.i18nPlaceholder)}); renderCities(); renderAxis(); if(state.selected.length>=2) renderResults(); localStorage.setItem('commonHoursLanguage',state.language); }
 function applyTheme(theme){ document.documentElement.dataset.theme=theme; localStorage.setItem('commonHoursTheme',theme); }
 
 function saveCities(){ localStorage.setItem('commonHoursCitiesV2',JSON.stringify(state.selected)); }
@@ -113,7 +163,9 @@ function zoneNow(zone){
   if(!zone) return {time:'',abbr:''};
   try{
     const now=new Date();
-    const time=new Intl.DateTimeFormat(state.language||'en',{timeZone:zone,hour:'numeric',minute:'2-digit'}).format(now);
+    // the search suggestions show a live local time too - same setting, or the
+    // clock a visitor picks a city by would disagree with the one they get
+    const time=new Intl.DateTimeFormat(state.language||'en',clockOpts(zone)).format(now);
     const parts=new Intl.DateTimeFormat('en-US',{timeZone:zone,timeZoneName:'short'}).formatToParts(now);
     const abbr=(parts.find(part=>part.type==='timeZoneName')||{}).value||'';
     return {time,abbr};
@@ -388,6 +440,7 @@ els.earlier.addEventListener('click',()=>shiftTime(-1)); els.later.addEventListe
 els.previous_day.addEventListener('click',()=>shiftDay(-1)); els.next_day.addEventListener('click',()=>shiftDay(1));
 els.language.addEventListener('change',()=>setLanguage(els.language.value));
 els.theme_toggle.addEventListener('click',()=>applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
+if(els.clock_toggle) els.clock_toggle.addEventListener('click',()=>applyClock(state.clock==='12'?'24':'12'));
 els.city_search.addEventListener('keydown',event=>{ if(event.key==='Enter'){ event.preventDefault(); els.add_city.click(); } });
 document.addEventListener('click',event=>{ if(!event.target.closest('.city-add-row')) els.city_suggestions.hidden=true; });
 els.timeline.addEventListener('click',event=>{ const trackEl=event.target.closest('[data-track]'); if(!trackEl)return; const box=trackEl.getBoundingClientRect(); state.slot=Math.max(0,Math.min(47,Math.round(((event.clientX-box.left)/box.width)*48))); renderResults(); });
@@ -395,7 +448,15 @@ els.copy_result.addEventListener('click',async()=>{await navigator.clipboard.wri
 els.share_result.addEventListener('click',async()=>{const url=meetingUrl().href; const text=`${els.result_label.textContent}: ${els.results_title.textContent} — ${els.meeting_summary.textContent}`; if(navigator.share) await navigator.share({title:'Common Hours',text,url}); else await navigator.clipboard.writeText(`${text}\n\n${url}`); track('result_shared');});
 
 const browserLanguage=(navigator.language||'en').slice(0,2); state.language=localStorage.getItem('commonHoursLanguage') || (copy[browserLanguage]?browserLanguage:'en');
-state.date=new Date().toISOString().slice(0,10); restoreOrDetectReference(); els.meeting_date.value=state.date; els.duration.value=String(state.duration); applyTheme(localStorage.getItem('commonHoursTheme') || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')); setLanguage(state.language); if(state.selected.length>=2){ if(state.restoredFromUrl) renderResults(); else calculate(); } else els.city_search.focus();
+// Default the clock to what the visitor's own locale actually uses, then let
+// the stored choice win. Hard-coding 12-hour for everyone would show "8:00 PM"
+// to a German or French visitor, which no clock there displays; hard-coding
+// 24-hour would do the same to an American. Intl already knows - ask it, and
+// keep the toggle for anyone whose habit differs from their locale.
+state.clock=localStorage.getItem('commonHoursClock')
+  || (new Intl.DateTimeFormat(navigator.language||'en',{hour:'numeric'})
+        .resolvedOptions().hour12 ? '12' : '24');
+state.date=new Date().toISOString().slice(0,10); restoreOrDetectReference(); els.meeting_date.value=state.date; els.duration.value=String(state.duration); applyTheme(localStorage.getItem('commonHoursTheme') || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')); applyClock(state.clock,false); setLanguage(state.language); if(state.selected.length>=2){ if(state.restoredFromUrl) renderResults(); else calculate(); } else els.city_search.focus();
 
 
 // Feedback dialog. Inert until index.html carries a Worker endpoint and a
