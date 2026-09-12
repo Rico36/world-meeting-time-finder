@@ -24,11 +24,11 @@ const pageCopy = {
 };
 
 const positioningCopy = {
-  en:{eyebrow:'Holiday-aware international meeting planner',headline:'Find a meeting time that works—and isn’t a holiday there.',subhead:'Compare local working hours and public holidays across countries before scheduling your international meeting.',guideDstTitle:'International public holidays and meeting planning',guideDstCopy:'Check holidays, date changes and daylight-saving shifts before you schedule across countries.',holidayCheck:'Holiday check by location',workingDay:'Working day',checkingHolidays:'Checking local holidays…',holidayUnavailable:'Holiday status unavailable',holidayEstimated:'expected date — the final day is set by moon sighting'},
-  es:{eyebrow:'Planificador internacional con festivos',headline:'Encuentra una hora que funcione y que allí no sea festivo.',subhead:'Compara horarios laborales y festivos entre países antes de programar tu reunión internacional.',guideDstTitle:'Festivos internacionales y planificación de reuniones',guideDstCopy:'Comprueba festivos, cambios de fecha y horario antes de programar entre países.',holidayCheck:'Comprobación de festivos por ubicación',workingDay:'Día laborable',checkingHolidays:'Comprobando festivos locales…',holidayUnavailable:'Estado de festivo no disponible',holidayEstimated:'fecha prevista; el día definitivo depende del avistamiento de la luna'},
-  fr:{eyebrow:'Planificateur international avec jours fériés',headline:'Trouvez une heure qui convient sans tomber sur un jour férié.',subhead:'Comparez les heures de travail et jours fériés entre pays avant de planifier votre réunion internationale.',guideDstTitle:'Jours fériés internationaux et planification',guideDstCopy:'Vérifiez jours fériés, changements de date et d’heure avant de planifier entre pays.',holidayCheck:'Vérification des jours fériés par lieu',workingDay:'Jour ouvré',checkingHolidays:'Vérification des jours fériés…',holidayUnavailable:'Statut du jour férié indisponible',holidayEstimated:'date prévue ; le jour définitif dépend de l’observation de la lune'},
-  de:{eyebrow:'Internationaler Planer mit Feiertagsprüfung',headline:'Finde eine Meetingzeit, die passt—und dort kein Feiertag ist.',subhead:'Vergleiche Arbeitszeiten und Feiertage verschiedener Länder, bevor du dein internationales Meeting planst.',guideDstTitle:'Internationale Feiertage und Meetingplanung',guideDstCopy:'Prüfe Feiertage, Datumswechsel und Zeitumstellungen vor der länderübergreifenden Planung.',holidayCheck:'Feiertagsprüfung nach Ort',workingDay:'Arbeitstag',checkingHolidays:'Lokale Feiertage werden geprüft…',holidayUnavailable:'Feiertagsstatus nicht verfügbar',holidayEstimated:'voraussichtliches Datum; der endgültige Tag wird durch Mondsichtung festgelegt'},
-  pt:{eyebrow:'Planejador internacional com feriados',headline:'Encontre um horário que funcione e não seja feriado por lá.',subhead:'Compare horários de trabalho e feriados entre países antes de marcar sua reunião internacional.',guideDstTitle:'Feriados internacionais e planejamento de reuniões',guideDstCopy:'Confira feriados, mudanças de data e de horário antes de agendar entre países.',holidayCheck:'Verificação de feriados por local',workingDay:'Dia útil',checkingHolidays:'Verificando feriados locais…',holidayUnavailable:'Status de feriado indisponível',holidayEstimated:'data prevista; o dia definitivo depende da observação da lua'}
+  en:{eyebrow:'Holiday-aware international meeting planner',headline:'Find a meeting time that works—and isn’t a holiday there.',subhead:'Compare local working hours and public holidays across countries before scheduling your international meeting.',guideDstTitle:'International public holidays and meeting planning',guideDstCopy:'Check holidays, date changes and daylight-saving shifts before you schedule across countries.',mapCaption:'Where everyone is right now',mapDesc:'A world map showing the selected cities and which parts of the world are currently in darkness.',mapNote:'Shaded areas are in night now. Positions are approximate; no time zone borders are drawn.',holidayCheck:'Holiday check by location',workingDay:'Working day',checkingHolidays:'Checking local holidays…',holidayUnavailable:'Holiday status unavailable',holidayEstimated:'expected date — the final day is set by moon sighting'},
+  es:{eyebrow:'Planificador internacional con festivos',headline:'Encuentra una hora que funcione y que allí no sea festivo.',subhead:'Compara horarios laborales y festivos entre países antes de programar tu reunión internacional.',guideDstTitle:'Festivos internacionales y planificación de reuniones',guideDstCopy:'Comprueba festivos, cambios de fecha y horario antes de programar entre países.',mapCaption:'Dónde está cada uno ahora mismo',mapDesc:'Un mapa del mundo con las ciudades seleccionadas y las zonas que ahora están de noche.',mapNote:'Las áreas sombreadas están de noche. Las posiciones son aproximadas; no se dibujan fronteras horarias.',holidayCheck:'Comprobación de festivos por ubicación',workingDay:'Día laborable',checkingHolidays:'Comprobando festivos locales…',holidayUnavailable:'Estado de festivo no disponible',holidayEstimated:'fecha prevista; el día definitivo depende del avistamiento de la luna'},
+  fr:{eyebrow:'Planificateur international avec jours fériés',headline:'Trouvez une heure qui convient sans tomber sur un jour férié.',subhead:'Comparez les heures de travail et jours fériés entre pays avant de planifier votre réunion internationale.',guideDstTitle:'Jours fériés internationaux et planification',guideDstCopy:'Vérifiez jours fériés, changements de date et d’heure avant de planifier entre pays.',mapCaption:'Où se trouve chacun en ce moment',mapDesc:'Une carte du monde montrant les villes sélectionnées et les régions actuellement dans la nuit.',mapNote:'Les zones ombrées sont dans la nuit. Les positions sont approximatives ; aucune frontière de fuseau n’est tracée.',holidayCheck:'Vérification des jours fériés par lieu',workingDay:'Jour ouvré',checkingHolidays:'Vérification des jours fériés…',holidayUnavailable:'Statut du jour férié indisponible',holidayEstimated:'date prévue ; le jour définitif dépend de l’observation de la lune'},
+  de:{eyebrow:'Internationaler Planer mit Feiertagsprüfung',headline:'Finde eine Meetingzeit, die passt—und dort kein Feiertag ist.',subhead:'Vergleiche Arbeitszeiten und Feiertage verschiedener Länder, bevor du dein internationales Meeting planst.',guideDstTitle:'Internationale Feiertage und Meetingplanung',guideDstCopy:'Prüfe Feiertage, Datumswechsel und Zeitumstellungen vor der länderübergreifenden Planung.',mapCaption:'Wo gerade alle sind',mapDesc:'Eine Weltkarte mit den ausgewählten Städten und den Regionen, in denen es gerade Nacht ist.',mapNote:'Schattierte Bereiche sind gerade in der Nacht. Positionen sind ungefähr; es werden keine Zeitzonengrenzen gezeichnet.',holidayCheck:'Feiertagsprüfung nach Ort',workingDay:'Arbeitstag',checkingHolidays:'Lokale Feiertage werden geprüft…',holidayUnavailable:'Feiertagsstatus nicht verfügbar',holidayEstimated:'voraussichtliches Datum; der endgültige Tag wird durch Mondsichtung festgelegt'},
+  pt:{eyebrow:'Planejador internacional com feriados',headline:'Encontre um horário que funcione e não seja feriado por lá.',subhead:'Compare horários de trabalho e feriados entre países antes de marcar sua reunião internacional.',guideDstTitle:'Feriados internacionais e planejamento de reuniões',guideDstCopy:'Confira feriados, mudanças de data e de horário antes de agendar entre países.',mapCaption:'Onde cada um está agora',mapDesc:'Um mapa-múndi com as cidades selecionadas e as regiões que estão em escuridão agora.',mapNote:'Áreas sombreadas estão em noite agora. As posições são aproximadas; nenhuma fronteira de fuso é desenhada.',holidayCheck:'Verificação de feriados por local',workingDay:'Dia útil',checkingHolidays:'Verificando feriados locais…',holidayUnavailable:'Status de feriado indisponível',holidayEstimated:'data prevista; o dia definitivo depende da observação da lua'}
 };
 
 const qualityCopy = {
@@ -172,7 +172,7 @@ async function searchPlaces(query){
     const remote=(data.results||[])
       .filter(place=>place.timezone && (!place.feature_code || /^PPL/.test(place.feature_code)))
       .sort((a,b)=>(b.population||0)-(a.population||0))
-      .map(place=>({name:place.name,country:place.country||'',admin:place.admin1||'',zone:place.timezone,countryCode:place.country_code||null,subdivision:null}));
+      .map(place=>({name:place.name,country:place.country||'',admin:place.admin1||'',zone:place.timezone,countryCode:place.country_code||null,subdivision:null,lat:typeof place.latitude==='number'?place.latitude:null,lon:typeof place.longitude==='number'?place.longitude:null}));
     const combined=dedupePlaces([...region,...local,...remote]).slice(0,8);
     state.suggestions=combined; renderSuggestions(combined,combined.length?regionLabel:t('noMatches'));
   }catch(error){ if(error.name!=='AbortError'){ const fallback=dedupePlaces([...region,...local]).slice(0,8); state.suggestions=fallback; renderSuggestions(fallback,fallback.length?regionLabel:t('noMatches')); } }
@@ -350,6 +350,7 @@ function renderResults(isCompromise=!slotIsPerfect()){
     return `<div class="timeline-row"><div class="timeline-city"><strong>${city.name}</strong><span>${formatDay(start,city.zone)} · ${formatTime(start,city.zone)}</span></div><div class="timeline-track" data-track><div class="slot-grid">${slots}</div><span class="meeting-band" style="left:${left}%;width:${width}%"></span></div></div>`;
   }).join('');
   document.querySelectorAll('.slot-grid').forEach(grid=>{ grid.style.display='grid'; grid.style.gridTemplateColumns='repeat(48,1fr)'; grid.style.position='absolute'; grid.style.inset='0'; });
+  renderWorldMap();
   updateMeetingUrl();
   checkHolidays(start);
 }
@@ -440,3 +441,102 @@ state.date=new Date().toISOString().slice(0,10); restoreOrDetectReference(); els
     }finally{ submit.disabled=false; }
   });
 })();
+
+
+// --- Day/night world map -----------------------------------------------------
+// Deliberately draws NO time zone boundaries. Real borders are jagged and
+// political (China spans five geographic bands on one zone; Nepal is +5:45), so
+// a drawn band map would be approximate in a way that undercuts a site that
+// hedges moon-sighting holiday dates for accuracy. This claims only two things,
+// both exactly true: these cities are here, and it is night here.
+// `var`, not `let`: renderResults() runs during page init - before this line is
+// reached - whenever cities arrive from a shared link or localStorage, and a
+// `let` here puts the cache in the temporal dead zone for exactly those paths.
+var mapDataPromise=null;
+function loadMapData(){
+  if(!mapDataPromise){
+    mapDataPromise=Promise.all([
+      fetch('assets/world-land.json').then(r=>r.ok?r.json():null),
+      fetch('assets/zone-points.json').then(r=>r.ok?r.json():null)
+    ]).then(([land,zones])=>({land,zones})).catch(()=>({land:null,zones:null}));
+  }
+  return mapDataPromise;
+}
+
+// Subsolar point for a given instant. Ported from the standard low-precision
+// solar position formulae and checked against the solstices and equinoxes:
+// June gives declination +23.44 with the north pole lit, December reverses it.
+function subsolarPoint(date){
+  const n=(date.getTime()/86400000)+2440587.5-2451545.0;
+  const rad=Math.PI/180;
+  const L=(280.460+0.9856474*n)%360;
+  const g=((357.528+0.9856003*n)%360)*rad;
+  const lam=(L+1.915*Math.sin(g)+0.020*Math.sin(2*g))*rad;
+  const eps=(23.439-0.0000004*n)*rad;
+  const dec=Math.asin(Math.sin(eps)*Math.sin(lam))/rad;
+  let raH=((Math.atan2(Math.cos(eps)*Math.sin(lam),Math.cos(lam))/rad)/15+24)%24;
+  const gmst=((18.697374558+24.06570982441908*n)%24+24)%24;
+  let lon=-15*(((gmst-raH)%24+24)%24);
+  lon=((lon+180)%360+360)%360-180;
+  return {dec,lon};
+}
+
+function cityPoint(city,zones){
+  if(typeof city.lat==='number'&&typeof city.lon==='number') return [city.lat,city.lon];
+  const z=zones&&(zones[city.zone]||zones[canonicalZone(city.zone)]);
+  return z?[z[0],z[1]]:null;
+}
+
+function renderWorldMap(){
+  const figure=document.getElementById('world-map-figure');
+  const svg=document.getElementById('world-map');
+  if(!figure||!svg) return;
+  if(state.selected.length<2){ figure.hidden=true; return; }
+  loadMapData().then(({land,zones})=>{
+    if(!land||!land.paths){ figure.hidden=true; return; }
+    const desc=svg.querySelector('desc');
+    const parts=[];
+    parts.push('<rect class="ocean" x="0" y="0" width="360" height="180"/>');
+    parts.push('<g class="land">'+land.paths.map(d=>'<path d="'+d+'"/>').join('')+'</g>');
+
+    // Night polygon: sample the terminator every 2 degrees of longitude, then
+    // close it along whichever pole edge is in darkness.
+    const {dec,lon:sslon}=subsolarPoint(new Date());
+    const decR=(Math.abs(dec)<1e-6?(dec>=0?1e-6:-1e-6):dec)*Math.PI/180;
+    const pts=[];
+    for(let lon=-180;lon<=180;lon+=2){
+      const h=(lon-sslon)*Math.PI/180;
+      const lat=Math.atan(-Math.cos(h)/Math.tan(decR))*180/Math.PI;
+      pts.push([lon+180,90-lat]);
+    }
+    // dec > 0 means the northern hemisphere is tilted sunward, so the dark cap
+    // is the southern one (y = 180 edge), and vice versa.
+    const edgeY=dec>0?180:0;
+    const d='M'+pts.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join('L')
+            +'L360 '+edgeY+'L0 '+edgeY+'Z';
+    parts.push('<path class="night" d="'+d+'"/>');
+
+    // City pins. Labels nudge vertically when they would collide.
+    const placed=[];
+    state.selected.forEach((city,index)=>{
+      const pt=cityPoint(city,zones);
+      if(!pt) return;
+      const x=pt[1]+180, y=90-pt[0];
+      let ly=y-4;
+      while(placed.some(p=>Math.abs(p.x-x)<44&&Math.abs(p.y-ly)<7)) ly-=7;
+      placed.push({x,y:ly});
+      const anchor=x>300?'end':(x<60?'start':'middle');
+      const lx=x>300?x-3:(x<60?x+3:x);
+      parts.push('<circle class="pin'+(city.detected?' pin-you':'')+'" cx="'+x.toFixed(1)+
+                 '" cy="'+y.toFixed(1)+'" r="2.6"/>');
+      parts.push('<text class="pin-label" x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+
+                 '" text-anchor="'+anchor+'">'+escapeHtml(city.name)+'</text>');
+    });
+    svg.innerHTML=(desc?desc.outerHTML:'')+parts.join('');
+    figure.hidden=false;
+  });
+}
+
+function escapeHtml(v){
+  return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
