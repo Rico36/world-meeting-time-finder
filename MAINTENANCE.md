@@ -384,6 +384,19 @@ Each pair page opens with an **at-a-glance block** — time gap, best meeting
 time, next holiday — before any prose. A visitor from search gets the answer
 without reading; the detail still follows for anyone who wants it.
 
+### Tests live in `tests/` — run them after any change
+
+```bash
+python -m http.server 8765          # from the repo root, in another shell
+python tests/run_all.py             # 8 suites, ~2 minutes
+python tests/run_all.py https://findcommonhours.com    # after a deploy
+```
+
+See `tests/README.md`. These were previously kept in a temporary scratchpad and
+three suites — detection, holiday and feedback, about 56 checks — were lost when
+it was cleaned. They have been rewritten from the code they cover. Anything
+worth running twice belongs in the repo.
+
 ### The holidays library is pinned — regenerate with the same version
 
 Both content workflows install `holidays==0.104`, and **the pin must match in
