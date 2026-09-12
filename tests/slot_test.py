@@ -40,11 +40,19 @@ def snap(pg):
       note:(document.getElementById('compromise-note').hidden?'':document.getElementById('compromise-note').textContent.trim()),
       picked:state.userPicked, slot:state.slot})""")
 
-def hour_of(summary, city):
-    m = re.search(r"(\d{1,2}):(\d\d)\s*(AM|PM)?[^·]*" + re.escape(city), summary)
+def first_hour(summary):
+    """The reference city's local hour, as a float.
+
+    Read positionally, not by city name: the reference row is whatever the
+    visitor's own geolocation resolves to, so against production it is
+    "Alpharetta" rather than the "New York" a timezone-only guess gives. Matching
+    on the name passed locally and failed on the live site.
+    """
+    m = re.match(r"\s*(\d{1,2}):(\d\d)(?:\s*(AM|PM))?", summary)
     if not m: return None
-    h = int(m.group(1)) % 12
-    if m.group(3) == "PM": h += 12
+    h = int(m.group(1))
+    if m.group(3):                       # 12-hour
+        h = h % 12 + (12 if m.group(3) == "PM" else 0)
     return h + int(m.group(2)) / 60
 
 with sync_playwright() as p:
@@ -61,13 +69,13 @@ with sync_playwright() as p:
     check("weekday overlap is found", s["label"] == "Inside working hours for everyone", s)
     check("no note when everyone is inside hours", s["note"] == "", s["note"])
     check("the computed slot is not attributed to the visitor", s["picked"] is False)
-    ny = hour_of(s["summary"], "New York")
-    check("New York lands in its working day", ny is not None and 9 <= ny <= 16, (ny, s["summary"]))
+    ny = first_hour(s["summary"])
+    check("the reference city lands in its working day", ny is not None and 9 <= ny <= 16, (ny, s["summary"]))
 
     # ---- THE REGRESSION: a weekend must not collapse to midnight ----
     set_day(pg, SATURDAY)
     s = snap(pg)
-    ny = hour_of(s["summary"], "New York")
+    ny = first_hour(s["summary"])
     check("Saturday does not propose a midnight meeting",
           ny is not None and not (0 <= ny < 5), (ny, s["summary"]))
     check("Saturday still proposes a civilised hour",
