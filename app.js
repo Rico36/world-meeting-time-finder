@@ -8,7 +8,7 @@ const cities = [
 ].map(([name,country,zone,countryCode,subdivision]) => ({name,country,zone,countryCode,subdivision}));
 
 const copy = {
-  en:{citiesIn:'Cities in {region}',language:'Language',advertisement:'Advertisement',eyebrow:'Free world meeting time finder',headline:'Find the best meeting time across time zones.',subhead:'Add two or more cities, choose a date and meeting length, and instantly see the most convenient hours for everyone.',plannerTitle:'Plan a meeting',startCity:'Where are you?',addCity:'Add another city',cityPlaceholder:'Type a city, state or country…',add:'Add',meetingDay:'Meeting day',duration:'Duration',autoUpdate:'Results update automatically',insideHours:'Inside working hours for everyone',closestToHours:'Closest to working hours',selectedTime:'Selected time',compromiseHint:'No hour on this day is inside normal working hours for every city. This is the closest match — try a nearby day, or adjust the time to compare alternatives.',outsideHint:'Outside normal working hours in {cities}. That may still suit everyone — this is flagged, not ruled out.',copy:'Copy',share:'Share',adjustTime:'Adjust meeting time',adjustHint:'Drag to explore, or move in 30-minute steps.',workingHours:'Normal working hours',selectedMeeting:'Selected meeting',legendHelp:'Green shows when a city is normally at work; the darker band is your chosen meeting.',simpleTitle:'Simple by design',simpleCopy:'No account required. Dates and times stay in your browser. Holiday checks use country-level public calendar data.',footer:'A friendly world meeting time finder.',selectCity:'Choose a specific city from the suggestions.',minimumCities:'Add at least two cities to compare.',holiday:'Public holiday',weekend:'Weekend',copied:'Copied!',searching:'Searching places…',noMatches:'No matching places found.'},
+  en:{citiesIn:'Cities in {region}',language:'Language',advertisement:'Advertisement',eyebrow:'Free world meeting time finder',headline:'Find the best meeting time across time zones.',subhead:'Add two or more cities, choose a date and meeting length, and instantly see the most convenient hours for everyone.',plannerTitle:'Plan a meeting',startCity:'Where are you?',addCity:'Add another city',cityPlaceholder:'Type a city, state or country…',add:'Add',meetingDay:'Meeting day',duration:'Duration',autoUpdate:'Results update automatically',insideHours:'Inside working hours for everyone',findCompromise:'Find Best Compromise',compromiseHint:'No hour on this day is inside normal working hours for every city. Adjust the time, or try a nearby day, to compare alternatives.',outsideHint:'Outside normal working hours in {cities}. That may still suit everyone — this is flagged, not ruled out.',copy:'Copy',share:'Share',adjustTime:'Adjust meeting time',adjustHint:'Drag to explore, or move in 30-minute steps.',workingHours:'Normal working hours',selectedMeeting:'Selected meeting',legendHelp:'Green shows when a city is normally at work; the darker band is your chosen meeting.',simpleTitle:'Simple by design',simpleCopy:'No account required. Dates and times stay in your browser. Holiday checks use country-level public calendar data.',footer:'A friendly world meeting time finder.',selectCity:'Choose a specific city from the suggestions.',minimumCities:'Add at least two cities to compare.',holiday:'Public holiday',weekend:'Weekend',copied:'Copied!',searching:'Searching places…',noMatches:'No matching places found.'},
 };
 
 const pageCopy = {
@@ -28,7 +28,7 @@ const builtInNationalHolidays = {
 };
 
 const state = { language:'en', clock:'12', selected:[], date:'', duration:60, slot:20, userPicked:false, holidays:new Map(), suggestions:[], restoredFromUrl:false, holidayCheckId:0 };
-const els = Object.fromEntries(['city-list','city-search','city-search-label','city-suggestions','city-error','add-city','meeting-date','duration','results','result-label','results-title','meeting-summary','compromise-note','selected-day','time-slider','timeline','timeline-axis','holiday-notices','copy-result','share-result','previous-day','next-day','earlier','later','theme-toggle','clock-toggle'].map(id => [id.replaceAll('-','_'), document.getElementById(id)]));
+const els = Object.fromEntries(['city-list','city-search','city-search-label','city-suggestions','city-error','add-city','meeting-date','duration','results','result-label','results-title','meeting-summary','compromise-note','selected-day','pick-day','time-slider','timeline','timeline-axis','holiday-notices','copy-result','share-result','previous-day','next-day','earlier','later','theme-toggle','clock-toggle'].map(id => [id.replaceAll('-','_'), document.getElementById(id)]));
 
 function t(key){ return qualityCopy.en[key] || positioningCopy.en[key] || pageCopy.en[key] || copy.en[key] || key; }
 function track(event, detail={}){ window.dataLayer?.push({event, ...detail}); window.dispatchEvent(new CustomEvent('commonhours:analytics',{detail:{event,...detail}})); }
@@ -124,12 +124,20 @@ function restoreFromUrl(){
   state.selected=restored;
   const date=params.get('date'); if(/^\d{4}-\d{2}-\d{2}$/.test(date||'')) state.date=date;
   const duration=Number(params.get('duration')); if([30,45,60,90,120].includes(duration)) state.duration=duration;
-  const slot=Number(params.get('slot')); if(Number.isInteger(slot)&&slot>=0&&slot<=47){ state.slot=slot; state.userPicked=true; }
+  const slotParam=params.get('slot');
+  // Number(null) is 0, and 0 is a valid slot - so the old unguarded check turned
+  // every link WITHOUT a slot into a midnight meeting. London and Paris, which
+  // overlap almost completely, opened at 12 AM.
+  if(slotParam!==null){ const slot=Number(slotParam);
+    if(Number.isInteger(slot)&&slot>=0&&slot<=47){ state.slot=slot; state.userPicked=true; } }
   // ?lang= is deliberately ignored rather than rejected: links shared before
   // the site went English-only still carry it, and they must still open.
   state.restoredFromUrl=true; saveCities(); return true;
 }
-function shareText(){ return `${els.result_label.textContent}: ${els.results_title.textContent} — ${els.meeting_summary.textContent}\n\n${meetingUrl().href}`; }
+// The heading is now an instruction to the person at the controls, which
+// makes no sense sent to a colleague - so a share carries the fact, or nothing.
+function shareHeadline(){ return slotIsPerfect() ? t('insideHours')+': ' : ''; }
+function shareText(){ return `${shareHeadline()}${els.results_title.textContent} — ${els.meeting_summary.textContent}\n\n${meetingUrl().href}`; }
 function addSelectedCity(city){
   if(state.selected.some(item=>item.name===city.name && item.zone===city.zone)){ els.city_error.textContent='Already added.'; return; }
   if(state.selected.length>=5){ els.city_error.textContent='Maximum 5 cities.'; return; }
@@ -420,8 +428,12 @@ function renderResults(){
   // "not working". Calling the result "best" asserted an optimum the code does not
   // look for, and "compromise" implied a sacrifice that a 6:30 start may not be.
   const outside=citiesOutsideHours();
-  els.result_label.textContent=t(state.userPicked ? 'selectedTime'
-                                : outside.length ? 'closestToHours' : 'insideHours');
+  // "Find Best Compromise" is deliberately an instruction, not a verdict. The
+  // tool does not find the compromise - it drops the slider somewhere defensible
+  // and the visitor decides from there. Phrased as a claim ("Best compromise")
+  // it was wrong twice over: it credited the visitor's own dragging to the tool,
+  // and findBestSlot() does not look for an optimum in the first place.
+  els.result_label.textContent=t(outside.length ? 'findCompromise' : 'insideHours');
   const names=outside.map(c=>c.name);
   const list=names.length<=1 ? names[0]
            : names.slice(0,-1).join(', ')+' and '+names[names.length-1];
@@ -474,13 +486,21 @@ els.duration.addEventListener('change',()=>{state.duration=Number(els.duration.v
 els.time_slider.addEventListener('input',()=>{state.slot=Number(els.time_slider.value);state.userPicked=true;renderResults();});
 els.earlier.addEventListener('click',()=>shiftTime(-1)); els.later.addEventListener('click',()=>shiftTime(1));
 els.previous_day.addEventListener('click',()=>shiftDay(-1)); els.next_day.addEventListener('click',()=>shiftDay(1));
+// The arrows step one day at a time; this opens the real picker, so a date weeks
+// out is one interaction instead of twenty. showPicker() needs a user gesture
+// and is not universal, so a failure falls back to the date field itself.
+if(els.pick_day) els.pick_day.addEventListener('click',()=>{
+  const field=els.meeting_date;
+  try{ if(typeof field.showPicker==='function'){ field.showPicker(); return; } }catch(error){}
+  field.focus(); field.scrollIntoView({block:'center',behavior:'smooth'});
+});
 els.theme_toggle.addEventListener('click',()=>applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
 if(els.clock_toggle) els.clock_toggle.addEventListener('click',()=>applyClock(state.clock==='12'?'24':'12'));
 els.city_search.addEventListener('keydown',event=>{ if(event.key==='Enter'){ event.preventDefault(); els.add_city.click(); } });
 document.addEventListener('click',event=>{ if(!event.target.closest('.city-add-row')) els.city_suggestions.hidden=true; });
 els.timeline.addEventListener('click',event=>{ const trackEl=event.target.closest('[data-track]'); if(!trackEl)return; const box=trackEl.getBoundingClientRect(); state.slot=Math.max(0,Math.min(47,Math.round(((event.clientX-box.left)/box.width)*48))); state.userPicked=true; renderResults(); });
 els.copy_result.addEventListener('click',async()=>{await navigator.clipboard.writeText(shareText()); els.copy_result.textContent=t('copied'); setTimeout(()=>els.copy_result.textContent=t('copy'),1200); track('result_copied');});
-els.share_result.addEventListener('click',async()=>{const url=meetingUrl().href; const text=`${els.result_label.textContent}: ${els.results_title.textContent} — ${els.meeting_summary.textContent}`; if(navigator.share) await navigator.share({title:'Common Hours',text,url}); else await navigator.clipboard.writeText(`${text}\n\n${url}`); track('result_shared');});
+els.share_result.addEventListener('click',async()=>{const url=meetingUrl().href; const text=`${shareHeadline()}${els.results_title.textContent} — ${els.meeting_summary.textContent}`; if(navigator.share) await navigator.share({title:'Common Hours',text,url}); else await navigator.clipboard.writeText(`${text}\n\n${url}`); track('result_shared');});
 
 // A visitor who chose Spanish before still has it in localStorage; clear it so
 // they are not left on a language the site no longer serves.
@@ -493,7 +513,8 @@ try{ localStorage.removeItem('commonHoursLanguage'); }catch(error){}
 state.clock=localStorage.getItem('commonHoursClock')
   || (new Intl.DateTimeFormat(navigator.language||'en',{hour:'numeric'})
         .resolvedOptions().hour12 ? '12' : '24');
-state.date=new Date().toISOString().slice(0,10); restoreOrDetectReference(); els.meeting_date.value=state.date; els.duration.value=String(state.duration); applyTheme(localStorage.getItem('commonHoursTheme') || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')); applyClock(state.clock,false); setLanguage(); if(state.selected.length>=2){ if(state.restoredFromUrl) renderResults(); else calculate(); } else els.city_search.focus();
+state.date=new Date().toISOString().slice(0,10); restoreOrDetectReference(); els.meeting_date.value=state.date; els.duration.value=String(state.duration); applyTheme(localStorage.getItem('commonHoursTheme') || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')); applyClock(state.clock,false); setLanguage(); if(state.selected.length>=2){ // only skip the computation when the link actually named a time
+  if(state.restoredFromUrl&&state.userPicked) renderResults(); else calculate(); } else els.city_search.focus();
 
 
 // Feedback dialog. Inert until index.html carries a Worker endpoint and a

@@ -135,6 +135,12 @@ h1 { max-width: 640px; margin: 0 auto 10px; font-family: Georgia, "Times New Rom
 .results-heading p:last-child { margin: 5px 0 0; color: var(--muted); }
 .result-actions { display: flex; gap: 7px; }
 .day-stepper { width: min(100%, 410px); min-height: 48px; margin: 20px auto 0; display: grid; grid-template-columns: 46px 1fr 46px; align-items: center; text-align: center; border-radius: 13px; background: var(--primary-soft); }
+/* The arrows only step one day. This makes the date itself open the calendar,
+   so a date weeks away does not mean twenty clicks. */
+.day-pick { display: inline-flex; align-items: center; justify-content: center; gap: 7px; width: 100%; min-height: 44px; padding: 0 8px; border: 0; border-radius: 9px; background: transparent; color: inherit; font: inherit; }
+.day-pick:hover { background: color-mix(in srgb, var(--primary) 14%, transparent); }
+.day-pick .cal-icon { flex: none; color: var(--primary); opacity: .8; }
+.day-pick:hover .cal-icon { opacity: 1; }
 .time-adjuster { margin-top: 16px; display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; gap: 12px; }
 .time-adjuster label { display: block; }
 .time-adjuster input { width: 100%; accent-color: var(--primary); }

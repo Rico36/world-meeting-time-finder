@@ -49,7 +49,7 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="styles.css?v=20260912-17">
+  <link rel="stylesheet" href="styles.css?v=20260912-19">
 </head>
 <body data-geo-endpoint="https://findcommonhours-geo.ricky-freyre.workers.dev">
   <header class="site-header">
@@ -125,7 +125,13 @@
 
         <div class="day-stepper" aria-label="Change meeting day">
           <button class="icon-button" id="previous-day" type="button" aria-label="Previous day">‹</button>
-          <strong id="selected-day">—</strong>
+          <button type="button" class="day-pick" id="pick-day" aria-label="Choose a meeting date from a calendar">
+            <strong id="selected-day">—</strong>
+            <svg class="cal-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">
+              <rect x="1.5" y="3" width="13" height="11.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M1.5 6.5h13M5 1.5v3M11 1.5v3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </button>
           <button class="icon-button" id="next-day" type="button" aria-label="Next day">›</button>
         </div>
 
@@ -235,7 +241,7 @@
     </form>
   </dialog>
 
-  <script src="app.js?v=20260912-17"></script>
+  <script src="app.js?v=20260912-19"></script>
   <!-- Load analytics after the page is usable so it does not delay the initial render. -->
   <script>
     window.addEventListener('load',()=>{const script=document.createElement('script');script.src='https://static.cloudflareinsights.com/beacon.min.js';script.dataset.cfBeacon='{"token":"1fa3e675ae4f4a6ca7406cb3d20594f0"}';document.head.append(script);},{once:true});

@@ -80,9 +80,10 @@ with sync_playwright() as p:
           ny is not None and not (0 <= ny < 5), (ny, s["summary"]))
     check("Saturday still proposes a civilised hour",
           ny is not None and 7 <= ny <= 19, (ny, s["summary"]))
-    check("Saturday is labelled as closest, not as a fit",
-          s["label"] == "Closest to working hours", s["label"])
-    check("Saturday explains why", "closest" in s["note"].lower(), s["note"])
+    check("Saturday invites the visitor to choose, rather than claiming a verdict",
+          s["label"] == "Find Best Compromise", s["label"])
+    check("Saturday explains why without claiming a best",
+          "No hour on this day" in s["note"] and "closest match" not in s["note"], s["note"])
 
     # ---- dragging the time makes it the visitor's, not the tool's ----
     set_day(pg, FRIDAY)
@@ -90,8 +91,11 @@ with sync_playwright() as p:
     pg.click("#later"); pg.wait_for_timeout(500)
     after = snap(pg)
     check("stepping the time marks it visitor-chosen", after["picked"] is True)
-    check("the heading stops claiming the tool chose it",
-          after["label"] == "Selected time", after["label"])
+    # The label now reflects one fact only - is everyone inside working hours -
+    # so a nudge that stays inside the window must keep saying so. It must never
+    # become a claim about who chose the time.
+    check("a nudge inside the window keeps the factual label",
+          after["label"] == "Inside working hours for everyone", after["label"])
     check("the slot actually moved", after["slot"] == before["slot"] + 1, (before["slot"], after["slot"]))
 
     # drag far outside working hours: it is flagged, not judged
@@ -99,7 +103,8 @@ with sync_playwright() as p:
                 "document.getElementById('time-slider').dispatchEvent(new Event('input'));}")
     pg.wait_for_timeout(500)
     s = snap(pg)
-    check("a 1 AM pick is still labelled as the visitor's", s["label"] == "Selected time", s)
+    check("a 1 AM pick is not dressed up as a recommendation",
+          s["label"] == "Find Best Compromise", s)
     check("it names who is outside working hours",
           "Outside normal working hours in" in s["note"], s["note"])
     check("it does not rule the choice out",
@@ -116,8 +121,41 @@ with sync_playwright() as p:
             wait_until="networkidle", timeout=60000)
     pg.wait_for_timeout(1600)
     s = snap(pg)
-    check("a shared slot is not presented as computed",
-          s["label"] == "Selected time" and s["picked"] is True, s)
+    check("a shared slot is honoured", s["picked"] is True and s["slot"] == 4, s)
+
+    # A link naming only cities must still get a computed baseline. Number(null)
+    # is 0 and 0 is a valid slot, so the unguarded check turned every such link
+    # into a midnight meeting - London and Paris, which overlap almost entirely,
+    # opened at 12 AM.
+    pg.goto(f"{BASE}/?city=London%7CEurope%2FLondon%7CGB%7C%7CUnited%20Kingdom"
+            f"&city=Paris%7CEurope%2FParis%7CFR%7C%7CFrance&date={FRIDAY}",
+            wait_until="networkidle", timeout=60000)
+    pg.wait_for_timeout(1800)
+    s = snap(pg)
+    check("a link without a slot is not treated as a midnight pick", s["picked"] is False, s)
+    check("a link without a slot gets a computed time",
+          s["label"] == "Inside working hours for everyone", s)
+    lon = first_hour(s["summary"])
+    check("London lands in its working day, not at midnight",
+          lon is not None and 9 <= lon <= 16, (lon, s["summary"]))
+
+    # ---- the calendar button beside the day arrows ----
+    pg.goto(f"{BASE}/", wait_until="networkidle", timeout=60000); pg.wait_for_timeout(1100)
+    add_city(pg, "London"); pg.wait_for_timeout(1200)
+    cal = pg.evaluate("""()=>{const b=document.getElementById('pick-day');
+        if(!b) return null; const r=b.getBoundingClientRect();
+        const st=b.closest('.day-stepper').getBoundingClientRect();
+        return {h:r.height, centered:Math.abs((r.left+r.right)/2-(st.left+st.right)/2)<4,
+                icon:!!b.querySelector('svg.cal-icon'), label:b.getAttribute('aria-label')||''};}""")
+    check("the day stepper has a calendar button", cal is not None)
+    check("it carries a calendar icon", cal and cal["icon"], cal)
+    check("it sits between the arrows", cal and cal["centered"], cal)
+    check("it is a real tap target", cal and cal["h"] >= 40, cal)
+    check("it is labelled for screen readers", cal and "date" in cal["label"].lower(), cal)
+    before = pg.input_value("#meeting-date")
+    pg.click("#pick-day"); pg.wait_for_timeout(600)
+    check("opening the picker does not change the date on its own",
+          pg.input_value("#meeting-date") == before)
 
     check("no page errors", not errs, errs[:3])
     b.close()

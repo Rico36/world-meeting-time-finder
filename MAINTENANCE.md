@@ -475,17 +475,40 @@ Now:
   penalty for a weekend — an 8 AM Monday is a meeting you can ask for, an 11 AM
   Sunday is not. `findBestSlot()` minimises the total. Saturday New York/London
   now returns 9 AM / 2 PM instead of midnight.
-- Three labels, each factually true: **Inside working hours for everyone**
-  (penalty 0), **Closest to working hours** (the tool chose, nothing fits), and
-  **Selected time** (a person chose it — dragged, stepped, clicked the timeline,
-  or arrived via a shared `?slot=` link).
+- Two labels. **Inside working hours for everyone** when the penalty is zero;
+  otherwise **Find Best Compromise** — deliberately an *instruction*, not a
+  verdict. The tool does not find the compromise: it drops the slider somewhere
+  defensible and the visitor decides from there. Phrasing it as a claim was
+  wrong twice over, since it also credited the visitor's own dragging to the
+  tool. As an imperative it cannot make that mistake, which is why the separate
+  "Selected time" state is no longer needed.
+- The heading is an instruction to whoever is at the controls, so **it is kept
+  out of shared text** — `shareHeadline()` prefixes a share with "Inside working
+  hours for everyone" when that is true, and nothing otherwise. Sending
+  "Find Best Compromise: 9 AM…" to a colleague would be nonsense.
 - When a visitor picks an hour outside working time it is *flagged, not judged*:
   "Outside normal working hours in X and Y. That may still suit everyone — this
   is flagged, not ruled out." A 6:30 start can be perfectly acceptable, which is
   the same philosophy already applied to holiday notices.
 
-`state.userPicked` is what separates the second and third labels — set on every
-path where a person moves the time, cleared in `calculate()`.
+`state.userPicked` no longer drives the heading, but it still selects the note:
+before anyone touches the slider it explains *why* nothing fits, and afterwards
+it names who is currently outside working hours. It is set on every path where a
+person moves the time and cleared in `calculate()`.
+
+**A shared link without a `?slot=` opened at midnight.** `params.get('slot')`
+returns `null` when absent, `Number(null)` is `0`, and `0` passes
+`Number.isInteger(slot) && slot >= 0 && slot <= 47`. So every link that named
+only cities was treated as an explicit midnight pick — London and Paris, which
+overlap almost completely, opened at 12 AM. The parameter is now checked for
+presence first, and a link with no time falls through to `calculate()` for a
+computed baseline.
+
+**The day stepper has a calendar button.** The arrows move one day at a time, so
+a date three weeks out was twenty clicks. `#pick-day` wraps the date text and a
+calendar icon and calls `showPicker()` on the existing `#meeting-date` field —
+it needs a user gesture and is not universal, so a failure falls back to
+focusing that field.
 `tests/slot_test.py` covers all of it, including the Saturday-midnight case.
 
 ### One clock format per screen
