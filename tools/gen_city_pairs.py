@@ -379,12 +379,33 @@ def render_pair_page(city_a, city_b, all_cities):
     related_list = "".join(f'<li><a href="{href}">{esc(label)}</a></li>'
                             for label, href in related_pairs_for(city_a, city_b, all_cities))
 
+    # Answer first. Someone arriving from search wants the gap and a time, not
+    # three paragraphs; the prose still follows for anyone who needs the detail.
+    if ov:
+        meet_big, meet_sub = f"{hm(ov[0])} / {hm(ov[1])}", f"{name_a} / {name_b}"
+    else:
+        c_ = best_compromise(oa, ob)
+        meet_big, meet_sub = f"{hm(c_[0])} / {hm(c_[1])}", f"{name_a} / {name_b} — no shared 9–5"
+    next_hol = min([h for h in (hol_a[:1] + hol_b[:1])], key=lambda r: r[0]) if (hol_a or hol_b) else None
+    next_hol_city = name_a if (hol_a and next_hol and next_hol == hol_a[0]) else name_b
+    glance = (
+        '<div class="at-a-glance">'
+        f'<div><span class="label">Time difference</span><strong>'
+        f'{"Same time" if typical == 0 else gap_h_str + " hours"}</strong>'
+        f'<span class="sub">{"identical local clocks" if typical == 0 else esc(ahead) + " ahead"}</span></div>'
+        f'<div><span class="label">Best meeting time</span><strong>{meet_big}</strong>'
+        f'<span class="sub">{esc(meet_sub)}</span></div>'
+        + (f'<div><span class="label">Next public holiday</span><strong>{fmt_date(next_hol[0])}</strong>'
+           f'<span class="sub">{esc(next_hol[1])} — {esc(next_hol_city)}</span></div>' if next_hol else "")
+        + '</div>')
+
     body = (
         f'{head(title, description, "time/" + slug, 1)}\n<body>\n  {header(1)}\n'
         f'  <main class="content-page">\n'
         f'    <p class="eyebrow">Time zone meeting planner</p>\n'
         f'    <h1>{esc(name_a)} and {esc(name_b)}: plan a meeting across time zones</h1>\n'
         f'    <p class="lede">{esc(description)}</p>\n'
+        f'    {glance}\n'
         f'    <a class="primary-button" href="{esc(meeting_url(city_a, city_b))}">Open in the free planner</a>\n'
         f'    <section><h2>The time difference</h2><p>{gap_para}</p>{seg_list}</section>\n'
         f'    <section><h2>Best time to meet</h2>{meeting_section}</section>\n'
@@ -484,13 +505,18 @@ def render_index(all_cities, pairs):
     )
     return "index.html", body
 
-def write_sitemap(pair_slugs, city_slugs):
+def write_sitemap():
+    """Scan the repo for what actually exists rather than being handed lists, so
+    whichever generator runs last still produces a complete, correct sitemap."""
     today = TODAY.isoformat()
     urls = [f"{SITE}/", f"{SITE}/privacy.html", f"{SITE}/meeting-time-zone-converter.html",
-            f"{SITE}/international-meeting-planner.html", f"{SITE}/daylight-saving-holidays.html",
-            f"{SITE}/time/"]
-    urls += [f"{SITE}/time/{s}" for s in city_slugs]
-    urls += [f"{SITE}/time/{s}" for s in pair_slugs]
+            f"{SITE}/international-meeting-planner.html", f"{SITE}/daylight-saving-holidays.html"]
+    for sub in ("time", "holidays"):
+        d = os.path.join(REPO, sub)
+        if not os.path.isdir(d): continue
+        urls.append(f"{SITE}/{sub}/")
+        urls += sorted(f"{SITE}/{sub}/{f}" for f in os.listdir(d)
+                       if f.endswith(".html") and f != "index.html")
     xml = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for u in urls:
@@ -526,7 +552,7 @@ def main():
     slug, html = render_index(CITIES, pairs)
     open(os.path.join(OUT_DIR, slug), "w", encoding="utf-8").write(html)
 
-    total_urls = write_sitemap([p[2] for p in pairs], city_slugs)
+    total_urls = write_sitemap()
     words = 0
     for f in os.listdir(OUT_DIR):
         t = open(os.path.join(OUT_DIR, f), encoding="utf-8").read()

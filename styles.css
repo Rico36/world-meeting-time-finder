@@ -182,6 +182,16 @@ h1 { max-width: 640px; margin: 0 auto 10px; font-family: Georgia, "Times New Rom
 .guide-points { margin: 12px 0 0; padding-left: 22px; }
 .guide-note { margin-top: 28px; padding: 18px 20px; border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0; background: var(--primary-soft); }
 .guide-note p { margin: 0; color: var(--text); }
+.at-a-glance { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 22px 0 10px; }
+.at-a-glance div { padding: 14px 16px; border: 1px solid var(--border); border-radius: 13px; background: var(--surface-strong); }
+.at-a-glance .label { display: block; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.at-a-glance strong { display: block; margin: 6px 0 2px; font-size: 22px; line-height: 1.2; }
+.at-a-glance span.sub { display: block; color: var(--muted); font-size: 13px; }
+.holiday-table { margin: 16px 0 0; border-top: 1px solid var(--border); }
+.holiday-table div { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding: 10px 2px; border-bottom: 1px solid var(--border); }
+.holiday-table .when { min-width: 148px; font-weight: 600; }
+.holiday-table .what { flex: 1 1 200px; color: var(--muted); }
+.holiday-table .tag { color: var(--primary); font-size: 12px; font-weight: 700; }
 .guide-nav { margin-top: 42px; padding-top: 24px; border-top: 1px solid var(--border); }
 .guide-nav h2 { margin-top: 0; }
 .guide-nav a { color: var(--primary); }

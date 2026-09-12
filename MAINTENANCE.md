@@ -332,6 +332,60 @@ independently defensible hubs.
 If more pages are needed later, add cities to `CITIES` in the generator; the
 pair count grows as n(n−1)/2, so 25 cities would give 300 pairs.
 
+Each pair page opens with an **at-a-glance block** — time gap, best meeting
+time, next holiday — before any prose. A visitor from search gets the answer
+without reading; the detail still follows for anyone who wants it.
+
+### Public holidays by country
+
+`tools/gen_holiday_pages.py` generates `holidays/` — one page per country for
+**246 countries** plus an index, about 105,000 words. Built to be a *tool*
+rather than an article: a scannable list with the weekday for every date, a
+flag when a holiday lands on a weekend or creates a likely long weekend, and a
+marker for dates python-holidays reports as estimated (the moon-sighting ones).
+
+```bash
+python tools/gen_holiday_pages.py     # rewrites holidays/ and sitemap.xml
+```
+
+Countries whose national list is six days or fewer get a line explaining that
+the rest are usually set regionally — Switzerland has four national days and
+the rest by canton, so without that note the page reads as broken rather than
+correct.
+
+No data for Ukraine or three uninhabited territories; those are skipped.
+
+**Both generators call the same `write_sitemap()`**, which scans `time/` and
+`holidays/` on disk rather than being handed a list — so whichever runs last
+still produces a complete sitemap and the two can never drift. Currently 484
+URLs.
+
+### Checking generated output
+
+After running either generator, verify links before pushing. This caught 934
+broken links the first time:
+
+```bash
+python - <<'PY'
+import os, re
+root = "."
+for sub in ("time", "holidays"):
+    d = os.path.join(root, sub); files = set(os.listdir(d))
+    for f in files:
+        if not f.endswith(".html"): continue
+        for h in re.findall(r'href="([^"]+)"', open(os.path.join(d, f), encoding="utf-8").read()):
+            h = h.split("?")[0].split("#")[0]
+            if not h or h.startswith("http") or h.endswith("/"): continue
+            if h.startswith("../"):
+                if not os.path.exists(os.path.join(root, h[3:])): print("BROKEN", sub, f, h)
+            elif h.endswith(".html") and h not in files: print("BROKEN", sub, f, h)
+print("done")
+PY
+```
+
+Strip the query string first — `styles.css?v=…` is not a missing file, and a
+checker that forgets this reports several hundred false positives.
+
 ### Multilingual SEO
 
 Five languages, one URL, no `hreflang`, canonical always `/`. The translations
