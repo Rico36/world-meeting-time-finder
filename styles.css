@@ -187,6 +187,17 @@ h1 { max-width: 640px; margin: 0 auto 10px; font-family: Georgia, "Times New Rom
 .at-a-glance .label { display: block; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .at-a-glance strong { display: block; margin: 6px 0 2px; font-size: 22px; line-height: 1.2; }
 .at-a-glance span.sub { display: block; color: var(--muted); font-size: 13px; }
+.filter-row { position: sticky; top: 0; z-index: 5; margin: 18px 0 6px; padding: 10px 0; background: var(--surface); }
+.filter-row input { width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: 11px; background: var(--surface-strong); color: var(--text); font: inherit; }
+.filter-row input:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+.filter-count { margin: 6px 2px 0; color: var(--muted); font-size: 13px; }
+.link-group { margin-top: 26px; }
+.link-group h3 { margin: 0 0 10px; font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--primary); }
+.link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 2px 16px; margin: 0; padding: 0; list-style: none; }
+.link-grid li { margin: 0; }
+.link-grid a { display: block; padding: 5px 0; color: var(--text); text-decoration: none; border-bottom: 1px solid transparent; }
+.link-grid a:hover { color: var(--primary); border-bottom-color: var(--primary-soft); }
+.link-group[hidden], .link-grid li[hidden] { display: none; }
 .holiday-table { margin: 16px 0 0; border-top: 1px solid var(--border); }
 .holiday-table div { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding: 10px 2px; border-bottom: 1px solid var(--border); }
 .holiday-table .when { min-width: 148px; font-weight: 600; }

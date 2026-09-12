@@ -481,14 +481,38 @@ def render_city_hub(city, all_cities):
     )
     return slug, body
 
+FILTER_SCRIPT = """(function(){
+  var box=document.getElementById('filter'),count=document.getElementById('filter-count');
+  if(!box) return;
+  var scope=document.getElementById('filter-target')||document;
+  var items=[].slice.call(scope.querySelectorAll('.link-grid li')),
+      groups=[].slice.call(scope.querySelectorAll('.link-group')),total=items.length;
+  items.forEach(function(li){ li.dataset.k=(li.textContent||'').toLowerCase(); });
+  function run(){
+    var q=box.value.trim().toLowerCase(),shown=0;
+    items.forEach(function(li){ var hit=!q||li.dataset.k.indexOf(q)!==-1; li.hidden=!hit; if(hit)shown++; });
+    groups.forEach(function(g){ g.hidden=!g.querySelector('li:not([hidden])'); });
+    count.textContent=q?(shown+' of '+total+' shown'):(total+' in total');
+  }
+  box.addEventListener('input',run); run();
+})();"""
+
 def render_index(all_cities, pairs):
     title = "City Time Zone Pairs — Meeting Planner Index | Common Hours"
     description = (f"Time differences, best meeting windows, clock changes and public holidays for "
                     f"{len(pairs)} pairs of major world business hubs.")
-    city_links = "".join(f'<li><a href="{slugify(c[0])}.html">{esc(c[0])}</a> — {esc(c[1])} ({esc(c[3])})</li>'
-                          for c in all_cities)
-    pair_links = "".join(f'<li><a href="{href}">{esc(a[0])} and {esc(b[0])}</a></li>'
-                          for a, b, href in pairs)
+    city_links = "".join(f'<li><a href="{slugify(c[0])}.html">{esc(c[0])}</a></li>'
+                          for c in sorted(all_cities, key=lambda c: c[0]))
+    # group pairs by first city so the list is browsable rather than a 210-line wall
+    by_city = {}
+    for a, b, href in pairs:
+        by_city.setdefault(a[0], []).append((f"{a[0]} and {b[0]}", href))
+    groups_html = ""
+    for city in sorted(by_city):
+        items = "".join(f'<li><a href="{href}">{esc(label)}</a></li>'
+                        for label, href in sorted(by_city[city]))
+        groups_html += (f'<div class="link-group"><h3>{esc(city)} ({len(by_city[city])})</h3>'
+                        f'<ul class="link-grid">{items}</ul></div>')
     body = (
         f'{head(title, description, "time/", 1)}\n<body>\n  {header(1)}\n'
         f'  <main class="content-page">\n'
@@ -497,10 +521,14 @@ def render_index(all_cities, pairs):
         f'    <p class="lede">{esc(description)} Every page shows the real difference across the whole '
         f'year — including the weeks when it shifts — plus each country’s upcoming public holidays.</p>\n'
         f'    <a class="primary-button" href="{SITE}/">Open the free planner</a>\n'
-        f'    <section><h2>By city</h2><ul class="guide-points">{city_links}</ul></section>\n'
-        f'    <section><h2>All {len(pairs)} pairs</h2><ul class="guide-points">{pair_links}</ul></section>\n'
+        f'    <div class="link-group"><h3>Browse by city</h3><ul class="link-grid">{city_links}</ul></div>\n'
+        f'    <div class="filter-row"><label class="sr-only" for="filter">Filter pairs</label>'
+        f'<input id="filter" type="search" autocomplete="off" placeholder="Type a city to filter '
+        f'{len(pairs)} pairs…"></div>\n'
+        f'    <p class="filter-count" id="filter-count">{len(pairs)} in total</p>\n'
+        f'    <div id="filter-target">{groups_html}</div>\n'
         f'  </main>\n  {footer(1)}\n'
-        f'  <script>{THEME_SCRIPT}</script>{CF_BEACON}\n'
+        f'  <script>{THEME_SCRIPT}{FILTER_SCRIPT}</script>{CF_BEACON}\n'
         f'</body>\n</html>\n'
     )
     return "index.html", body
@@ -509,8 +537,10 @@ def write_sitemap():
     """Scan the repo for what actually exists rather than being handed lists, so
     whichever generator runs last still produces a complete, correct sitemap."""
     today = TODAY.isoformat()
-    urls = [f"{SITE}/", f"{SITE}/privacy.html", f"{SITE}/meeting-time-zone-converter.html",
-            f"{SITE}/international-meeting-planner.html", f"{SITE}/daylight-saving-holidays.html"]
+    # root-level pages that actually exist, rather than a list that drifts
+    urls = [f"{SITE}/"]
+    urls += sorted(f"{SITE}/{f}" for f in os.listdir(REPO)
+                   if f.endswith(".html") and f != "index.html")
     for sub in ("time", "holidays"):
         d = os.path.join(REPO, sub)
         if not os.path.isdir(d): continue

@@ -30,6 +30,44 @@ import gen_city_pairs
 
 OUT_DIR = os.path.join(REPO, "holidays")
 WEEKDAY = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+CACHE = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".cache")
+
+CONTINENTS = {"EU": "Europe", "AS": "Asia", "NA": "North America", "SA": "South America",
+              "AF": "Africa", "OC": "Oceania", "AN": "Antarctica"}
+CONTINENT_ORDER = ["Europe", "Asia", "North America", "South America", "Africa", "Oceania", "Antarctica"]
+
+def continent_map():
+    """ISO alpha-2 -> continent name, from the GeoNames countryInfo.txt the
+    city/country data already comes from. 246 names in one alphabetical column
+    is a wall; grouped by continent it is browsable."""
+    os.makedirs(CACHE, exist_ok=True)
+    path = os.path.join(CACHE, "countryInfo.txt")
+    if not os.path.exists(path):
+        import urllib.request
+        urllib.request.urlretrieve("https://download.geonames.org/export/dump/countryInfo.txt", path)
+    out = {}
+    for line in open(path, encoding="utf-8"):
+        if line.startswith("#"): continue
+        f = line.split("\t")
+        if len(f) > 8 and f[0]:
+            out[f[0]] = CONTINENTS.get(f[8].strip(), "Other")
+    return out
+
+FILTER_SCRIPT = """(function(){
+  var box=document.getElementById('filter'),count=document.getElementById('filter-count');
+  if(!box) return;
+  var scope=document.getElementById('filter-target')||document;
+  var items=[].slice.call(scope.querySelectorAll('.link-grid li')),
+      groups=[].slice.call(scope.querySelectorAll('.link-group')),total=items.length;
+  items.forEach(function(li){ li.dataset.k=(li.textContent||'').toLowerCase(); });
+  function run(){
+    var q=box.value.trim().toLowerCase(),shown=0;
+    items.forEach(function(li){ var hit=!q||li.dataset.k.indexOf(q)!==-1; li.hidden=!hit; if(hit)shown++; });
+    groups.forEach(function(g){ g.hidden=!g.querySelector('li:not([hidden])'); });
+    count.textContent=q?(shown+' of '+total+' shown'):(total+' in total');
+  }
+  box.addEventListener('input',run); run();
+})();"""
 
 def country_list():
     out = []
@@ -170,7 +208,18 @@ def render_index(countries):
     title = f"Public Holidays by Country — {TODAY.year} and {TODAY.year+1} | Common Hours"
     description = (f"Public holiday dates for {len(countries)} countries, with weekdays and weekend "
                     f"clashes marked. Check before scheduling an international meeting.")
-    links = "".join(f'<li><a href="{slugify(n)}.html">{esc(n)}</a></li>' for n, _ in countries)
+    cmap = continent_map()
+    grouped = {}
+    for name, code in countries:
+        grouped.setdefault(cmap.get(code, "Other"), []).append((name, code))
+    order = [c for c in CONTINENT_ORDER if c in grouped] + \
+            [c for c in sorted(grouped) if c not in CONTINENT_ORDER]
+    groups_html = ""
+    for cont in order:
+        items = "".join(f'<li><a href="{slugify(n)}.html">{esc(n)}</a></li>'
+                        for n, _ in sorted(grouped[cont]))
+        groups_html += (f'<div class="link-group"><h3>{esc(cont)} ({len(grouped[cont])})</h3>'
+                        f'<ul class="link-grid">{items}</ul></div>')
     body = (
         f'{head(title, description, "holidays/", 1)}\n<body>\n  {header(1)}\n'
         f'  <main class="content-page">\n'
@@ -179,9 +228,13 @@ def render_index(countries):
         f'    <p class="lede">{esc(description)} Each page shows the weekday for every date, flags the '
         f'ones that land on a weekend, and marks dates whose final day is set by moon sighting.</p>\n'
         f'    <a class="primary-button" href="{SITE}/">Open the meeting planner</a>\n'
-        f'    <section><h2>{len(countries)} countries</h2><ul class="guide-points">{links}</ul></section>\n'
+        f'    <div class="filter-row"><label class="sr-only" for="filter">Filter countries</label>'
+        f'<input id="filter" type="search" autocomplete="off" placeholder="Type to filter '
+        f'{len(countries)} countries…"></div>\n'
+        f'    <p class="filter-count" id="filter-count">{len(countries)} in total</p>\n'
+        f'    <div id="filter-target">{groups_html}</div>\n'
         f'  </main>\n  {footer(1)}\n'
-        f'  <script>{THEME_SCRIPT}</script>{CF_BEACON}\n'
+        f'  <script>{THEME_SCRIPT}{FILTER_SCRIPT}</script>{CF_BEACON}\n'
         f'</body>\n</html>\n'
     )
     return "index.html", body

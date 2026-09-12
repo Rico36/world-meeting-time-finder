@@ -49,7 +49,7 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="styles.css?v=20260911-2">
+  <link rel="stylesheet" href="styles.css?v=20260911-3">
 </head>
 <body data-geo-endpoint="https://findcommonhours-geo.ricky-freyre.workers.dev">
   <header class="site-header">
@@ -80,7 +80,7 @@
         <p data-i18n="subhead">Compare local working hours and public holidays across countries before scheduling your international meeting.</p>
       </section>
 
-      <section class="planner-card" aria-labelledby="planner-title">
+      <section class="planner-card" id="planner" aria-labelledby="planner-title">
         <h2 class="sr-only" id="planner-title" data-i18n="plannerTitle">Plan a meeting</h2>
 
         <div class="city-list" id="city-list"></div>
@@ -170,25 +170,31 @@
         </ol>
       </section>
 
+      <section class="seo-content" id="tools">
+        <p class="eyebrow" data-i18n="toolsEyebrow">What you can do here</p>
+        <h2 data-i18n="toolsTitle">Three ways to use Common Hours</h2>
+        <div class="resource-grid">
+          <a class="resource-card" href="#planner"><strong data-i18n="toolPlannerTitle">Find a meeting time</strong><span data-i18n="toolPlannerCopy">Add every participant’s city and see the hours that work for all of them, holidays included.</span></a>
+          <a class="resource-card" href="time/"><strong data-i18n="guidePairsTitle">City time zone pairs</strong><span data-i18n="guidePairsCopy">Time differences, meeting windows and holidays for 210 pairs of major business hubs.</span></a>
+          <a class="resource-card" href="holidays/"><strong data-i18n="guideHolidaysTitle">Public holidays by country</strong><span data-i18n="guideHolidaysCopy">Holiday dates for 246 countries, with weekends and long weekends flagged.</span></a>
+        </div>
+      </section>
+
       <section class="seo-content" id="guides">
         <p class="eyebrow" data-i18n="guidesEyebrow">Helpful guides</p>
         <h2 data-i18n="guidesTitle">Make international scheduling easier</h2>
         <div class="resource-grid">
           <a class="resource-card" href="meeting-time-zone-converter.html"><strong data-i18n="guideConverterTitle">Meeting time-zone converter</strong><span data-i18n="guideConverterCopy">Understand local times and convert a proposed meeting for every participant.</span></a>
           <a class="resource-card" href="international-meeting-planner.html"><strong data-i18n="guidePlannerTitle">International meeting planner</strong><span data-i18n="guidePlannerCopy">Use a practical checklist for fair, workable meetings across countries.</span></a>
-          <a class="resource-card" href="daylight-saving-holidays.html"><strong data-i18n="guideDstTitle">International public holidays and meeting planning</strong><span data-i18n="guideDstCopy">Check holidays, date changes and daylight-saving shifts before you schedule across countries.</span></a><a class="resource-card" href="time/"><strong data-i18n="guidePairsTitle">City time zone pairs</strong><span data-i18n="guidePairsCopy">Time differences, meeting windows and holidays for 210 pairs of major business hubs.</span></a><a class="resource-card" href="holidays/"><strong data-i18n="guideHolidaysTitle">Public holidays by country</strong><span data-i18n="guideHolidaysCopy">Holiday dates for 246 countries, with weekends and long weekends flagged.</span></a>
+          <a class="resource-card" href="daylight-saving-holidays.html"><strong data-i18n="guideDstTitle">International public holidays and meeting planning</strong><span data-i18n="guideDstCopy">Check holidays, date changes and daylight-saving shifts before you schedule across countries.</span></a>
         </div>
       </section>
 
-      <section class="seo-content methodology" id="holiday-methodology">
+      <section class="seo-content" id="holiday-methodology">
         <p class="eyebrow" data-i18n="methodEyebrow">How holiday checking works</p>
         <h2 data-i18n="methodTitle">Useful warnings, with honest limits</h2>
-        <p class="method-intro" data-i18n="methodIntro">Common Hours checks the meeting’s local date in every selected city against public-calendar information. When a nationwide holiday is found, it appears beside that city so the organizer can confirm availability before sending an invitation.</p>
-        <div class="method-grid">
-          <article><h3 data-i18n="methodCoverageTitle">What the check covers</h3><p data-i18n="methodCoverageCopy">The tool looks for nationwide public holidays and known local calendar entries. India’s three fixed national holidays—Republic Day, Independence Day and Gandhi Jayanti—also have built-in coverage when the external calendar cannot provide results.</p></article>
-          <article><h3 data-i18n="methodLimitsTitle">What no calendar can know</h3><p data-i18n="methodLimitsCopy">Regional observances, substitute days, company shutdowns, school breaks and personal leave can differ. If coverage is unavailable, the site says so instead of incorrectly calling the date a normal working day.</p></article>
-          <article><h3 data-i18n="methodUseTitle">How to use a warning</h3><p data-i18n="methodUseCopy">Holiday notices are not automatic exclusions. Confirm the observance with the local participant, then keep the proposed time, choose a nearby day or adjust the meeting. The people attending always make the final decision.</p></article>
-        </div>
+        <p data-i18n="methodStub">A holiday notice is a prompt to confirm, not an automatic exclusion — and no public calendar knows about regional observances, company shutdowns or personal leave.</p>
+        <p><a href="holiday-data-accuracy.html" data-i18n="methodStubLink">What the holiday check covers, and what it cannot know</a></p>
       </section>
 
       <section class="seo-content faq" id="faq">
@@ -222,7 +228,7 @@
     </form>
   </dialog>
 
-  <script src="app.js?v=20260911-2"></script>
+  <script src="app.js?v=20260911-3"></script>
   <!-- Load analytics after the page is usable so it does not delay the initial render. -->
   <script>
     window.addEventListener('load',()=>{const script=document.createElement('script');script.src='https://static.cloudflareinsights.com/beacon.min.js';script.dataset.cfBeacon='{"token":"1fa3e675ae4f4a6ca7406cb3d20594f0"}';document.head.append(script);},{once:true});

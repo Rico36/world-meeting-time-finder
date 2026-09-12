@@ -386,6 +386,39 @@ PY
 Strip the query string first — `styles.css?v=…` is not a missing file, and a
 checker that forgets this reports several hundred false positives.
 
+### Index pages: grouping and filter
+
+Both `/time/` and `/holidays/` list hundreds of links, which as a flat
+alphabetical list is a wall nobody scrolls. Each index groups its links
+(holidays by continent from GeoNames `countryInfo.txt`, city pairs by first
+city) and carries a type-to-filter box.
+
+The filter is scoped to `#filter-target`, deliberately: `/time/` has a
+"browse by city" grid *above* the filter that must not be counted or hidden by
+it. If a future index adds links outside that wrapper they are ignored by the
+filter, which is usually what you want — but the running count only reflects
+what is inside the wrapper.
+
+### Homepage: what belongs there
+
+The homepage is the tool, not the article. Until 11 September it also had to
+carry the site's entire text weight, because there were only five pages; with
+~490 pages that is no longer true, and it was cut back accordingly:
+
+- **Tools** (`#tools`) and **Guides** (`#guides`) are separate sections. Tools
+  lists what the site *does* (planner, city pairs, holidays); guides lists the
+  three explanatory articles. They were one mixed grid and read as a grab-bag.
+- The 156-word holiday methodology block became a 45-word stub linking to
+  **`holiday-data-accuracy.html`**, which now also collects the limitations
+  that were scattered elsewhere: the seven countries with no upstream data,
+  moon-sighting estimates, and why a clear public calendar is not the same as
+  a free colleague.
+
+Homepage is ~520 words. **Do not cut it to a bare widget** — a tool with 150
+words of chrome is exactly the thin signal that got flagged in the first
+place. The FAQ in particular earns its place: scannable, and it carries
+schema.
+
 ### Multilingual SEO
 
 Five languages, one URL, no `hreflang`, canonical always `/`. The translations
