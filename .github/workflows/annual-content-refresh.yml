@@ -47,7 +47,10 @@ jobs:
 
       - name: Regenerate dated guide content and the holiday fallback
         run: |
-          pip install --quiet holidays
+          # Pinned so the output depends only on the year being generated.
+          # Must match the pin in refresh-generated-pages.yml - if they differ,
+          # the two jobs fight over the same 479 pages. See that file for why.
+          pip install --quiet "holidays==0.104"
           python tools/expand_guides.py "${{ steps.year.outputs.year }}"
           node tools/sync_guide_html.js
           # holidays-fallback.json covers countries the live holiday API does not;

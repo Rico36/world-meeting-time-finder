@@ -46,7 +46,18 @@ jobs:
 
       - name: Regenerate the city-pair and holiday pages
         run: |
-          pip install --quiet holidays
+          # PINNED ON PURPOSE. Unpinned, this job silently republished content
+          # whenever the library released: 0.103 -> 0.104 moved Brunei's Isra'
+          # and Mi'raj by a day and dropped Ethiopia from 13 holidays to 12,
+          # across 27 pages, with nothing in the diff explaining why. Worse, a
+          # maintainer regenerating locally on a different version would revert
+          # the bot's output and the bot would revert theirs, indefinitely.
+          #
+          # Raising this pin is a deliberate, reviewable act. dependency-check.yml
+          # opens an issue when a newer release exists, so it will not be
+          # forgotten. Keep it identical in annual-content-refresh.yml, and run
+          # `pip install holidays==<pin>` locally before regenerating by hand.
+          pip install --quiet "holidays==0.104"
           python tools/gen_city_pairs.py
           python tools/gen_holiday_pages.py
           # deliberately NOT bump_assets.py: this changes page content, not CSS or

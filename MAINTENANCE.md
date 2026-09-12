@@ -384,6 +384,35 @@ Each pair page opens with an **at-a-glance block** — time gap, best meeting
 time, next holiday — before any prose. A visitor from search gets the answer
 without reading; the detail still follows for anyone who wants it.
 
+### The holidays library is pinned — regenerate with the same version
+
+Both content workflows install `holidays==0.104`, and **the pin must match in
+both**. Before regenerating the pages by hand, match it locally:
+
+```bash
+pip install "holidays==0.104"
+```
+
+This is not caution for its own sake. The install was originally unpinned, and
+the day 0.104 shipped, the monthly job rewrote 27 pages: Brunei's *Isra' and
+Mi'raj* moved a day, Ethiopia went from 13 public holidays to 12. Nothing in the
+diff said why, and the sanity checks passed, because structurally nothing was
+wrong. Two things follow from that:
+
+1. **Content changes on a monetised site should be traceable to a decision.**
+   An unpinned dependency publishes upstream edits automatically, unreviewed.
+2. **Local and CI must agree, or they fight.** A maintainer regenerating on
+   0.103 reverts the bot's output; the bot reverts theirs next month; repeat
+   indefinitely. The symptom looks like a flapping workflow, not a version skew,
+   so it is unpleasant to diagnose.
+
+`tools/check_dependencies.py` reports when a newer release exists, **fails** if
+either workflow stops pinning, and **fails** if the two pins disagree. So raising
+the pin is a deliberate act that cannot be silently forgotten. To raise it: bump
+both workflows, install the same version locally, regenerate, and read the diff
+before committing — that diff is the upstream's holiday corrections, which is
+exactly what deserves a human glance.
+
 ### Territories that share a sovereign's calendar
 
 Twelve territory pages are retired into the sovereign page whose calendar they

@@ -12,7 +12,7 @@ workflow can raise an issue. Checks:
 
 Usage:  python tools/check_dependencies.py
 """
-import json, sys, datetime, urllib.request, urllib.parse, urllib.error
+import json, os, re, sys, datetime, urllib.request, urllib.parse, urllib.error
 
 UA = {"User-Agent": "findcommonhours-healthcheck", "Accept": "application/json"}
 SITE = "https://findcommonhours.com"
@@ -88,6 +88,46 @@ for path in ASSETS:
         problems.append("asset: %s failed (%s)" % (path, type(e).__name__))
 if not any(p.startswith("asset:") for p in problems):
     notes.append("assets: ok (%d checked)" % len(ASSETS))
+
+# ------------------------------------------------------------------------
+# The holidays library is pinned in both content workflows, because an
+# unpinned install republished 27 pages the moment 0.104 shipped. A pin that
+# nobody ever raises is its own problem - the site would keep serving dates the
+# upstream project has since corrected - so surface new releases here and let a
+# human decide. This is a notice, not a failure: a stale pin is not an outage.
+wf = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                  ".github", "workflows")
+pins = {}
+for name in ("refresh-generated-pages.yml", "annual-content-refresh.yml"):
+    p = os.path.join(wf, name)
+    if not os.path.exists(p):
+        problems.append("holidays: %s is missing - the pin cannot be checked" % name)
+        continue
+    m = re.search(r'holidays==([0-9.]+)', open(p, encoding="utf-8").read())
+    if m:
+        pins[name] = m.group(1)
+    else:
+        problems.append("holidays: %s no longer pins a version - its output will "
+                        "drift with every upstream release" % name)
+
+try:
+
+    if len(set(pins.values())) > 1:
+        problems.append("holidays: workflows pin different versions (%s) - they "
+                        "will fight over the same pages" %
+                        ", ".join(f"{k}={v}" for k, v in sorted(pins.items())))
+    elif pins:
+        pinned = next(iter(pins.values()))
+        with urllib.request.urlopen("https://pypi.org/pypi/holidays/json", timeout=20) as r:
+            latest = json.load(r)["info"]["version"]
+        if latest != pinned:
+            notes.append("holidays: pinned at %s, %s is available - review the "
+                         "diff, then raise the pin in both workflows"
+                         % (pinned, latest))
+        else:
+            notes.append("holidays: pinned at %s, current" % pinned)
+except Exception as e:
+    notes.append("holidays: version check skipped (%s)" % type(e).__name__)
 
 # ------------------------------------------------------------------------
 for n in notes:
