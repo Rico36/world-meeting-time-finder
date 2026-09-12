@@ -229,10 +229,23 @@ PAIR_SCRIPT = """(function(){
 def esc(s):
     return (str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;"))
 
-def header(depth):
+def header(depth, section=None):
+    """`section` is "holidays" or "time" when the page belongs to one, so the
+    nav can mark where the reader is.
+
+    The nav is on every page, not just the homepage: adding it only there would
+    put Holidays one click away and then strand the reader, since these pages
+    previously linked back only from the footer."""
     root = "../" * depth
+    def link(href, label, key):
+        current = ' aria-current="page"' if key == section else ''
+        return f'<a href="{root}{href}"{current}>{label}</a>'
     return (f'<header class="site-header"><a class="brand" href="{root}"><span class="brand-mark" '
-            f'aria-hidden="true">☀</span><span>Common Hours</span></a><div class="header-actions">'
+            f'aria-hidden="true">☀</span><span>Common Hours</span></a>'
+            f'<nav class="site-nav" aria-label="Sections">'
+            f'{link("holidays/", "Holidays", "holidays")}'
+            f'{link("time/", "City pairs", "time")}'
+            f'</nav><div class="header-actions">'
             f'<button class="icon-button" id="theme-toggle" type="button" aria-label="Switch color theme">◐</button>'
             f'</div></header>')
 
@@ -436,7 +449,7 @@ def render_pair_page(city_a, city_b, all_cities):
         + '</div>')
 
     body = (
-        f'{head(title, description, "time/" + slug, 1)}\n<body>\n  {header(1)}\n'
+        f'{head(title, description, "time/" + slug, 1)}\n<body>\n  {header(1, "time")}\n'
         f'  <main class="content-page">\n'
         f'    <p class="eyebrow">Time zone meeting planner</p>\n'
         f'    <h1>{esc(name_a)} and {esc(name_b)}: plan a meeting across time zones</h1>\n'
@@ -496,7 +509,7 @@ def render_city_hub(city, all_cities):
                  if hol else f"<li>No upcoming public holidays found for {country}.</li>")
 
     body = (
-        f'{head(title, description, "time/" + slug, 1)}\n<body>\n  {header(1)}\n'
+        f'{head(title, description, "time/" + slug, 1)}\n<body>\n  {header(1, "time")}\n'
         f'  <main class="content-page">\n'
         f'    <p class="eyebrow">Time zone meeting planner</p>\n'
         f'    <h1>Meeting times between {esc(name)} and other major cities</h1>\n'
@@ -550,7 +563,7 @@ def render_index(all_cities, pairs):
         groups_html += (f'<div class="link-group"><h3>{esc(city)} ({len(by_city[city])})</h3>'
                         f'<ul class="link-grid">{items}</ul></div>')
     body = (
-        f'{head(title, description, "time/", 1)}\n<body>\n  {header(1)}\n'
+        f'{head(title, description, "time/", 1)}\n<body>\n  {header(1, "time")}\n'
         f'  <main class="content-page">\n'
         f'    <p class="eyebrow">Time zone meeting planner</p>\n'
         f'    <h1>City time zone pairs</h1>\n'

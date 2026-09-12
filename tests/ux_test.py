@@ -47,6 +47,38 @@ with sync_playwright() as p:
     check("homepage: methodology is now a stub with a link",
           pg.eval_on_selector_all('#holiday-methodology a[href="holiday-data-accuracy.html"]', "e=>e.length") == 1)
     check("homepage: planner anchor exists", pg.eval_on_selector_all("#planner", "e=>e.length") == 1)
+
+    # ---- top-bar nav: Holidays and City pairs ----
+    # Both sections were reachable only from the footer. The nav is on every
+    # page, not just here, so clicking through does not strand the reader.
+    nav = pg.eval_on_selector_all(".site-nav a", "e=>e.map(a=>[a.textContent.trim(),a.getAttribute('href')])")
+    check("homepage: top nav has exactly two links", len(nav) == 2, nav)
+    check("homepage: nav links to Holidays and City pairs",
+          [n[0] for n in nav] == ["Holidays", "City pairs"], nav)
+    check("homepage: nav hrefs resolve to the section indexes",
+          [n[1] for n in nav] == ["holidays/", "time/"], nav)
+    check("homepage: nav links are a real tap target",
+          min(pg.eval_on_selector_all(".site-nav a", "e=>e.map(a=>a.getBoundingClientRect().height)")) >= 40)
+    check("homepage: header does not overflow",
+          not pg.eval_on_selector(".site-header", "e=>e.scrollWidth>e.clientWidth+1"))
+
+    # the nav must actually go somewhere, and mark where you are when it does
+    pg.click('.site-nav a[href="holidays/"]')
+    pg.wait_for_load_state("networkidle", timeout=60000)
+    check("nav: Holidays opens the holiday index", pg.url.rstrip("/").endswith("/holidays"), pg.url)
+    check("nav: the current section is marked on arrival",
+          pg.eval_on_selector_all('.site-nav a[aria-current="page"]', "e=>e.map(a=>a.textContent.trim())") == ["Holidays"])
+    pg.click('.site-nav a:has-text("City pairs")')
+    pg.wait_for_load_state("networkidle", timeout=60000)
+    check("nav: City pairs is reachable from Holidays", pg.url.rstrip("/").endswith("/time"), pg.url)
+    check("nav: City pairs marks itself current",
+          pg.eval_on_selector_all('.site-nav a[aria-current="page"]', "e=>e.map(a=>a.textContent.trim())") == ["City pairs"])
+    # and from a leaf page, not just the indexes
+    pg.goto(f"{BASE}/holidays/japan.html", wait_until="networkidle", timeout=60000)
+    check("nav: present on a country page", pg.eval_on_selector_all(".site-nav a", "e=>e.length") == 2)
+    check("nav: a country page marks Holidays current",
+          pg.eval_on_selector_all('.site-nav a[aria-current="page"]', "e=>e.map(a=>a.textContent.trim())") == ["Holidays"])
+    pg.goto(f"{BASE}/", wait_until="networkidle", timeout=60000)
     # The site is English-only by decision, not by omission. The selector
     # translated index.html and nothing else - 1 page of 485, with no hreflang -
     # so picking Spanish gave a Spanish homepage that led only into English.

@@ -417,7 +417,7 @@ def render_country(pretty, code, hub_cities, follows=()):
     ]}
 
     body = (
-        f'{head(title, description, "holidays/" + slug, 1)}\n<body>\n  {header(1)}\n'
+        f'{head(title, description, "holidays/" + slug, 1)}\n<body>\n  {header(1, "holidays")}\n'
         f'  <main class="content-page">\n'
         f'    <p class="eyebrow">Public holidays</p>\n'
         f'    <h1>Public holidays in {esc(pretty)}</h1>\n'
@@ -472,7 +472,7 @@ def render_index(countries, retired=None):
         groups_html += (f'<div class="link-group"><h3>{esc(cont)} ({len(grouped[cont])})</h3>'
                         f'<ul class="link-grid">{items}</ul></div>')
     body = (
-        f'{head(title, description, "holidays/", 1)}\n<body>\n  {header(1)}\n'
+        f'{head(title, description, "holidays/", 1)}\n<body>\n  {header(1, "holidays")}\n'
         f'  <main class="content-page">\n'
         f'    <p class="eyebrow">Public holidays</p>\n'
         f'    <h1>Public holidays by country</h1>\n'

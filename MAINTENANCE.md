@@ -384,6 +384,32 @@ Each pair page opens with an **at-a-glance block** — time gap, best meeting
 time, next holiday — before any prose. A visitor from search gets the answer
 without reading; the detail still follows for anyone who wants it.
 
+### Top-bar nav: Holidays and City pairs
+
+Both sections existed on ~480 pages and were reachable only from the footer.
+They now sit in the header on **every** page, not just the homepage — adding it
+to the homepage alone would have put Holidays one click away and then stranded
+the reader, since the generated pages linked back only from their footers.
+
+- The homepage and the five other root pages carry the markup inline.
+- The 467 generated pages get it from `header(depth, section)` in
+  `tools/gen_city_pairs.py`. `section` is `"holidays"` or `"time"`, which sets
+  `aria-current="page"` so the nav says where you are. The 12 redirect stubs
+  deliberately have no chrome and so no nav.
+- **Below 560px the wordmark is hidden but stays in the accessibility tree**
+  (clipped, not `display:none`). Brand mark + wordmark + two links + two buttons
+  does not fit a phone, and on the generated pages that wordmark is the brand
+  link's only accessible name — removing it outright would leave an unlabelled
+  link.
+
+Verified from 1280px down to 260px: no header overflow, no sideways page
+scroll, 44px tap targets throughout. Covered by `tests/ux_test.py`, which also
+clicks through to confirm the links go somewhere and mark the right section.
+
+While fitting this, a **pre-existing** overflow turned up: the footer nav had
+seven links at an 18px gap and no `flex-wrap`, so the whole page scrolled
+sideways at 320px. Fixed in the same pass.
+
 ### The site is English-only — deliberately
 
 The language selector (English, Spanish, French, German, Portuguese) was removed
