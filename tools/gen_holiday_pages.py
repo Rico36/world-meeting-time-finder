@@ -78,8 +78,13 @@ def country_list():
             if len(h) == 0: continue
         except Exception:
             continue
-        # registry names are CamelCase run-together ("UnitedStates"); space them
+        # registry names are CamelCase run-together ("UnitedStates"); space them,
+        # then lowercase connecting words so it is "Antigua and Barbuda", not
+        # "Antigua And Barbuda" (14 countries were affected)
         pretty = re.sub(r"(?<=[a-z])(?=[A-Z])", " ", name).replace("_", " ").strip()
+        words = pretty.split()
+        pretty = " ".join(w if i == 0 or w.lower() not in ("and", "of", "the", "da")
+                          else w.lower() for i, w in enumerate(words))
         out.append((pretty, code))
     return sorted(set(out))
 
