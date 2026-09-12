@@ -60,6 +60,15 @@ jobs:
           import os, re, sys
           problems = []
           counts = {}
+
+          # Every generated page gets its <head> from one function, head() in
+          # tools/gen_city_pairs.py, which the holiday generator imports. That
+          # single function carries the AdSense loader, so an unrelated edit to
+          # it would silently demonetise 479 of the site's 490 pages - and the
+          # link-and-word-count checks below would pass green while it happened.
+          PUB = "ca-pub-4158152621897495"
+          missing_ads = 0
+
           for sub in ("time", "holidays"):
               d = os.path.join(".", sub)
               files = set(os.listdir(d))
@@ -68,6 +77,8 @@ jobs:
               for f in files:
                   if not f.endswith(".html"): continue
                   html = open(os.path.join(d, f), encoding="utf-8").read()
+                  if PUB not in html or "adsbygoogle.js" not in html:
+                      missing_ads += 1
                   body = re.sub(r"<(script|style)[^>]*>.*?</\1>", "", html, flags=re.S | re.I)
                   words += len(re.sub(r"<[^>]+>", " ", body).split())
                   for h in re.findall(r'href="([^"]+)"', html):
@@ -88,6 +99,10 @@ jobs:
           if counts["holidays"] < 200: problems.append(f"only {counts['holidays']} pages in holidays/")
           if counts["time_words"] < 60000: problems.append("time/ word count collapsed")
           if counts["holidays_words"] < 60000: problems.append("holidays/ word count collapsed")
+          if missing_ads:
+              problems.append(f"{missing_ads} page(s) lost the AdSense loader")
+          else:
+              print("AdSense loader present on every generated page.")
 
           if problems:
               print(f"\n{len(problems)} problem(s):")
