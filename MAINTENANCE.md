@@ -58,6 +58,17 @@ before changing them:
   the useful gate. A PR nobody merges would also fail to reset the 60-day
   clock, defeating the point.
 
+Note the coupling in the first point: the schedule sustains itself only on runs
+that *actually commit*. A run where nothing moved prints "Nothing changed" and
+commits nothing, so it does not reset the clock. In practice a month never
+passes without holidays falling out of the upcoming lists across 246 countries,
+so this is close to theoretical — but it is the reason the September 2026 audit
+stopped tracking `__pycache__`. While the `.pyc` files were tracked they differed
+on every run, so `git diff --quiet` was never true and the job committed
+unconditionally. That masked the real change-detection *and* gave the clock a
+false reset, which would have hidden a generator that had silently stopped
+producing new dates.
+
 If you would rather review these, change the final step to open a PR — but then
 merge them promptly, or the schedule will eventually disable itself.
 
