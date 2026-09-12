@@ -32,6 +32,7 @@ python tests/detect_test.py
 | `map_test.py` | Land outlines, city pins, solar terminator vs an independent Python computation |
 | `merge_test.py` | Retired territory pages, redirect stubs, sitemap exclusion |
 | `regional_test.py` | Subdivision holidays, collapsed by default |
+| `slot_test.py` | Slot selection, and that the heading never claims more than the code knows |
 | `ux_test.py` | Homepage structure, grids, CTA placement |
 
 Server-side tests are separate and need Node, not a browser:

@@ -49,7 +49,7 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="styles.css?v=20260912-15">
+  <link rel="stylesheet" href="styles.css?v=20260912-17">
 </head>
 <body data-geo-endpoint="https://findcommonhours-geo.ricky-freyre.workers.dev">
   <header class="site-header">
@@ -112,7 +112,7 @@
       <section class="results-card" id="results" aria-live="polite" aria-labelledby="results-title" hidden>
         <div class="results-heading">
           <div>
-            <p class="eyebrow" id="result-label" data-i18n="bestOverlap">Best overlap</p>
+            <p class="eyebrow" id="result-label" data-i18n="insideHours">Inside working hours for everyone</p>
             <h2 id="results-title">—</h2>
             <p id="meeting-summary">—</p>
             <p class="compromise-note" id="compromise-note" hidden></p>
@@ -235,7 +235,7 @@
     </form>
   </dialog>
 
-  <script src="app.js?v=20260912-15"></script>
+  <script src="app.js?v=20260912-17"></script>
   <!-- Load analytics after the page is usable so it does not delay the initial render. -->
   <script>
     window.addEventListener('load',()=>{const script=document.createElement('script');script.src='https://static.cloudflareinsights.com/beacon.min.js';script.dataset.cfBeacon='{"token":"1fa3e675ae4f4a6ca7406cb3d20594f0"}';document.head.append(script);},{once:true});

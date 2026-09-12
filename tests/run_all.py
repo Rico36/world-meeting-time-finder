@@ -20,6 +20,7 @@ SUITES = [
     ("map",       "Day/night map, pins and the solar terminator"),
     ("merge",     "Retired territory pages and their redirect stubs"),
     ("regional",  "Subdivision holidays and the collapsed section"),
+    ("slot",      "Slot selection and honest result labelling"),
     ("ux",        "Homepage structure, grids, CTA placement"),
 ]
 

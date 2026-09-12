@@ -450,6 +450,44 @@ and start with the holiday pages: `python-holidays` ships **native** holiday
 names (`Año Nuevo`, `Confraternização Universal`, `ईद-उल-फितर`), so those 247
 pages can be translated properly by generation rather than machine-translated.
 
+### The result heading must not claim more than the code knows
+
+The heading said **"Best overlap"** or **"Best compromise"**. Both over-claimed,
+and one of them was simply false.
+
+- `renderResults()` runs on every slider `input`, so the label was recomputed
+  from whatever slot the **visitor** had dragged to. Drag to 6:30 AM and the
+  page called your own choice "Best compromise" — crediting it to the tool.
+- `findBestSlot()` never computed a "best" anything. It returned the *first*
+  slot where everyone was working, or else the one with the highest count of
+  city-half-hours inside 9–5.
+
+That count was the real bug. It was a **boolean** per city-half-hour, so it
+could not tell 6:30 AM from 3 AM — both are just "not working". And when nothing
+scored at all — **every weekend**, and any pairing with no overlap — every slot
+tied at zero and the tie went to the lowest index. The tool proposed a
+**midnight** meeting for New York and London every Saturday.
+
+Now:
+
+- `hoursPenalty()` scores **distance in minutes** from each city's 9–5 window,
+  measured around the clock (11 PM is 6 hours out, not 18), plus a 10-hour
+  penalty for a weekend — an 8 AM Monday is a meeting you can ask for, an 11 AM
+  Sunday is not. `findBestSlot()` minimises the total. Saturday New York/London
+  now returns 9 AM / 2 PM instead of midnight.
+- Three labels, each factually true: **Inside working hours for everyone**
+  (penalty 0), **Closest to working hours** (the tool chose, nothing fits), and
+  **Selected time** (a person chose it — dragged, stepped, clicked the timeline,
+  or arrived via a shared `?slot=` link).
+- When a visitor picks an hour outside working time it is *flagged, not judged*:
+  "Outside normal working hours in X and Y. That may still suit everyone — this
+  is flagged, not ruled out." A 6:30 start can be perfectly acceptable, which is
+  the same philosophy already applied to holiday notices.
+
+`state.userPicked` is what separates the second and third labels — set on every
+path where a person moves the time, cleared in `calculate()`.
+`tests/slot_test.py` covers all of it, including the Saturday-midnight case.
+
 ### One clock format per screen
 
 Times appear in five places on the planner: the city rows, the result heading,

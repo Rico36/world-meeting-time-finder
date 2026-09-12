@@ -8,7 +8,7 @@ const cities = [
 ].map(([name,country,zone,countryCode,subdivision]) => ({name,country,zone,countryCode,subdivision}));
 
 const copy = {
-  en:{citiesIn:'Cities in {region}',language:'Language',advertisement:'Advertisement',eyebrow:'Free world meeting time finder',headline:'Find the best meeting time across time zones.',subhead:'Add two or more cities, choose a date and meeting length, and instantly see the most convenient hours for everyone.',plannerTitle:'Plan a meeting',startCity:'Where are you?',addCity:'Add another city',cityPlaceholder:'Type a city, state or country…',add:'Add',meetingDay:'Meeting day',duration:'Duration',autoUpdate:'Results update automatically',bestOverlap:'Best overlap',bestCompromise:'Best compromise',compromiseHint:'This is the closest match to normal working hours. Try a nearby day or adjust the time to compare alternatives.',copy:'Copy',share:'Share',adjustTime:'Adjust meeting time',adjustHint:'Drag to explore, or move in 30-minute steps.',workingHours:'Normal working hours',selectedMeeting:'Selected meeting',legendHelp:'Green shows when a city is normally at work; the darker band is your chosen meeting.',simpleTitle:'Simple by design',simpleCopy:'No account required. Dates and times stay in your browser. Holiday checks use country-level public calendar data.',footer:'A friendly world meeting time finder.',selectCity:'Choose a specific city from the suggestions.',minimumCities:'Add at least two cities to compare.',holiday:'Public holiday',weekend:'Weekend',copied:'Copied!',searching:'Searching places…',noMatches:'No matching places found.'},
+  en:{citiesIn:'Cities in {region}',language:'Language',advertisement:'Advertisement',eyebrow:'Free world meeting time finder',headline:'Find the best meeting time across time zones.',subhead:'Add two or more cities, choose a date and meeting length, and instantly see the most convenient hours for everyone.',plannerTitle:'Plan a meeting',startCity:'Where are you?',addCity:'Add another city',cityPlaceholder:'Type a city, state or country…',add:'Add',meetingDay:'Meeting day',duration:'Duration',autoUpdate:'Results update automatically',insideHours:'Inside working hours for everyone',closestToHours:'Closest to working hours',selectedTime:'Selected time',compromiseHint:'No hour on this day is inside normal working hours for every city. This is the closest match — try a nearby day, or adjust the time to compare alternatives.',outsideHint:'Outside normal working hours in {cities}. That may still suit everyone — this is flagged, not ruled out.',copy:'Copy',share:'Share',adjustTime:'Adjust meeting time',adjustHint:'Drag to explore, or move in 30-minute steps.',workingHours:'Normal working hours',selectedMeeting:'Selected meeting',legendHelp:'Green shows when a city is normally at work; the darker band is your chosen meeting.',simpleTitle:'Simple by design',simpleCopy:'No account required. Dates and times stay in your browser. Holiday checks use country-level public calendar data.',footer:'A friendly world meeting time finder.',selectCity:'Choose a specific city from the suggestions.',minimumCities:'Add at least two cities to compare.',holiday:'Public holiday',weekend:'Weekend',copied:'Copied!',searching:'Searching places…',noMatches:'No matching places found.'},
 };
 
 const pageCopy = {
@@ -27,7 +27,7 @@ const builtInNationalHolidays = {
   IN:{'01-26':'Republic Day','08-15':'Independence Day','10-02':'Gandhi Jayanti'}
 };
 
-const state = { language:'en', clock:'12', selected:[], date:'', duration:60, slot:20, holidays:new Map(), suggestions:[], restoredFromUrl:false, holidayCheckId:0 };
+const state = { language:'en', clock:'12', selected:[], date:'', duration:60, slot:20, userPicked:false, holidays:new Map(), suggestions:[], restoredFromUrl:false, holidayCheckId:0 };
 const els = Object.fromEntries(['city-list','city-search','city-search-label','city-suggestions','city-error','add-city','meeting-date','duration','results','result-label','results-title','meeting-summary','compromise-note','selected-day','time-slider','timeline','timeline-axis','holiday-notices','copy-result','share-result','previous-day','next-day','earlier','later','theme-toggle','clock-toggle'].map(id => [id.replaceAll('-','_'), document.getElementById(id)]));
 
 function t(key){ return qualityCopy.en[key] || positioningCopy.en[key] || pageCopy.en[key] || copy.en[key] || key; }
@@ -124,7 +124,7 @@ function restoreFromUrl(){
   state.selected=restored;
   const date=params.get('date'); if(/^\d{4}-\d{2}-\d{2}$/.test(date||'')) state.date=date;
   const duration=Number(params.get('duration')); if([30,45,60,90,120].includes(duration)) state.duration=duration;
-  const slot=Number(params.get('slot')); if(Number.isInteger(slot)&&slot>=0&&slot<=47) state.slot=slot;
+  const slot=Number(params.get('slot')); if(Number.isInteger(slot)&&slot>=0&&slot<=47){ state.slot=slot; state.userPicked=true; }
   // ?lang= is deliberately ignored rather than rejected: links shared before
   // the site went English-only still carry it, and they must still open.
   state.restoredFromUrl=true; saveCities(); return true;
@@ -321,19 +321,38 @@ function restoreOrDetectReference(){
   }
 }
 
+// How far a moment is from a city's normal working hours, in minutes. Zero
+// inside 9-5 on a weekday; otherwise the shortest distance to that window,
+// measured around the clock so 11 PM is 6 hours out rather than 18.
+const WORK_OPEN=9*60, WORK_CLOSE=17*60;
+// A weekday hour outside 9-5 beats a weekend hour that looks convenient: 8 AM
+// Monday is a meeting you can ask for, 11 AM Sunday is not.
+const WEEKEND_PENALTY=10*60;
+function hoursPenalty(date, city){
+  const p=localParts(date,city.zone);
+  const minutes=+p.hour*60 + +p.minute;
+  const inWindow=minutes>=WORK_OPEN && minutes<=WORK_CLOSE;
+  const distance=inWindow?0:Math.min(((WORK_OPEN-minutes)%1440+1440)%1440,
+                                     ((minutes-WORK_CLOSE)%1440+1440)%1440);
+  return distance + (['Sat','Sun'].includes(p.weekday)?WEEKEND_PENALTY:0);
+}
+
 function findBestSlot(){
+  // Scored by total distance from everyone's working hours, not by counting how
+  // many cities happen to be inside them. The count was a boolean, so it could
+  // not tell 6:30 AM from 3 AM - both are simply "not working" - and when no
+  // slot scored at all (every weekend, and any pairing with no overlap) the tie
+  // went to the lowest index, which is midnight. The tool proposed a midnight
+  // meeting for New York and London every Saturday.
   const needed=Math.ceil(state.duration/30);
-  let best={slot:20,score:-1,perfect:false};
+  let best={slot:20,penalty:Infinity,perfect:false};
   for(let slot=0;slot<=48-needed;slot++){
-    let score=0; let perfect=true;
-    for(const city of state.selected){
-      for(let part=0;part<needed;part++){
-        const good=isWorking(slotDate(slot+part),city,30);
-        score+=good?1:0; perfect&&=good;
-      }
-    }
-    if(perfect) return {slot,score,perfect:true};
-    if(score>best.score) best={slot,score,perfect:false};
+    let penalty=0;
+    for(const city of state.selected)
+      for(let part=0;part<needed;part++)
+        penalty+=hoursPenalty(slotDate(slot+part),city);
+    if(penalty===0) return {slot,penalty,perfect:true};
+    if(penalty<best.penalty) best={slot,penalty,perfect:false};
   }
   return best;
 }
@@ -379,14 +398,39 @@ async function holidayFor(city,date){
   return holidays.find(h=>h.date===localDate && (h.nationalHoliday || !h.subdivisionCodes?.length || h.subdivisionCodes.includes(city.subdivision))) || null;
 }
 
-function renderResults(isCompromise=!slotIsPerfect()){
+// Cities whose normal working hours do not cover the whole selected meeting.
+function citiesOutsideHours(){
+  const needed=Math.ceil(state.duration/30);
+  return state.selected.filter(city=>
+    !Array.from({length:needed},(_,part)=>isWorking(slotDate(state.slot+part),city,30)).every(Boolean));
+}
+
+function renderResults(){
   if(state.selected.length<2){ els.results.hidden=true; return; }
   els.results.hidden=false;
   const start=slotDate(state.slot); const end=new Date(start.getTime()+state.duration*60000);
-  els.result_label.textContent=t(isCompromise?'bestCompromise':'bestOverlap');
+
+  // Three honest states, where there used to be two over-claiming ones.
+  //
+  // "Best compromise" was wrong twice over. It was shown for whatever slot the
+  // visitor had dragged to, crediting their choice to the tool; and findBestSlot()
+  // never computes a "best" anything - it returns the FIRST slot where everyone is
+  // working, or else the one where the most city-half-hours land inside 9-5. That
+  // score is a boolean count, so it cannot tell 6:30 AM from 3 AM: both are simply
+  // "not working". Calling the result "best" asserted an optimum the code does not
+  // look for, and "compromise" implied a sacrifice that a 6:30 start may not be.
+  const outside=citiesOutsideHours();
+  els.result_label.textContent=t(state.userPicked ? 'selectedTime'
+                                : outside.length ? 'closestToHours' : 'insideHours');
+  const names=outside.map(c=>c.name);
+  const list=names.length<=1 ? names[0]
+           : names.slice(0,-1).join(', ')+' and '+names[names.length-1];
+  const note=!outside.length ? ''
+           : state.userPicked ? t('outsideHint').replace('{cities}',list)
+           : t('compromiseHint');
   els.results_title.textContent=`${formatTime(start,state.selected[0].zone)}–${formatTime(end,state.selected[0].zone)} ${state.selected[0].name}`;
   els.meeting_summary.textContent=state.selected.map(c=>`${formatTime(start,c.zone)} ${c.name}`).join(' · ');
-  els.compromise_note.hidden=!isCompromise; els.compromise_note.textContent=isCompromise?t('compromiseHint'):'';
+  els.compromise_note.hidden=!note; els.compromise_note.textContent=note;
   els.selected_day.textContent=formatDay(start,state.selected[0].zone);
   els.time_slider.value=state.slot;
   const width=Math.max(2,(state.duration/1440)*100); const left=(state.slot/48)*100;
@@ -416,9 +460,9 @@ async function checkHolidays(start){
   els.holiday_notices.innerHTML=notices.map(n=>`<div class="holiday-notice status-${n.kind}">${n.icon} ${n.text}</div>`).join('');
 }
 
-function calculate(){ if(state.selected.length<2){ els.city_error.textContent=t('minimumCities'); els.results.hidden=true; return; } els.city_error.textContent=''; const best=findBestSlot(); state.slot=best.slot; renderResults(!best.perfect); track('overlap_calculated',{cities:state.selected.length,duration:state.duration}); }
+function calculate(){ if(state.selected.length<2){ els.city_error.textContent=t('minimumCities'); els.results.hidden=true; return; } els.city_error.textContent=''; const best=findBestSlot(); state.slot=best.slot; state.userPicked=false; renderResults(); track('overlap_calculated',{cities:state.selected.length,duration:state.duration}); }
 function shiftDay(amount){ const d=new Date(`${state.date}T12:00:00Z`); d.setUTCDate(d.getUTCDate()+amount); state.date=d.toISOString().slice(0,10); els.meeting_date.value=state.date; calculate(); }
-function shiftTime(amount){ state.slot=Math.max(0,Math.min(47,state.slot+amount)); renderResults(); track('time_adjusted',{slot:state.slot}); }
+function shiftTime(amount){ state.slot=Math.max(0,Math.min(47,state.slot+amount)); state.userPicked=true; renderResults(); track('time_adjusted',{slot:state.slot}); }
 
 els.city_search.addEventListener('input',()=>{ clearTimeout(searchTimer); searchTimer=setTimeout(()=>searchPlaces(els.city_search.value),220); });
 els.city_search.addEventListener('focus',()=>{ if(state.suggestions.length) renderSuggestions(state.suggestions); });
@@ -427,14 +471,14 @@ els.add_city.addEventListener('click',()=>{ if(state.suggestions.length) addSele
 els.city_list.addEventListener('click',event=>{ const button=event.target.closest('[data-remove]'); if(!button)return; state.selected.splice(Number(button.dataset.remove),1); saveCities(); renderCities(); if(state.selected.length>=2) calculate(); else els.results.hidden=true; });
 els.meeting_date.addEventListener('change',()=>{state.date=els.meeting_date.value;calculate();});
 els.duration.addEventListener('change',()=>{state.duration=Number(els.duration.value);calculate();track('duration_changed',{duration:state.duration});});
-els.time_slider.addEventListener('input',()=>{state.slot=Number(els.time_slider.value);renderResults();});
+els.time_slider.addEventListener('input',()=>{state.slot=Number(els.time_slider.value);state.userPicked=true;renderResults();});
 els.earlier.addEventListener('click',()=>shiftTime(-1)); els.later.addEventListener('click',()=>shiftTime(1));
 els.previous_day.addEventListener('click',()=>shiftDay(-1)); els.next_day.addEventListener('click',()=>shiftDay(1));
 els.theme_toggle.addEventListener('click',()=>applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
 if(els.clock_toggle) els.clock_toggle.addEventListener('click',()=>applyClock(state.clock==='12'?'24':'12'));
 els.city_search.addEventListener('keydown',event=>{ if(event.key==='Enter'){ event.preventDefault(); els.add_city.click(); } });
 document.addEventListener('click',event=>{ if(!event.target.closest('.city-add-row')) els.city_suggestions.hidden=true; });
-els.timeline.addEventListener('click',event=>{ const trackEl=event.target.closest('[data-track]'); if(!trackEl)return; const box=trackEl.getBoundingClientRect(); state.slot=Math.max(0,Math.min(47,Math.round(((event.clientX-box.left)/box.width)*48))); renderResults(); });
+els.timeline.addEventListener('click',event=>{ const trackEl=event.target.closest('[data-track]'); if(!trackEl)return; const box=trackEl.getBoundingClientRect(); state.slot=Math.max(0,Math.min(47,Math.round(((event.clientX-box.left)/box.width)*48))); state.userPicked=true; renderResults(); });
 els.copy_result.addEventListener('click',async()=>{await navigator.clipboard.writeText(shareText()); els.copy_result.textContent=t('copied'); setTimeout(()=>els.copy_result.textContent=t('copy'),1200); track('result_copied');});
 els.share_result.addEventListener('click',async()=>{const url=meetingUrl().href; const text=`${els.result_label.textContent}: ${els.results_title.textContent} — ${els.meeting_summary.textContent}`; if(navigator.share) await navigator.share({title:'Common Hours',text,url}); else await navigator.clipboard.writeText(`${text}\n\n${url}`); track('result_shared');});
 
