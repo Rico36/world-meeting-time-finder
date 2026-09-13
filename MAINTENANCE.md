@@ -545,6 +545,35 @@ The rules now:
 `tests/clock_test.py` checks all five surfaces agree, in three locales, before
 and after toggling, and across a reload.
 
+### Sitemap `lastmod` must stay honest
+
+Every URL used to carry today's date: `write_sitemap()` stamped `TODAY` on all
+474 unconditionally. That told Google the entire site changes every time the
+generator runs. Google uses `lastmod` **only where it is consistently accurate**,
+so an always-today sitemap trains it to ignore the field — throwing away a signal
+that actually helps prioritise crawling on a site with little crawl demand.
+
+Dates now come from `tools/sitemap-dates.json`, a **committed** manifest of
+per-page content hashes. A page keeps its recorded date until its content
+actually changes.
+
+Two decisions worth keeping:
+
+- **The hash normalises `?v=` out.** `bump_assets.py` rewrites the cache-busting
+  version in all 474 files whenever CSS or JS changes, and counting that as a
+  content change puts the sitemap straight back where it started. A stylesheet
+  version is not a change to what the page says. Verified: bumping every asset
+  version moves zero dates.
+- **It is not derived from git history.** That was the first attempt and it
+  fails for the same reason — a `bump_assets` commit touches every file, so git
+  reports them all as changed that day. Hashing also means the answer does not
+  depend on clone depth, so CI keeps its fast shallow checkout.
+
+The manifest must stay committed or CI regenerates it from scratch each run and
+every date resets to today. `tests/sitemap_test.py` checks the sitemap agrees
+with the manifest, the manifest agrees with the files on disk, no date is in the
+future, and no redirect stub appears in either.
+
 ### Tests live in `tests/` — run them after any change
 
 ```bash

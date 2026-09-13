@@ -601,34 +601,85 @@ def render_index(all_cities, pairs):
     )
     return "index.html", body
 
+_ASSET_V = re.compile(r"\?v=[0-9A-Za-z\-]+")
+DATES_FILE = os.path.join(HERE, "sitemap-dates.json")
+
+def _content_hash(path):
+    """Hash of what the page SAYS, with the cache-busting version normalised out.
+
+    bump_assets.py rewrites `?v=` in all 474 files whenever CSS or JS changes.
+    That is not a change to the page's content, and counting it as one is what
+    made every sitemap entry claim it changed today.
+    """
+    import hashlib
+    with open(path, encoding="utf-8") as fh:
+        return hashlib.sha1(_ASSET_V.sub("?v=", fh.read()).encode("utf-8")).hexdigest()
+
+def resolve_lastmod(entries):
+    """Real per-page dates, from a committed manifest of content hashes.
+
+    Deliberately NOT derived from git history: a bump_assets commit touches
+    every file, so git would report them all as changed on that day - the exact
+    false signal this exists to remove. It also means the answer does not depend
+    on clone depth, so CI can keep using a shallow checkout.
+
+    Google uses <lastmod> only where it is consistently accurate. A sitemap that
+    claims 474 pages changed today, every month, teaches it to ignore the field.
+    """
+    try:
+        with open(DATES_FILE, encoding="utf-8") as fh:
+            store = json.load(fh)
+    except Exception:
+        store = {}
+
+    today = TODAY.isoformat()
+    dates, fresh = {}, {}
+    for rel in entries:
+        digest = _content_hash(os.path.join(REPO, rel))
+        prior = store.get(rel)
+        date = prior["date"] if prior and prior.get("hash") == digest else today
+        dates[rel] = date
+        fresh[rel] = {"hash": digest, "date": date}
+
+    if fresh != store:
+        with open(DATES_FILE, "w", encoding="utf-8") as fh:
+            json.dump(fresh, fh, indent=0, sort_keys=True)
+    return dates
+
 def write_sitemap():
     """Scan the repo for what actually exists rather than being handed lists, so
     whichever generator runs last still produces a complete, correct sitemap."""
-    today = TODAY.isoformat()
-    # root-level pages that actually exist, rather than a list that drifts
-    urls = [f"{SITE}/"]
-    urls += sorted(f"{SITE}/{f}" for f in os.listdir(REPO)
-                   if f.endswith(".html") and f != "index.html")
     def is_stub(path):
         """Retired URLs redirect to the page that absorbed them. Listing a
         redirect in the sitemap asks Google to index a page with no content."""
         with open(path, encoding="utf-8") as fh:
             return "<!--redirect-stub-->" in fh.read(400)
 
+    # (url, repo-relative file) so each entry can carry its own real date
+    entries = [(f"{SITE}/", "index.html")]
+    entries += sorted((f"{SITE}/{f}", f) for f in os.listdir(REPO)
+                      if f.endswith(".html") and f != "index.html")
     for sub in ("time", "holidays"):
         d = os.path.join(REPO, sub)
         if not os.path.isdir(d): continue
-        urls.append(f"{SITE}/{sub}/")
-        urls += sorted(f"{SITE}/{sub}/{f}" for f in os.listdir(d)
-                       if f.endswith(".html") and f != "index.html"
-                       and not is_stub(os.path.join(d, f)))
+        entries.append((f"{SITE}/{sub}/", f"{sub}/index.html"))
+        entries += sorted((f"{SITE}/{sub}/{f}", f"{sub}/{f}") for f in os.listdir(d)
+                          if f.endswith(".html") and f != "index.html"
+                          and not is_stub(os.path.join(d, f)))
+
+    dates = resolve_lastmod([path for _, path in entries])
+
     xml = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    for u in urls:
-        xml.append(f"  <url>\n    <loc>{u}</loc>\n    <lastmod>{today}</lastmod>\n  </url>")
+    for url, path in entries:
+        xml.append(f"  <url>\n    <loc>{url}</loc>\n"
+                   f"    <lastmod>{dates[path]}</lastmod>\n  </url>")
     xml.append("</urlset>\n")
     open(os.path.join(REPO, "sitemap.xml"), "w", encoding="utf-8").write("\n".join(xml))
-    return len(urls)
+
+    spread = len(set(dates.values()))
+    print(f"  sitemap:    {len(entries)} URLs across {spread} distinct lastmod date(s)")
+    return len(entries)
 
 def main():
     global VERSION
