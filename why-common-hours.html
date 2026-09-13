@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Why a time-zone converter is the wrong tool for scheduling across countries, what a holiday-aware planner does differently, and the limits no public calendar can cover.">
+  <link rel="canonical" href="https://findcommonhours.com/why-common-hours.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="Why Common Hours | Common Hours"><meta property="og:description" content="A time that works for everyone can still be the wrong day. The case for checking working hours and public holidays together."><meta property="og:url" content="https://findcommonhours.com/why-common-hours.html"><meta property="og:image" content="https://findcommonhours.com/assets/og.jpg">
+  <title>Why Common Hours — Working Hours and Holidays Together | Common Hours</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4158152621897495" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="styles.css?v=20260913-1">
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true">☀</span><span>Common Hours</span></a><nav class="site-nav" aria-label="Sections"><a href="holidays/">Holidays</a><a href="time/">City pairs</a></nav></header>
+  <main class="content-page">
+    <p class="eyebrow">Why this tool exists</p>
+    <h1>A time that works for everyone can still be the wrong day</h1>
+    <p class="lede">Any converter will tell you that 9 AM in New York is 9 PM in Hong Kong. That is arithmetic, and it is the easy half. The hard half is whether anyone is actually at work — and whether the day you picked is a public holiday somewhere in the group.</p>
+
+    <figure class="overlap-figure">
+      <div class="overlap-card">
+        <div class="overlap-head">
+          <span class="overlap-title">New York and Hong Kong, a normal Friday</span>
+          <span class="overlap-meta">UTC−4 · UTC+8 · 12 hours apart</span>
+        </div>
+        <div class="overlap-row">
+          <span class="overlap-label"><span class="overlap-city">New York</span><span class="overlap-hours">09:00 – 17:00</span></span>
+          <span class="overlap-track"><span class="overlap-seg" style="left:37.5%;width:33.33%"></span><span class="overlap-pick" style="left:20.83%;width:4.17%"></span></span>
+        </div>
+        <div class="overlap-row">
+          <span class="overlap-label"><span class="overlap-city">Hong Kong</span><span class="overlap-hours">09:00 – 17:00</span></span>
+          <span class="overlap-track"><span class="overlap-seg" style="left:87.5%;width:12.5%"></span><span class="overlap-seg" style="left:0;width:20.83%"></span><span class="overlap-pick" style="left:20.83%;width:4.17%"></span></span>
+        </div>
+        <div class="overlap-axis" aria-hidden="true"><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>12 AM</span></div>
+        <div class="overlap-key">
+          <span><i class="chip chip-working"></i> Normal working hours</span>
+          <span><i class="chip chip-pick"></i> Closest available hour</span>
+        </div>
+      </div>
+      <figcaption>Both cities keep the same 9-to-5. Drawn on one clock, the bands never touch: <strong>no hour of this day is inside normal working hours for both.</strong> Common Hours picks 5 AM in New York — 5 PM in Hong Kong — and says exactly that, rather than presenting a converted time as though it were a recommendation.</figcaption>
+    </figure>
+
+    <h2>Most tools answer a question nobody asked</h2>
+    <p>A time-zone converter takes an hour you already chose and restates it elsewhere. That is useful when you know the answer and want to check it. It is close to useless when you are staring at four cities and a calendar, because the thing you actually need is the reverse: given these people, when should we meet?</p>
+    <p>Common Hours works backwards from everyone’s working day. It scores every half-hour slot by how far it sits from each participant’s normal hours — measured in minutes, around the clock, so 6:30 AM ranks properly above 3 AM instead of both being lumped together as “outside hours”. A weekend costs more than an awkward weekday hour, because an 8 AM Monday is a meeting you can ask someone for and an 11 AM Sunday is not.</p>
+    <p>When a genuine overlap exists, it says so. When none does — as above — it does not invent one. It shows the least costly hour, names who is being asked to stretch, and leaves the decision with you. A tool that always produces a confident answer is not being helpful; it is hiding the part of the problem you needed to see.</p>
+
+    <h2>The holiday check is the point, not a feature</h2>
+    <p>This is where scheduling across countries actually goes wrong. The hour is fine, everyone accepts the invitation, and then half the group is unreachable because it is Eid, or Golden Week, or the Monday after a national day. Common Hours checks the meeting date against every participant’s public-holiday calendar before you send anything.</p>
+    <p>It also covers the places that most holiday data quietly skips. Several widely used public-holiday APIs return nothing at all for a set of major economies — India, the United Arab Emirates, Pakistan, Saudi Arabia, Thailand, Malaysia and Israel. These are the countries whose holidays are announced rather than fixed: set by moon sighting, cabinet decree or a lunar calendar. Common Hours carries them anyway, from an independently maintained calendar library rather than a single upstream feed.</p>
+    <p>Regional coverage matters more than it looks. A national calendar says Switzerland has <strong>four</strong> public holidays, which is true and nearly useless — the country observes <strong>forty-four</strong> more that are set canton by canton. If your colleague is in Zurich, the national list is not the list you need. Common Hours carries subdivision-level holidays for thirty countries, including 159 additional dates across India’s states and union territories, and keeps them one click away rather than buried.</p>
+    <p>Dates whose timing depends on a moon sighting are marked as estimates rather than stated as fact, because that is what they are until a few days beforehand.</p>
+
+    <h2>Built so the answers stay right after you close the tab</h2>
+    <p>Time-zone arithmetic looks simple and is not. Offsets are not fixed: countries start and end daylight saving on different dates, some have abandoned it outright, and a familiar city-to-city gap can be an hour different for several weeks a year. Common Hours resolves named IANA time zones for the specific meeting date rather than a remembered offset, so the seasonal weeks where the gap shifts are handled rather than guessed.</p>
+    <p>Behind the planner sits reference material that is regenerated on a schedule rather than written once and left to rot:</p>
+    <ul class="guide-points">
+      <li><strong>234 countries and territories</strong> with public-holiday calendars for this year and next.</li>
+      <li><strong>210 city-pair guides</strong>, each with a computed overlap window, both sides’ clock-change dates and both countries’ upcoming holidays.</li>
+      <li><strong>21 per-city hubs</strong> covering major business centres.</li>
+      <li><strong>30 countries</strong> with regional holidays broken out separately from the national list.</li>
+    </ul>
+    <p>The countdown on each page recomputes in your browser on load, so a date that has passed never sits there claiming to be next. The planner needs no account: your cities and preferences stay in your own browser, and there is nothing to sign up for, verify or cancel.</p>
+
+    <h2>The limits, stated plainly</h2>
+    <p>Any tool that claims to know whether your colleague is free is overselling itself, and the ones that quietly exclude dates are the worst offenders — they remove options without telling you why. Common Hours flags rather than filters: a holiday notice is a prompt to ask, not a decision made on your behalf.</p>
+    <p>None of the following appears in any country-level dataset, here or anywhere else:</p>
+    <ul class="guide-points">
+      <li>Regional observances that apply in one state, province or canton but not the next — covered for thirty countries here, not for every country.</li>
+      <li>Company shutdowns, including the stretch between Christmas and New Year.</li>
+      <li>School holidays, which quietly determine when parents are actually available.</li>
+      <li>Ordinary personal leave, which no public dataset will ever contain.</li>
+    </ul>
+    <p>Treat a clear calendar as a good starting point and a bad finishing point. Confirm with the person you are inviting. <a href="holiday-data-accuracy.html">How the holiday check works</a> sets out the coverage and its gaps in more detail.</p>
+
+    <h2>When something simpler will do</h2>
+    <p>If everyone is in one country, a clock on the wall is enough. If you already know the hour and only want it restated somewhere else, a plain converter is faster and this is more than you need. If your whole team lives in one calendar system with shared free/busy, that system already knows more about availability than any public dataset can.</p>
+    <p>The case for Common Hours is narrow and, within that scope, strong: <strong>you are scheduling across countries, the participants are not in your calendar system, and a public holiday you did not check for would cost you the meeting.</strong> That is the situation it is built for, and the one where a converter will let you down without ever appearing to.</p>
+
+    <a class="primary-button" href="./">Check a date in the planner</a>
+
+    <nav class="guide-nav" aria-label="More"><h2>More</h2><ul>
+      <li><a href="holidays/">Public holidays by country</a></li>
+      <li><a href="time/">Meeting times for city pairs</a></li>
+      <li><a href="international-meeting-planner.html">How to schedule international meetings</a></li>
+      <li><a href="holiday-data-accuracy.html">How the holiday check works</a></li>
+    </ul></nav>
+  </main>
+  <footer><span>Common Hours</span><span>A free world meeting time finder.</span><nav><a href="./">Meeting planner</a><a href="time/">City pairs</a><a href="holidays/">Holidays</a><a href="privacy.html">Privacy</a></nav></footer>
+  <script>document.documentElement.dataset.theme=localStorage.getItem('commonHoursTheme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');</script>
+  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"1fa3e675ae4f4a6ca7406cb3d20594f0"}'></script>
+</body>
+</html>

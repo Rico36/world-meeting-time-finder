@@ -41,9 +41,11 @@ with sync_playwright() as p:
     pg.goto(f"{BASE}/", wait_until="networkidle", timeout=60000); pg.wait_for_timeout(800)
     check("homepage: tools section present", pg.eval_on_selector_all("#tools .resource-card", "e=>e.length") == 3,
           pg.eval_on_selector_all("#tools .resource-card", "e=>e.map(x=>x.textContent.slice(0,20))"))
-    check("homepage: guides section has 3 article cards",
-          pg.eval_on_selector_all("#guides .resource-card", "e=>e.length") == 3,
+    check("homepage: guides section has 4 article cards",
+          pg.eval_on_selector_all("#guides .resource-card", "e=>e.length") == 4,
           pg.eval_on_selector_all("#guides .resource-card", "e=>e.map(x=>x.getAttribute('href'))"))
+    check("homepage: the 'why' article is linked first in guides",
+          pg.eval_on_selector("#guides .resource-card", "e=>e.getAttribute('href')") == "why-common-hours.html")
     check("homepage: methodology is now a stub with a link",
           pg.eval_on_selector_all('#holiday-methodology a[href="holiday-data-accuracy.html"]', "e=>e.length") == 1)
     check("homepage: planner anchor exists", pg.eval_on_selector_all("#planner", "e=>e.length") == 1)
@@ -96,6 +98,31 @@ with sync_playwright() as p:
     check("homepage: still English after a stale 'es' in storage",
           pg.eval_on_selector("html", "e=>e.lang") == "en"
           and pg.evaluate("()=>localStorage.getItem('commonHoursLanguage')") is None)
+
+    # ---- the 'why' article ----
+    pg.goto(f"{BASE}/why-common-hours.html", wait_until="networkidle", timeout=60000)
+    words = len(pg.inner_text("main").split())
+    check("why page: substantive", words > 900, words)
+    check("why page: has the site nav", pg.eval_on_selector_all(".site-nav a", "e=>e.length") == 2)
+    check("why page: carries the ad loader",
+          pg.eval_on_selector_all('script[src*="adsbygoogle"]', "e=>e.length") == 1)
+    check("why page: canonical is self-referential",
+          pg.eval_on_selector('link[rel=canonical]', "e=>e.href")
+          == "https://findcommonhours.com/why-common-hours.html")
+    # the overlap figure is the page's thesis - it must actually render, and the
+    # two working-hours bands must not touch, which is the whole point
+    fig = pg.evaluate("""()=>{const segs=[...document.querySelectorAll('.overlap-row')].map(r=>
+        [...r.querySelectorAll('.overlap-seg')].map(s=>{const b=s.getBoundingClientRect();
+          return [Math.round(b.left), Math.round(b.right)];}));
+        return {rows:segs.length, ny:segs[0], hk:segs[1],
+                picks:document.querySelectorAll('.overlap-pick').length};}""")
+    check("why page: both city rows drawn", fig["rows"] == 2, fig)
+    check("why page: Hong Kong's band wraps into two segments", len(fig["hk"]) == 2, fig)
+    check("why page: the working bands never overlap",
+          all(ny[1] <= hk[0] or hk[1] <= ny[0] for ny in fig["ny"] for hk in fig["hk"]), fig)
+    check("why page: the suggested hour is marked on both rows", fig["picks"] == 2, fig)
+    check("why page: states its limits",
+          "personal leave" in pg.inner_text("main"))
 
     # ---- new accuracy page ----
     pg.goto(f"{BASE}/holiday-data-accuracy.html", wait_until="networkidle", timeout=60000)

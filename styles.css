@@ -252,6 +252,35 @@ h1 { max-width: 640px; margin: 0 auto 10px; font-family: Georgia, "Times New Rom
 .holiday-table .what { flex: 1 1 200px; color: var(--muted); }
 .holiday-table .tag { color: var(--primary); font-size: 12px; font-weight: 700; }
 .guide-nav { margin-top: 42px; padding-top: 24px; border-top: 1px solid var(--border); }
+/* Static working-hours figure on why-common-hours.html. Deliberately NOT the
+   planner's .timeline-* classes: those are sized for the live app's grid and
+   carry a 48-slot child, so reusing them would couple an article's layout to
+   changes in the tool. Same tokens, so both read as one system. */
+.overlap-figure { margin: 26px 0 30px; }
+.overlap-card { padding: 20px 18px 14px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); }
+.overlap-head { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; justify-content: space-between; margin-bottom: 16px; }
+.overlap-title { font-weight: 600; font-size: 15px; }
+.overlap-meta { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.overlap-row { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 12px; align-items: center; margin-bottom: 9px; }
+.overlap-label { min-width: 0; }
+.overlap-city { display: block; font-size: 13.5px; font-weight: 600; }
+.overlap-hours { display: block; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.overlap-track { position: relative; height: 30px; border-radius: 7px; background: var(--resting); overflow: hidden; }
+.overlap-seg { position: absolute; top: 0; bottom: 0; background: var(--working); }
+.overlap-pick { position: absolute; top: 0; bottom: 0; background: var(--selected); }
+.overlap-axis { display: flex; justify-content: space-between; margin: 6px 0 0 104px; font-size: 10.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.overlap-key { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 14px 0 0 104px; font-size: 12px; color: var(--muted); }
+.overlap-key span { display: inline-flex; align-items: center; gap: 7px; }
+.overlap-key .chip { width: 22px; height: 11px; border-radius: 3px; flex: none; }
+.chip-working { background: var(--working); }
+.chip-pick { background: var(--selected); }
+.overlap-figure figcaption { margin: 13px 2px 0; font-size: 14px; line-height: 1.6; color: var(--muted); }
+.overlap-figure figcaption strong { color: var(--text); font-weight: 600; }
+@media (max-width: 560px) {
+  .overlap-row { grid-template-columns: 74px minmax(0, 1fr); gap: 9px; }
+  .overlap-axis, .overlap-key { margin-left: 83px; }
+}
+
 .guide-nav h2 { margin-top: 0; }
 .guide-nav a { color: var(--primary); }
 footer { padding: 24px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; }
