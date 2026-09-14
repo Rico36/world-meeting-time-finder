@@ -240,11 +240,17 @@ def header(depth, section=None):
     def link(href, label, key):
         current = ' aria-current="page"' if key == section else ''
         return f'<a href="{root}{href}"{current}>{label}</a>'
+    why_current = ' aria-current="page"' if section == "why" else ''
     return (f'<header class="site-header"><a class="brand" href="{root}"><span class="brand-mark" '
             f'aria-hidden="true">☀</span><span>Common Hours</span></a>'
             f'<nav class="site-nav" aria-label="Sections">'
             f'{link("holidays/", "Holidays", "holidays")}'
             f'{link("time/", "City pairs", "time")}'
+            # Label truncates to "Why" on narrow screens, where a third full-length
+            # link does not fit beside two buttons. aria-label keeps the accessible
+            # name stable at every width.
+            f'<a href="{root}why-common-hours.html" aria-label="Why Common Hours"{why_current}>'
+            f'Why<span class="nav-long"> Common Hours</span></a>'
             f'</nav><div class="header-actions">'
             f'<button class="icon-button" id="theme-toggle" type="button" aria-label="Switch color theme">◐</button>'
             f'</div></header>')

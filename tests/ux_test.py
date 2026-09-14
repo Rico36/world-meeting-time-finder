@@ -54,11 +54,15 @@ with sync_playwright() as p:
     # Both sections were reachable only from the footer. The nav is on every
     # page, not just here, so clicking through does not strand the reader.
     nav = pg.eval_on_selector_all(".site-nav a", "e=>e.map(a=>[a.textContent.trim(),a.getAttribute('href')])")
-    check("homepage: top nav has exactly two links", len(nav) == 2, nav)
-    check("homepage: nav links to Holidays and City pairs",
-          [n[0] for n in nav] == ["Holidays", "City pairs"], nav)
-    check("homepage: nav hrefs resolve to the section indexes",
-          [n[1] for n in nav] == ["holidays/", "time/"], nav)
+    check("homepage: top nav has three links", len(nav) == 3, nav)
+    # third label truncates to "Why" under 700px; aria-label carries the full name
+    check("homepage: nav links to Holidays, City pairs and the why article",
+          [n[0] for n in nav] == ["Holidays", "City pairs", "Why Common Hours"], nav)
+    check("homepage: nav hrefs resolve",
+          [n[1] for n in nav] == ["holidays/", "time/", "why-common-hours.html"], nav)
+    check("homepage: the why link keeps a stable accessible name",
+          pg.eval_on_selector('.site-nav a[href="why-common-hours.html"]',
+                              "e=>e.getAttribute('aria-label')") == "Why Common Hours")
     check("homepage: nav links are a real tap target",
           min(pg.eval_on_selector_all(".site-nav a", "e=>e.map(a=>a.getBoundingClientRect().height)")) >= 40)
     check("homepage: header does not overflow",
@@ -77,7 +81,7 @@ with sync_playwright() as p:
           pg.eval_on_selector_all('.site-nav a[aria-current="page"]', "e=>e.map(a=>a.textContent.trim())") == ["City pairs"])
     # and from a leaf page, not just the indexes
     pg.goto(f"{BASE}/holidays/japan.html", wait_until="networkidle", timeout=60000)
-    check("nav: present on a country page", pg.eval_on_selector_all(".site-nav a", "e=>e.length") == 2)
+    check("nav: present on a country page", pg.eval_on_selector_all(".site-nav a", "e=>e.length") == 3)
     check("nav: a country page marks Holidays current",
           pg.eval_on_selector_all('.site-nav a[aria-current="page"]', "e=>e.map(a=>a.textContent.trim())") == ["Holidays"])
     pg.goto(f"{BASE}/", wait_until="networkidle", timeout=60000)
@@ -103,7 +107,10 @@ with sync_playwright() as p:
     pg.goto(f"{BASE}/why-common-hours.html", wait_until="networkidle", timeout=60000)
     words = len(pg.inner_text("main").split())
     check("why page: substantive", words > 900, words)
-    check("why page: has the site nav", pg.eval_on_selector_all(".site-nav a", "e=>e.length") == 2)
+    check("why page: has the site nav", pg.eval_on_selector_all(".site-nav a", "e=>e.length") == 3)
+    check("why page: marks itself current in the nav",
+          pg.eval_on_selector_all('.site-nav a[aria-current="page"]',
+                                  "e=>e.map(a=>a.getAttribute('href'))") == ["why-common-hours.html"])
     check("why page: carries the ad loader",
           pg.eval_on_selector_all('script[src*="adsbygoogle"]', "e=>e.length") == 1)
     check("why page: canonical is self-referential",

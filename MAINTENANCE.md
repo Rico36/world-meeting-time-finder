@@ -391,11 +391,20 @@ They now sit in the header on **every** page, not just the homepage — adding i
 to the homepage alone would have put Holidays one click away and then stranded
 the reader, since the generated pages linked back only from their footers.
 
-- The homepage and the five other root pages carry the markup inline.
+The nav carries **three** links: Holidays, City pairs, and Why Common Hours.
+
+- The homepage and the six other root pages carry the markup inline.
 - The 467 generated pages get it from `header(depth, section)` in
-  `tools/gen_city_pairs.py`. `section` is `"holidays"` or `"time"`, which sets
-  `aria-current="page"` so the nav says where you are. The 12 redirect stubs
-  deliberately have no chrome and so no nav.
+  `tools/gen_city_pairs.py`. `section` is `"holidays"`, `"time"` or `"why"`,
+  which sets `aria-current="page"` so the nav says where you are. The 12
+  redirect stubs deliberately have no chrome and so no nav.
+- **The third label shortens to "Why" below 700px** (`.nav-long` is hidden), and
+  the link carries `aria-label="Why Common Hours"` so the accessible name never
+  changes with the viewport. Three full-length labels do not fit beside the
+  brand and two buttons.
+- **Below 360px the header wraps** and the nav takes its own row. 375px — the
+  common phone width — still fits on one row; without the wrap, 320px pushed the
+  whole page sideways.
 - **Below 560px the wordmark is hidden but stays in the accessibility tree**
   (clipped, not `display:none`). Brand mark + wordmark + two links + two buttons
   does not fit a phone, and on the generated pages that wordmark is the brand

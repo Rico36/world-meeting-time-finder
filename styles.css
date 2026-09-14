@@ -55,6 +55,18 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .site-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 11px; border-radius: 10px; color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; white-space: nowrap; }
 .site-nav a:hover { background: var(--primary-soft); color: var(--text); }
 .site-nav a[aria-current="page"] { color: var(--primary); background: var(--primary-soft); }
+/* Three nav items plus the brand and two buttons do not fit a narrow header.
+   Below 700px the third one shortens to "Why"; its aria-label carries the full
+   name, so the accessible name never changes with the viewport. */
+@media (max-width: 700px) { .site-nav .nav-long { display: none; } }
+/* Under ~360px even the short labels overflow beside the brand and both
+   buttons, so the nav drops to its own row rather than pushing the page
+   sideways. 375px (the common phone width) still fits on one row. */
+@media (max-width: 360px) {
+  .site-header { flex-wrap: wrap; padding: 6px 10px; gap: 4px 10px; }
+  .site-nav { order: 3; width: 100%; margin-left: 0; justify-content: space-between; }
+  .site-nav a { padding: 0 8px; }
+}
 .meeting-settings input, .meeting-settings select { min-height: 44px; border: 1px solid var(--border); border-radius: 11px; padding: 0 12px; color: var(--text); background: var(--surface-strong); }
 .icon-button { min-width: 44px; min-height: 44px; border: 0; border-radius: 11px; background: transparent; color: var(--text); font-size: 21px; }
 .icon-button:hover { background: var(--primary-soft); }
