@@ -35,6 +35,7 @@ python tests/detect_test.py
 | `sitemap_test.py` | `lastmod` accuracy against the content-hash manifest, stub exclusion — no browser |
 | `slot_test.py` | Slot selection, and that the heading never claims more than the code knows |
 | `ux_test.py` | Homepage structure, grids, CTA placement |
+| `weekend_test.py` | Per-country weekends in the planner and the holiday tags |
 
 Server-side tests are separate and need Node, not a browser:
 

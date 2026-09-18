@@ -23,6 +23,7 @@ SUITES = [
     ("sitemap",   "Sitemap lastmod accuracy and stub exclusion (no browser)"),
     ("slot",      "Slot selection and honest result labelling"),
     ("ux",        "Homepage structure, grids, CTA placement"),
+    ("weekend",   "Per-country weekends: Fri+Sat, Sun-only, and the defaults"),
 ]
 
 base = sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8765"

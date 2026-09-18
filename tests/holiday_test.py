@@ -56,15 +56,29 @@ with sync_playwright() as p:
             out.append(html[m.end():end if end != -1 else len(html)])
         return "".join(out)
 
-    wrong = []
+    # Per country, not Sat+Sun. This assertion used to hardcode weekday() >= 5,
+    # which is wrong for 28 countries: Afghanistan's Sunday holidays are working
+    # days and Algeria's Friday ones are not. It agreed with the generator's old
+    # bug, so it passed while both were wrong.
+    sys.path.insert(0, os.path.join(REPO, "tools"))
+    from gen_city_pairs import slugify
+    from gen_holiday_pages import country_list, weekend_days
+    weekend_by_slug = {slugify(pretty) + ".html": weekend_days(code)
+                       for pretty, code in country_list()}
+
+    wrong, unchecked = [], 0
     for n, h in list(countries.items())[:80]:
+        wk = weekend_by_slug.get(n)
+        if wk is None:
+            unchecked += 1; continue
         for iso, rest in re.findall(r'data-date="(\d{4}-\d\d-\d\d)">(.{0,400}?)(?=<div data-date|$)',
                                     national_only(h), re.S):
-            weekend = datetime.date.fromisoformat(iso).weekday() >= 5
+            weekend = datetime.date.fromisoformat(iso).weekday() in wk
             tagged = "falls on a weekend" in rest
             if weekend != tagged:
-                wrong.append((n, iso, weekend, tagged)); break
-    check("the weekend flag matches the actual weekday", not wrong, wrong[:3])
+                wrong.append((n, iso, sorted(wk), weekend, tagged)); break
+    check("the weekend flag matches that country's own weekend", not wrong, wrong[:3])
+    check("most sampled countries were actually checked", unchecked < 10, unchecked)
 
     # ---- 3. moon-sighting dates are marked, never stated flatly ----
     hits = [n for n, h in countries.items() if "date set by moon sighting" in h]

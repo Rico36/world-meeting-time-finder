@@ -282,15 +282,30 @@ def render_regional(code, rows, total_subs, noun):
             f'specific region before assuming someone is working.</p>'
             f'</details></section>\n'), len(rows)
 
-def classify(d, name):
+def weekend_days(code):
+    """This country's rest days, as Python weekday numbers (0 = Monday).
+
+    Saturday+Sunday is wrong for 28 countries: Saudi Arabia, Qatar, Israel,
+    Egypt and most of the Gulf rest Friday+Saturday, Hong Kong and a few others
+    Sunday alone, Brunei Friday+Sunday, Iran Friday. Tagging a Friday holiday in
+    Riyadh as "long weekend likely" - when Friday IS their weekend - inverts the
+    only fact the tag exists to convey.
+    """
+    try:
+        wk = getattr(holidays.country_holidays(code, years=TODAY.year), "weekend", None)
+        return set(wk) if wk else {5, 6}
+    except Exception:
+        return {5, 6}
+
+def classify(d, name, weekend=frozenset({5, 6})):
     """Notes that make a bare date genuinely useful for meeting planning."""
     tags = []
     wd = d.weekday()
-    if wd >= 5:
+    if wd in weekend:
         tags.append("falls on a weekend")
-    elif wd == 0:
-        tags.append("long weekend likely")
-    elif wd == 4:
+    elif (wd + 1) % 7 in weekend or (wd - 1) % 7 in weekend:
+        # adjacent to a rest day at either end - Friday and Monday under Sat+Sun,
+        # Thursday and Sunday under Fri+Sat
         tags.append("long weekend likely")
     if re.search(r"estimated", name, re.I):
         tags.append("date set by moon sighting")
@@ -298,6 +313,7 @@ def classify(d, name):
 
 def render_country(pretty, code, hub_cities, follows=()):
     slug = f"{slugify(pretty)}.html"
+    weekend = weekend_days(code)   # read by table() and the weekend count below
     h = english_holidays(code, YEARS)
     rows = []
     for d, raw in sorted(h.items()):
@@ -337,7 +353,7 @@ def render_country(pretty, code, hub_cities, follows=()):
             return '<p>No dates recorded for this year.</p>'
         out = ['<div class="holiday-table">']
         for d, name, est in items:
-            tags = classify(d, name + (" (estimated)" if est else ""))
+            tags = classify(d, name + (" (estimated)" if est else ""), weekend)
             tag_html = "".join(f'<span class="tag">{esc(t)}</span>' for t in tags)
             out.append(f'<div data-date="{d.isoformat()}"><span class="when">'
                        f'{WEEKDAY[d.weekday()]} {d.day} {M_LONG[d.month-1]}'
@@ -363,7 +379,7 @@ def render_country(pretty, code, hub_cities, follows=()):
     else:
         glance = ""
 
-    weekend_count = sum(1 for d, _, _ in this_year if d.weekday() >= 5)
+    weekend_count = sum(1 for d, _, _ in this_year if d.weekday() in weekend)
     weekend_txt = ("" if not weekend_count else
                    f", of which {weekend_count} "
                    f"{'falls' if weekend_count == 1 else 'fall'} on a weekend")

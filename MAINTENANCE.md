@@ -554,6 +554,39 @@ The rules now:
 `tests/clock_test.py` checks all five surfaces agree, in three locales, before
 and after toggling, and across a reload.
 
+### The weekend is per country, not Saturday+Sunday
+
+`app.js` hardcoded `['Sat','Sun']` in three places — the working-hours test, the
+slot scorer and the weekend notices — and `classify()` in the holiday generator
+did the same. That is wrong for **28 countries**:
+
+| Weekend | Countries |
+|---|---|
+| Fri+Sat | 18 — Saudi Arabia, Qatar, Israel, Egypt, Kuwait, Bahrain, Oman, Jordan, Iraq, Bangladesh, Afghanistan… |
+| Sun only | 8 — Hong Kong, DR Congo, Niger, Anguilla… |
+| Fri+Sun | Brunei |
+| Fri | Iran |
+
+For a visitor scheduling with Riyadh or Doha the planner showed **Friday as a
+working day and Sunday as the weekend** — exactly inverted, on the single
+question the site exists to answer. Saudi Arabia and Qatar were the first and
+third largest sources of impressions at the time.
+
+- `tools/gen_weekends.py` patches the map into `app.js` between
+  `WEEKENDS:START`/`END` markers. Only the ~28 exceptions are emitted; anything
+  absent falls back to Sat+Sun, so the block stays under a kilobyte. Run it
+  annually with the place data, or when a country is reported to have moved.
+- **The data is per country *and* per year**, so it tracks real changes: the
+  library correctly has the **UAE on Sat+Sun** after its 2022 move while its
+  neighbours stay Fri+Sat. Never substitute a regional rule of thumb for it.
+- `classify()` derives "long weekend likely" from adjacency to that country's own
+  rest days — Friday and Monday under Sat+Sun, Thursday and Sunday under Fri+Sat
+  — rather than hardcoding weekday numbers.
+
+`tests/weekend_test.py` covers both sides. Note that `holiday_test.py` had
+encoded the same `weekday() >= 5` assumption and so passed while the generator
+was wrong; it now checks each country against its real weekend.
+
 ### Sitemap `lastmod` must stay honest
 
 Every URL used to carry today's date: `write_sitemap()` stamped `TODAY` on all
