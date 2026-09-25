@@ -338,7 +338,14 @@ def render_pair_page(city_a, city_b, all_cities):
     name_a, country_a, cc_a, zone_a = city_a
     name_b, country_b, cc_b, zone_b = city_b
     slug = pair_slug(city_a, city_b)
-    title = f"{name_a} and {name_b} Time Zone — Meeting Planner | Common Hours"
+    # "Time Difference", not "Time Zone - Meeting Planner". Search Console,
+    # Sep 2026: "new york and los angeles time difference" ranked 10.7, the
+    # second-best position on the site, while the phrase appeared in 231 pair
+    # pages and ZERO titles. "Meeting planner" is the head term timeanddate
+    # owns outright (position 72.8 across 127 impressions), so it cost nothing
+    # to drop. "Best time to meet" is deliberately NOT added: no query in the
+    # data supports it, and a title is not the place for a hunch.
+    title = f"{name_a} and {name_b} Time Difference | Common Hours"
     now = datetime.now()
     oa_now, ob_now = offset_minutes(zone_a, now), offset_minutes(zone_b, now)
     segs, typical = gap_description(zone_a, zone_b)

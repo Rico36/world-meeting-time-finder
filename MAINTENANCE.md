@@ -554,6 +554,32 @@ The rules now:
 `tests/clock_test.py` checks all five surfaces agree, in three locales, before
 and after toggling, and across a reload.
 
+### Pair page titles say "Time Difference" - from the data, not a hunch
+
+Search Console, late September 2026: `new york and los angeles time difference`
+ranked **10.7**, the second-best position on the site, behind only
+`estonia public holidays 2027` at 6.8. The phrase appeared in **231 pair pages
+and zero titles** - it was an H2, buried.
+
+Titles changed from *"{A} and {B} Time Zone - Meeting Planner"* to
+*"{A} and {B} Time Difference"*. Three things worth keeping:
+
+- **"Meeting planner" cost nothing to drop.** It is the head term timeanddate
+  owns outright - 127 impressions at position 72.8, the site's largest
+  impression source and its least winnable query.
+- **"Best time to meet" was deliberately NOT added**, tempting as it was. No
+  query in the data supports it. A title is not the place for a hunch, and
+  padding it would have pushed past the truncation point for nothing.
+- **Length stays 47-59 characters**, under the ~60 where Google truncates.
+  Check this if the `CITIES` list ever gains a longer name.
+
+The description was left alone: *"...are 3 hours apart (New York ahead)"*
+already answers the query with a specific number, which is what earns the
+click. Title and description now complement rather than repeat.
+
+Hub pages and the `/time/` index keep their titles - the evidence was about
+pair pages only.
+
 ### The weekend is per country, not Saturday+Sunday
 
 `app.js` hardcoded `['Sat','Sun']` in three places — the working-hours test, the
